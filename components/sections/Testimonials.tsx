@@ -4,16 +4,20 @@ import { SectionMarker } from "@/components/SectionMarker";
 
 const testimonials = [
   {
-    name: "A. S.",
-    text: "Liguei de madrugada quando meu irmão foi detido e fui atendido na hora. O Dr. Rodrigo acompanhou tudo na delegacia e conduziu o caso com muito profissionalismo.",
+    name: "Leonardo Pavão, Goiânia",
+    text: "Advogado superinteligente e muito prestativo com minha causa. Fiquei feliz com o resultado e grato pela dedicação dele.",
   },
   {
-    name: "M. R.",
-    text: "Atendimento rápido e direto com o advogado. Em um momento de desespero, ter orientação clara sobre cada etapa do processo fez toda a diferença para a família.",
+    name: "Jane Lopes, Goiânia",
+    text: "Ótimo atendimento e um dos melhores advogados criminalistas de Goiânia.",
   },
   {
-    name: "J. C.",
-    text: "Profissional extremamente técnico e atencioso. Conduziu o processo com seriedade, sempre explicando os próximos passos e mantendo total sigilo.",
+    name: "Luiz Carlos, Goiânia",
+    text: "Atendimento rápido e profissional. Parabéns pelo profissionalismo.",
+  },
+  {
+    name: "Mariangela Palma, Goiânia",
+    text: "Profissional muito qualificado, transmitindo tranquilidade em um caso complexo. Excelente suporte do início ao fim. Muito satisfeita.",
   },
 ];
 
@@ -34,7 +38,7 @@ export function Testimonials() {
           </p>
         </Reveal>
 
-        <div className="mt-12 grid gap-5 md:grid-cols-3">
+        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
           {testimonials.map(({ name, text }, i) => (
             <Reveal key={name} delay={i * 70}>
               <figure className="hover-lift flex h-full flex-col border border-brass/15 bg-ink-elevated p-6 hover:border-brass/40 sm:p-7">

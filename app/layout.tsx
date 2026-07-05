@@ -20,7 +20,7 @@ const fraunces = Fraunces({
 export const metadata: Metadata = {
   title: "Advogado Criminalista em Goiânia — Defesa imediata, 24 horas | Dr. Rodrigo Faustino",
   description:
-    "Você foi preso, intimado, está sendo investigado ou acusado de um crime? Atuação imediata na defesa criminal em Goiânia, Aparecida de Goiânia e região. Plantão 24h.",
+    "Você foi intimado ou acusado de um crime? Ou um familiar acaba de ser preso? Atuação imediata na defesa criminal em Goiânia e região. Plantão 24h.",
 };
 
 export default function RootLayout({
