@@ -27,11 +27,11 @@ export function Authority() {
           <Reveal>
             <div className="duotone relative aspect-[4/5] w-full max-w-sm overflow-hidden">
               <Image
-                src="/images/dr-rodrigo-hero.jpg"
+                src="/images/dr-rodrigo-hero.png"
                 alt="Dr. Rodrigo Faustino"
                 fill
                 sizes="(max-width: 1024px) 100vw, 33vw"
-                className="object-cover object-top"
+                className="object-cover object-[center_22%]"
               />
             </div>
           </Reveal>

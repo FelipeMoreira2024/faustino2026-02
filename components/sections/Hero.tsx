@@ -59,14 +59,14 @@ export function Hero() {
           </ul>
         </div>
 
-        <div className="duotone relative aspect-[4/5] w-full max-w-md overflow-hidden justify-self-center lg:justify-self-end">
+        <div className="duotone relative -mt-[2cm] aspect-[4/5] w-full max-w-[32rem] overflow-hidden justify-self-center lg:justify-self-end">
           <Image
-            src="/images/dr-rodrigo-hero.jpg"
+            src="/images/dr-rodrigo-hero.png"
             alt="Dr. Rodrigo Faustino, advogado criminalista em Goiânia"
             fill
             priority
-            sizes="(max-width: 1024px) 100vw, 40vw"
-            className="object-cover object-top"
+            sizes="(max-width: 1024px) 100vw, 45vw"
+            className="object-cover object-[center_22%]"
           />
         </div>
       </div>
