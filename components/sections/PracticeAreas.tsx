@@ -91,9 +91,9 @@ export function PracticeAreas() {
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {areas.map(({ icon: Icon, title, description }, i) => (
             <Reveal key={title} delay={Math.min(i * 50, 200)}>
-              <article className="group h-full border border-brass/15 bg-ink-elevated p-6 transition-colors duration-300 hover:border-brass sm:p-7">
+              <article className="group hover-lift h-full border border-brass/15 bg-ink-elevated p-6 transition-colors duration-300 hover:border-brass sm:p-7">
                 <Icon
-                  className="h-6 w-6 text-brass"
+                  className="icon-brass h-6 w-6 text-brass"
                   strokeWidth={1.25}
                   aria-hidden="true"
                 />

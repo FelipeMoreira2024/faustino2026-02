@@ -46,7 +46,7 @@ export function Hero() {
             {proofs.map(({ icon: Icon, label }) => (
               <li
                 key={label}
-                className="inline-flex items-center gap-2 rounded-full border border-brass/30 px-3.5 py-2 text-[13px] font-medium text-paper"
+                className="inline-flex items-center gap-2 rounded-full border border-brass/30 px-3.5 py-2 text-[13px] font-medium text-paper transition-colors duration-300 hover:border-brass/70"
               >
                 <Icon
                   className="h-3.5 w-3.5 shrink-0 text-brass"

@@ -15,7 +15,7 @@ const page = await browser.newPage();
 
 async function shoot(width, height, name) {
   await page.setViewport({ width, height, deviceScaleFactor: 1 });
-  await page.goto("http://localhost:3000", { waitUntil: "networkidle0" });
+  await page.goto((process.env.QA_URL ?? "http://localhost:3000"), { waitUntil: "networkidle0" });
   // O screenshot fullPage renderiza fora da viewport sem disparar o
   // IntersectionObserver nem pintar content-visibility:auto — força o estado final.
   await page.addStyleTag({

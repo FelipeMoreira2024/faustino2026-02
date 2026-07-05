@@ -41,7 +41,7 @@ export function WhatsAppButton({
         "font-semibold transition-[background-color,transform] duration-200 hover:bg-[#1fc35c] active:scale-[0.99]",
         compact
           ? "gap-1.5 px-2.5 py-1.5 text-xs"
-          : "min-h-[52px] w-full px-7 text-base sm:w-auto",
+          : "cta-lift min-h-[52px] w-full px-7 text-base sm:w-auto",
         className
       )}
     >

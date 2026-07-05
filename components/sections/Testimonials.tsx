@@ -37,7 +37,7 @@ export function Testimonials() {
         <div className="mt-12 grid gap-5 md:grid-cols-3">
           {testimonials.map(({ name, text }, i) => (
             <Reveal key={name} delay={i * 70}>
-              <figure className="flex h-full flex-col border border-brass/15 bg-ink-elevated p-6 sm:p-7">
+              <figure className="hover-lift flex h-full flex-col border border-brass/15 bg-ink-elevated p-6 hover:border-brass/40 sm:p-7">
                 <div
                   className="flex gap-1"
                   role="img"
@@ -69,7 +69,7 @@ export function Testimonials() {
               href="https://www.google.com/search?q=Rodrigo+Faustino+Advogado+Criminalista+Goi%C3%A2nia"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium text-brass underline decoration-brass/40 underline-offset-4 transition-colors hover:decoration-brass"
+              className="link-underline inline-block py-2.5 text-sm font-medium text-brass"
             >
               Ver avaliações no Google
             </a>

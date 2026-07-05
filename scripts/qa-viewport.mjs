@@ -16,7 +16,7 @@ const page = await browser.newPage();
 
 // ---- Mobile 390px ----
 await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 2 });
-await page.goto("http://localhost:3000", { waitUntil: "networkidle0" });
+await page.goto((process.env.QA_URL ?? "http://localhost:3000"), { waitUntil: "networkidle0" });
 
 const overflow = await page.evaluate(() => {
   const docWidth = document.scrollingElement.scrollWidth;
@@ -82,7 +82,7 @@ console.log("CTAs (h×w):", JSON.stringify(ctaHeights));
 
 // ---- Desktop 1440px ----
 await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 });
-await page.goto("http://localhost:3000", { waitUntil: "networkidle0" });
+await page.goto((process.env.QA_URL ?? "http://localhost:3000"), { waitUntil: "networkidle0" });
 await new Promise((r) => setTimeout(r, 900));
 await page.screenshot({ path: "qa-desktop-1440.png" });
 

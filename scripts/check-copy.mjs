@@ -1,5 +1,5 @@
 // Passada de revisão: baixa a página renderizada e confere a copy exata + deep-links.
-const res = await fetch("http://localhost:3000");
+const res = await fetch((process.env.QA_URL ?? "http://localhost:3000"));
 const html = await res.text();
 
 const text = html

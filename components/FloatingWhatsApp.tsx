@@ -24,9 +24,9 @@ export function FloatingWhatsApp() {
       aria-label="Falar agora no WhatsApp"
       onClick={() => trackWhatsAppClick("botao-flutuante")}
       className={cn(
-        "pulse-ring fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full",
+        "pulse-ring fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full",
         "bg-whatsapp text-ink shadow-[0_8px_24px_rgba(0,0,0,0.45)]",
-        "transition-[opacity,transform] duration-300",
+        "transition-[opacity,transform,scale] duration-300 hover:scale-105 active:scale-95",
         visible
           ? "translate-y-0 opacity-100"
           : "pointer-events-none translate-y-4 opacity-0"

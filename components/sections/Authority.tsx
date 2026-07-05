@@ -93,7 +93,7 @@ export function Authority() {
             <div className="mt-6 grid grid-cols-3 gap-3 sm:gap-5">
               {credentialSlots.map((caption) => (
                 <figure key={caption}>
-                  <div className="flex aspect-[4/3] items-center justify-center border border-brass/15 bg-ink-elevated">
+                  <div className="flex aspect-[4/3] items-center justify-center border border-brass/15 bg-ink-elevated transition-colors duration-300 hover:border-brass/50">
                     <User
                       className="h-6 w-6 text-brass/40"
                       strokeWidth={1}

@@ -11,7 +11,7 @@ const executablePath = candidates.find((p) => existsSync(p));
 const browser = await puppeteer.launch({ executablePath, headless: "new" });
 const page = await browser.newPage();
 await page.setViewport({ width: 1440, height: 900 });
-await page.goto("http://localhost:3000", { waitUntil: "networkidle0" });
+await page.goto((process.env.QA_URL ?? "http://localhost:3000"), { waitUntil: "networkidle0" });
 await page.addStyleTag({
   content:
     ".cv-auto{content-visibility:visible!important} .js .reveal{opacity:1!important;transform:none!important}",

@@ -70,7 +70,7 @@ export function Location() {
                 href={MAPS_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[52px] w-full items-center justify-center gap-2.5 rounded-md border border-ink/25 px-7 font-semibold text-ink transition-colors hover:border-ink sm:w-auto"
+                className="inline-flex min-h-[52px] w-full items-center justify-center gap-2.5 rounded-md border border-ink/25 px-7 font-semibold text-ink transition-[border-color,background-color] duration-300 hover:border-ink hover:bg-ink/5 sm:w-auto"
               >
                 <MapPin className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
                 Ver no Google Maps

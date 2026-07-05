@@ -48,7 +48,7 @@ export function Faq() {
                 value={`faq-${i}`}
                 className="border-ink/15"
               >
-                <AccordionTrigger className="font-display text-lg font-semibold text-ink [&>svg]:text-brass-deep">
+                <AccordionTrigger className="font-display text-lg font-semibold text-ink transition-colors duration-300 hover:text-brass-deep [&>svg]:text-brass-deep">
                   {question}
                 </AccordionTrigger>
                 <AccordionContent className="leading-relaxed text-ink-soft">
