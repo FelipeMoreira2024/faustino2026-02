@@ -58,7 +58,7 @@ export function Hero() {
           </ul>
         </div>
 
-        <div className="duotone relative -mt-[2cm] aspect-[4/5] w-full max-w-[32rem] overflow-hidden justify-self-center lg:justify-self-end">
+        <div className="tone-warm relative -mt-[2cm] aspect-[4/5] w-full max-w-[32rem] overflow-hidden justify-self-center lg:justify-self-end">
           <Image
             src="/images/dr-rodrigo-hero.png"
             alt="Dr. Rodrigo Faustino, advogado criminalista em Goiânia"

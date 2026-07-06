@@ -136,6 +136,17 @@ button {
     transform: translateY(0);
   }
 
+  /* Fotografia colorida: zoom sutil + cor levemente mais viva no hover */
+  .tone-warm img {
+    transition:
+      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 0.8s ease;
+  }
+  .tone-warm:hover img {
+    transform: scale(1.025);
+    filter: saturate(1) contrast(1.07) brightness(1) sepia(0.08);
+  }
+
   /* Fotografia: zoom sutilíssimo + duotone que "acorda" no hover */
   .duotone img {
     transition:
@@ -206,6 +217,23 @@ button {
   html {
     scroll-behavior: auto;
   }
+}
+
+/* ---- Tom quente: preserva a cor, harmoniza com o ink/brass ---- */
+.tone-warm img {
+  filter: saturate(0.85) contrast(1.07) brightness(0.96) sepia(0.12);
+}
+.tone-warm::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    170deg,
+    rgba(201, 169, 97, 0.1) 0%,
+    rgba(16, 20, 24, 0.04) 45%,
+    rgba(16, 20, 24, 0.5) 100%
+  );
 }
 
 /* ---- Duotone ink/brass na fotografia ---- */
