@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Check, User } from "lucide-react";
+import { Check } from "lucide-react";
 import { Eyebrow } from "@/components/Eyebrow";
 import { Reveal } from "@/components/Reveal";
 import { SectionMarker } from "@/components/SectionMarker";
@@ -12,10 +12,31 @@ const highlights = [
   "Plantão 24 horas para emergências",
 ];
 
-const credentialSlots = [
-  "Congresso ABRACRIM",
-  "Comissão de Prerrogativas",
-  "Tribunal do Júri",
+const gallery = [
+  {
+    src: "/images/honrarias/Advogado Criminalista Referêcia no Estado de goias.jpg",
+    caption: "Referência em direito criminal no Estado de Goiás",
+  },
+  {
+    src: "/images/honrarias/Ex ministro da Justiça Dr. Jose  Euardo Cardoso.jpg",
+    caption: "Com o ex-Ministro da Justiça Dr. José Eduardo Cardozo",
+  },
+  {
+    src: "/images/honrarias/Ministro do Superior Tribunal de Justiça Rogério Schietti.jpg",
+    caption: "Com o Ministro do STJ Rogério Schietti",
+  },
+  {
+    src: "/images/honrarias/Secretário Nacional de Justiça Dr. Augusto de Arruda.jpg",
+    caption: "Com o Secretário Nacional de Justiça Dr. Augusto de Arruda",
+  },
+  {
+    src: "/images/honrarias/Homenagem Asembleia LEgislativa.jpg",
+    caption: "Homenagem na Assembleia Legislativa",
+  },
+  {
+    src: "/images/honrarias/Homenagem Camara Municial.jpg",
+    caption: "Homenagem na Câmara Municipal",
+  },
 ];
 
 export function Authority() {
@@ -88,16 +109,19 @@ export function Authority() {
         <Reveal delay={120}>
           <div className="mt-16 border-t border-brass/15 pt-10">
             <p className="text-xs font-medium uppercase tracking-[0.15em] text-brass">
-              Atuação junto a referências do direito criminal
+              Reconhecimento e atuação junto a autoridades do direito
             </p>
-            <div className="mt-6 grid grid-cols-3 gap-3 sm:gap-5">
-              {credentialSlots.map((caption) => (
-                <figure key={caption}>
-                  <div className="flex aspect-[4/3] items-center justify-center border border-brass/15 bg-ink-elevated transition-colors duration-300 hover:border-brass/50">
-                    <User
-                      className="h-6 w-6 text-brass/40"
-                      strokeWidth={1}
-                      aria-hidden="true"
+            <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3">
+              {gallery.map(({ src, caption }, i) => (
+                <figure key={src}>
+                  <div className="relative aspect-[4/3] overflow-hidden border border-brass/15 bg-ink-elevated transition-colors duration-300 hover:border-brass/50">
+                    <Image
+                      src={src}
+                      alt={caption}
+                      fill
+                      loading={i < 3 ? "eager" : "lazy"}
+                      sizes="(max-width: 768px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-500 hover:scale-[1.04]"
                     />
                   </div>
                   <figcaption className="mt-2.5 text-[11px] font-medium uppercase tracking-[0.15em] text-muted">
