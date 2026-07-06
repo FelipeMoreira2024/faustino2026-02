@@ -79,21 +79,6 @@ export function QualificationFilter() {
                     aria-hidden="true"
                   />
                   <span>
-                    Você foi{" "}
-                    <strong className="font-semibold">
-                      vítima de golpe online
-                    </strong>{" "}
-                    e busca recuperar valores — nesse caso, procure um advogado
-                    cível ou do consumidor
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Info
-                    className="mt-1.5 h-4 w-4 shrink-0"
-                    strokeWidth={1.5}
-                    aria-hidden="true"
-                  />
-                  <span>
                     Você busca{" "}
                     <strong className="font-semibold">
                       registrar denúncia ou medida protetiva
@@ -113,6 +98,16 @@ export function QualificationFilter() {
                       Defensoria Pública
                     </strong>{" "}
                     (atendimento gratuito do Estado)
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Info
+                    className="mt-1.5 h-4 w-4 shrink-0"
+                    strokeWidth={1.5}
+                    aria-hidden="true"
+                  />
+                  <span>
+                    Você foi vítima de golpe online e busca recuperar valores.
                   </span>
                 </li>
               </ul>
