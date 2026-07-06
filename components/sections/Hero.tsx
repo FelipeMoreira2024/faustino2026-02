@@ -14,7 +14,7 @@ export function Hero() {
   return (
     <section className="relative bg-ink" id="hero">
       <SectionMarker number="02" tone="ink" hideOnMobile />
-      <div className="mx-auto grid max-w-6xl gap-10 px-5 pb-20 pt-10 sm:px-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-16 lg:px-20 lg:pb-28 lg:pt-10">
+      <div className="mx-auto grid max-w-6xl gap-10 px-5 pb-14 pt-10 sm:px-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-16 lg:px-20 lg:pb-20 lg:pt-10">
         <div>
           <span className="inline-flex items-center rounded-full border border-brass/40 px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.13em] text-brass sm:text-xs sm:tracking-[0.15em]">
             DEFESA CRIMINAL • ATENDIMENTO 24 HORAS
