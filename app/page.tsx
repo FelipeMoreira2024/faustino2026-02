@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Topbar } from "@/components/sections/Topbar";
 import { Hero } from "@/components/sections/Hero";
 import { UrgentSituations } from "@/components/sections/UrgentSituations";
@@ -95,6 +96,13 @@ export default function Page() {
 
       <footer className="border-t border-brass/15 bg-ink">
         <div className="mx-auto max-w-6xl px-5 py-8 sm:px-8 lg:px-20">
+          <Image
+            src="/images/logo-faustino.png"
+            alt="Faustino Advocacia Especializada"
+            width={200}
+            height={72}
+            className="mb-5 h-auto w-[150px] opacity-90 sm:w-[180px]"
+          />
           <p className="text-xs leading-relaxed text-muted">
             Dr. Rodrigo Faustino — Advogado Criminalista • OAB/GO 64.028.
             Conteúdo meramente informativo, em conformidade com o Provimento
