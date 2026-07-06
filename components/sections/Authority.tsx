@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Check } from "lucide-react";
 import { Eyebrow } from "@/components/Eyebrow";
+import { HonorsCarousel } from "@/components/HonorsCarousel";
 import { Reveal } from "@/components/Reveal";
 import { SectionMarker } from "@/components/SectionMarker";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
@@ -107,28 +108,13 @@ export function Authority() {
         </div>
 
         <Reveal delay={120}>
-          <div className="mt-16 border-t border-brass/15 pt-10">
-            <p className="text-xs font-medium uppercase tracking-[0.15em] text-brass">
-              Reconhecimento e atuação junto a autoridades do direito
-            </p>
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3">
-              {gallery.map(({ src, caption }, i) => (
-                <figure key={src}>
-                  <div className="relative aspect-[4/3] overflow-hidden border border-brass/15 bg-ink-elevated transition-colors duration-300 hover:border-brass/50">
-                    <Image
-                      src={src}
-                      alt={caption}
-                      fill
-                      loading={i < 3 ? "eager" : "lazy"}
-                      sizes="(max-width: 768px) 50vw, 33vw"
-                      className="object-cover transition-transform duration-500 hover:scale-[1.04]"
-                    />
-                  </div>
-                  <figcaption className="mt-2.5 text-[11px] font-medium uppercase tracking-[0.15em] text-muted">
-                    {caption}
-                  </figcaption>
-                </figure>
-              ))}
+          <div className="mt-16 border-t border-brass/15 pt-12 lg:mt-20 lg:pt-16">
+            <Eyebrow>RECONHECIMENTO</Eyebrow>
+            <h3 className="mt-4 max-w-2xl font-display text-2xl font-semibold tracking-[-0.01em] text-paper sm:text-3xl">
+              Atuação junto às principais autoridades do direito
+            </h3>
+            <div className="mt-10">
+              <HonorsCarousel slides={gallery} />
             </div>
           </div>
         </Reveal>

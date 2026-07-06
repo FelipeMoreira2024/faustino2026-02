@@ -225,6 +225,15 @@ button {
   );
 }
 
+/* ---- Carrossel: esconde a barra de rolagem mantendo o scroll ---- */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* ---- Lazy rendering abaixo da dobra ---- */
 .cv-auto {
   content-visibility: auto;
