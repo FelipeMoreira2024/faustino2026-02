@@ -97,7 +97,7 @@ export function PracticeAreas() {
                   strokeWidth={1.25}
                   aria-hidden="true"
                 />
-                <h3 className="mt-5 font-display text-lg font-semibold leading-snug text-paper">
+                <h3 className="mt-5 font-display text-lg font-semibold leading-normal text-paper [text-wrap:pretty]">
                   {title}
                 </h3>
                 <p className="mt-3 text-[15px] leading-relaxed text-muted">
