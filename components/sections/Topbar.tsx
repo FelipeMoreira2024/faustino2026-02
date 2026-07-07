@@ -16,7 +16,7 @@ export function Topbar() {
             </strong>
             <span className="hidden md:inline">
               {" "}
-              — Prisão em flagrante? Fale agora:
+              — Acusado ou preso? Fale agora:
             </span>{" "}
             <a
               href={PHONE_TEL}
