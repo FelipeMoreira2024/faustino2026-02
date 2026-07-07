@@ -15,27 +15,27 @@ const highlights = [
 
 const gallery = [
   {
-    src: "/images/honrarias/Advogado Criminalista Referêcia no Estado de goias.jpg",
+    src: "/images/honrarias/referencia-direito-criminal-goias.webp",
     caption: "Referência em direito criminal no Estado de Goiás",
   },
   {
-    src: "/images/honrarias/Ex ministro da Justiça Dr. Jose  Euardo Cardoso.jpg",
+    src: "/images/honrarias/ex-ministro-jose-eduardo-cardozo.webp",
     caption: "Com o ex-Ministro da Justiça Dr. José Eduardo Cardozo",
   },
   {
-    src: "/images/honrarias/Ministro do Superior Tribunal de Justiça Rogério Schietti.jpg",
+    src: "/images/honrarias/ministro-stj-rogerio-schietti.webp",
     caption: "Com o Ministro do STJ Rogério Schietti",
   },
   {
-    src: "/images/honrarias/Secretário Nacional de Justiça Dr. Augusto de Arruda.jpg",
+    src: "/images/honrarias/secretario-nacional-justica-augusto-arruda.webp",
     caption: "Com o Secretário Nacional de Justiça Dr. Augusto de Arruda",
   },
   {
-    src: "/images/honrarias/Homenagem Asembleia LEgislativa.jpg",
+    src: "/images/honrarias/homenagem-assembleia-legislativa.webp",
     caption: "Homenagem na Assembleia Legislativa",
   },
   {
-    src: "/images/honrarias/Homenagem Camara Municial.jpg",
+    src: "/images/honrarias/homenagem-camara-municipal.webp",
     caption: "Homenagem na Câmara Municipal",
   },
 ];
@@ -49,7 +49,7 @@ export function Authority() {
           <Reveal>
             <div className="duotone relative aspect-[4/5] w-full max-w-sm overflow-hidden">
               <Image
-                src="/images/dr-rodrigo-hero.png"
+                src="/images/dr-rodrigo-hero.webp"
                 alt="Dr. Rodrigo Faustino"
                 fill
                 sizes="(max-width: 1024px) 100vw, 33vw"
