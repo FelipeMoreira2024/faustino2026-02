@@ -3,7 +3,7 @@ import Script from "next/script";
 import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
 
-const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+const gtmId = process.env.NEXT_PUBLIC_GTM_ID || "GTM-KXMJTXP";
 
 const inter = Inter({
   variable: "--font-inter",
