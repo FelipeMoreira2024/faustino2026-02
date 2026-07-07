@@ -23,7 +23,7 @@ npm run start  # servir build
 
 - `app/page.tsx` — montagem das seções, hairline assinatura e JSON-LD (LegalService + FAQPage)
 - `components/sections/` — um componente por seção, na ordem da copy
-- `components/WhatsAppButton.tsx` — CTA centralizado com `dataLayer.push({ event: 'whatsapp_click', cta_section })`
+- `components/WhatsAppButton.tsx` — CTA centralizado com evento `lead_whatsapp_rodrigo_faustino_v2` no `dataLayer` e delay de 300ms antes do WhatsApp
 - `lib/whatsapp.ts` — deep-links da Seção 13 (padrão, flagrante, sigilo)
 - `lib/faq.ts` — perguntas da Seção 10, compartilhadas entre o accordion e o schema FAQPage
 
@@ -54,4 +54,4 @@ Scripts de verificação em `scripts/` (requerem o servidor rodando em `localhos
 
 ## Deploy
 
-Pronto para Vercel: `vercel deploy` (build estático, sem variáveis de ambiente). Adicione o snippet do GTM em `app/layout.tsx` quando o contêiner estiver definido — os eventos `whatsapp_click` já são empurrados para `window.dataLayer`.
+Pronto para Vercel: `vercel deploy`. Defina `NEXT_PUBLIC_GTM_ID` para carregar o container do Google Tag Manager — os cliques de WhatsApp empurram o evento `lead_whatsapp_rodrigo_faustino_v2` para `window.dataLayer`.

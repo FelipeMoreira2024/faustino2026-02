@@ -9,9 +9,33 @@ declare global {
   }
 }
 
-export function trackWhatsAppClick(section: string) {
+const WHATSAPP_REDIRECT_DELAY_MS = 300;
+
+const whatsappLeadEvent = {
+  event: "lead_whatsapp_rodrigo_faustino_v2",
+  conversion_type: "whatsapp_click",
+  client_name: "rodrigo_faustino",
+  niche: "advogado_criminalista",
+  city: "goiania",
+  campaign_type: "rede_de_pesquisa",
+  version: "v2_clean",
+};
+
+export function trackWhatsAppLead() {
   window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ event: "whatsapp_click", cta_section: section });
+  window.dataLayer.push(whatsappLeadEvent);
+}
+
+export function openWhatsAppWithTracking(
+  event: React.MouseEvent<HTMLAnchorElement>,
+  href: string
+) {
+  event.preventDefault();
+  trackWhatsAppLead();
+
+  window.setTimeout(() => {
+    window.open(href, "_blank", "noopener,noreferrer");
+  }, WHATSAPP_REDIRECT_DELAY_MS);
 }
 
 type WhatsAppButtonProps = {
@@ -24,7 +48,6 @@ type WhatsAppButtonProps = {
 };
 
 export function WhatsAppButton({
-  section,
   href,
   children,
   className,
@@ -35,7 +58,7 @@ export function WhatsAppButton({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      onClick={() => trackWhatsAppClick(section)}
+      onClick={(event) => openWhatsAppWithTracking(event, href)}
       className={cn(
         "inline-flex items-center justify-center gap-2.5 rounded-md bg-whatsapp text-ink",
         "font-semibold transition-[background-color,transform] duration-200 hover:bg-[#1fc35c] active:scale-[0.99]",

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { WA_STANDARD } from "@/lib/whatsapp";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
-import { trackWhatsAppClick } from "@/components/WhatsAppButton";
+import { openWhatsAppWithTracking } from "@/components/WhatsAppButton";
 import { cn } from "@/lib/utils";
 
 export function FloatingWhatsApp() {
@@ -22,7 +22,7 @@ export function FloatingWhatsApp() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Falar agora no WhatsApp"
-      onClick={() => trackWhatsAppClick("botao-flutuante")}
+      onClick={(event) => openWhatsAppWithTracking(event, WA_STANDARD)}
       className={cn(
         "pulse-ring fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full",
         "bg-whatsapp text-ink shadow-[0_8px_24px_rgba(0,0,0,0.45)]",
