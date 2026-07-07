@@ -28,8 +28,8 @@ export function Hero() {
           </h1>
 
           <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-            Você foi intimado ou acusado de um crime? Ou um familiar acaba de
-            ser preso? Atuação imediata na defesa criminal em Goiânia e região.
+            Foi intimado ou acusado de crime? Ou teve um familiar preso agora?
+            Atuação imediata na defesa criminal em Goiânia e região.
           </p>
 
           <div className="mt-8">

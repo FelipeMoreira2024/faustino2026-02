@@ -81,7 +81,7 @@ export function Authority() {
 
             <p className="mt-4 leading-relaxed text-muted">
               Atua com defesa criminal estratégica em casos urgentes e
-              delicados, com atendimento direto, postura técnica e orientação
+              sensíveis, com atendimento direto, postura técnica e orientação
               clara desde o primeiro contato — sempre com sigilo e
               responsabilidade profissional.
             </p>
