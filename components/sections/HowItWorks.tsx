@@ -16,7 +16,7 @@ const steps: { number: string; title: string; description: React.ReactNode }[] =
   },
   {
     number: "03",
-    title: "Proposta de atuação e honorários",
+    title: "Proposta de atuação",
     description: (
       <>
         Após a análise, você recebe a{" "}
