@@ -1,5 +1,14 @@
 import type { NextConfig } from "next";
 
+const sitelinkPaths = [
+  "/advogado-criminalista-goiania",
+  "/defesa-criminal-urgente",
+  "/prisao-em-flagrante",
+  "/audiencia-de-custodia",
+  "/habeas-corpus",
+  "/crimes-sexuais",
+];
+
 const nextConfig: NextConfig = {
   images: {
     // Serve AVIF/WebP conforme o suporte do navegador
@@ -19,6 +28,12 @@ const nextConfig: NextConfig = {
         ],
       },
     ];
+  },
+  async rewrites() {
+    return sitelinkPaths.map((source) => ({
+      source,
+      destination: "/",
+    }));
   },
 };
 
