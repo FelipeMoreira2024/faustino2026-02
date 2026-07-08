@@ -64,7 +64,9 @@ export function Hero() {
             alt="Dr. Rodrigo Faustino, advogado criminalista em Goiânia"
             fill
             priority
-            sizes="(max-width: 1024px) 100vw, 45vw"
+            fetchPriority="high"
+            quality={70}
+            sizes="(max-width: 640px) calc(100vw - 2.5rem), (max-width: 1024px) 32rem, 45vw"
             className="object-cover object-[center_22%]"
           />
         </div>

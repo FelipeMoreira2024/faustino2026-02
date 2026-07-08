@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { WA_STANDARD } from "@/lib/whatsapp";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { openWhatsAppWithTracking } from "@/components/WhatsAppButton";
@@ -8,12 +8,34 @@ import { cn } from "@/lib/utils";
 
 export function FloatingWhatsApp() {
   const [visible, setVisible] = useState(false);
+  const visibleRef = useRef(false);
+  const frameRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 400);
-    onScroll();
+    const updateVisibility = () => {
+      const nextVisible = window.scrollY > 400;
+      if (visibleRef.current !== nextVisible) {
+        visibleRef.current = nextVisible;
+        setVisible(nextVisible);
+      }
+    };
+
+    const onScroll = () => {
+      if (frameRef.current !== null) return;
+      frameRef.current = window.requestAnimationFrame(() => {
+        frameRef.current = null;
+        updateVisibility();
+      });
+    };
+
+    updateVisibility();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frameRef.current !== null) {
+        window.cancelAnimationFrame(frameRef.current);
+      }
+    };
   }, []);
 
   return (

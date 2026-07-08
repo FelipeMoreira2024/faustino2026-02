@@ -53,7 +53,7 @@ export function HonorsCarousel({ slides }: HonorsCarouselProps) {
         role="region"
         aria-label="Galeria de reconhecimentos"
       >
-        {slides.map(({ src, caption }, i) => (
+        {slides.map(({ src, caption }) => (
           <figure
             key={src}
             className="w-[78%] shrink-0 snap-start sm:w-[calc((100%-1.25rem)/2)] lg:w-[calc((100%-2.5rem)/3)]"
@@ -63,7 +63,8 @@ export function HonorsCarousel({ slides }: HonorsCarouselProps) {
                 src={src}
                 alt={caption}
                 fill
-                loading={i < 3 ? "eager" : "lazy"}
+                loading="lazy"
+                quality={65}
                 sizes="(max-width: 640px) 78vw, (max-width: 1024px) 50vw, 33vw"
                 className="object-cover object-top transition-transform duration-500 hover:scale-[1.03]"
               />

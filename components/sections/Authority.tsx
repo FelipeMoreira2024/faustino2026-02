@@ -52,7 +52,8 @@ export function Authority() {
                 src="/images/dr-rodrigo-hero.webp"
                 alt="Dr. Rodrigo Faustino"
                 fill
-                sizes="(max-width: 1024px) 100vw, 33vw"
+                quality={65}
+                sizes="(max-width: 640px) calc(100vw - 2.5rem), (max-width: 1024px) 24rem, 33vw"
                 className="object-cover object-[center_22%]"
               />
             </div>
