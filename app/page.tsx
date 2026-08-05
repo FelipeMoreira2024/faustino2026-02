@@ -150,6 +150,16 @@ export default function Page() {
             64.028. Conteúdo meramente informativo, em conformidade com o
             Provimento 205/2021 da OAB.
           </p>
+          <p className="mt-4 text-[11px] tracking-wide text-muted/50">
+            <a
+              href="https://maquinadeclientes.goexpert.com.br/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-muted/80"
+            >
+              feito com máquina de clientes
+            </a>
+          </p>
         </div>
       </footer>
 
