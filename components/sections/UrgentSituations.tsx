@@ -20,9 +20,9 @@ export function UrgentSituations() {
       <SectionMarker number="03" tone="ink" />
       <div className="mx-auto max-w-6xl px-5 pb-16 pt-12 sm:px-8 lg:px-20 lg:pb-28 lg:pt-20">
         <Reveal>
-          <Eyebrow>ATENÇÃO IMEDIATA</Eyebrow>
+          <Eyebrow>SITUAÇÕES URGENTES</Eyebrow>
           <h2 className="mt-4 font-display text-3xl font-semibold tracking-[-0.01em] text-paper sm:text-4xl">
-            Situação urgente? Cada hora conta.
+            Situações que exigem orientação sem demora
           </h2>
         </Reveal>
 

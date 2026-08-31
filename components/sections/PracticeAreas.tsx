@@ -70,9 +70,9 @@ const areas: Area[] = [
   },
   {
     icon: Clock,
-    title: "Acompanhamento em Delegacia 24h",
+    title: "Acompanhamento em Delegacia",
     description:
-      "Presença do advogado em depoimentos, oitivas e ocorrências urgentes, a qualquer hora.",
+      "Presença do advogado em depoimentos, oitivas e ocorrências urgentes, conforme disponibilidade confirmada no contato.",
   },
 ];
 

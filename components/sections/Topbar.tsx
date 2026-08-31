@@ -1,7 +1,21 @@
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { PHONE_DISPLAY, PHONE_TEL, WA_STANDARD } from "@/lib/whatsapp";
 
-export function Topbar() {
+type TopbarProps = {
+  href?: string;
+  label?: string;
+  city?: string;
+  topic?: string;
+  pageSlug?: string;
+};
+
+export function Topbar({
+  href = WA_STANDARD,
+  label = "ATENDIMENTO CRIMINAL",
+  city,
+  topic,
+  pageSlug,
+}: TopbarProps = {}) {
   return (
     <div className="sticky top-0 z-50 h-11 border-b border-brass/20 bg-ink shadow-[0_10px_28px_-18px_rgba(0,0,0,0.7)]">
       <div className="mx-auto flex h-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-8 lg:px-20">
@@ -12,11 +26,11 @@ export function Topbar() {
           />
           <span className="truncate">
             <strong className="font-semibold tracking-wide">
-              PLANTÃO CRIMINAL 24H
+              {label}
             </strong>
             <span className="hidden md:inline">
               {" "}
-              — Acusado ou preso? Fale agora:
+              — Telefone para contato:
             </span>{" "}
             <a
               href={PHONE_TEL}
@@ -28,7 +42,10 @@ export function Topbar() {
         </p>
         <WhatsAppButton
           section="topbar"
-          href={WA_STANDARD}
+          href={href}
+          city={city}
+          topic={topic}
+          pageSlug={pageSlug}
           compact
           className="shrink-0"
         >

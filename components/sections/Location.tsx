@@ -3,15 +3,11 @@ import { Reveal } from "@/components/Reveal";
 import { SectionMarker } from "@/components/SectionMarker";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { PHONE_DISPLAY, PHONE_TEL, WA_STANDARD } from "@/lib/whatsapp";
-
-export const ADDRESS =
-  "Rua 1.136, nº 246 — Setor Marista, Goiânia/GO — CEP 74180-150";
-
-const MAPS_QUERY = encodeURIComponent(
-  "Rua 1136, 246, Setor Marista, Goiânia - GO, 74180-150"
-);
-const MAPS_LINK = `https://www.google.com/maps/search/?api=1&query=${MAPS_QUERY}`;
-const MAPS_EMBED = `https://www.google.com/maps?q=${MAPS_QUERY}&output=embed`;
+import {
+  MAPS_EMBED,
+  MAPS_LINK,
+  OFFICE_ADDRESS_DISPLAY,
+} from "@/lib/site";
 
 export function Location() {
   return (
@@ -37,7 +33,7 @@ export function Location() {
                   strokeWidth={1.5}
                   aria-hidden="true"
                 />
-                {ADDRESS}
+                {OFFICE_ADDRESS_DISPLAY}
               </li>
               <li className="flex items-start gap-3">
                 <Phone
@@ -58,7 +54,7 @@ export function Location() {
                   strokeWidth={1.5}
                   aria-hidden="true"
                 />
-                Plantão 24 horas para urgências
+                Atendimento para situações criminais urgentes
               </li>
             </ul>
 

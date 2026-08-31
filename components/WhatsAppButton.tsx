@@ -16,22 +16,35 @@ const whatsappLeadEvent = {
   conversion_type: "whatsapp_click",
   client_name: "rodrigo_faustino",
   niche: "advogado_criminalista",
-  city: "goiania",
   campaign_type: "rede_de_pesquisa",
   version: "v2_clean",
 };
 
-export function trackWhatsAppLead() {
+type TrackingContext = {
+  section: string;
+  city?: string;
+  topic?: string;
+  pageSlug?: string;
+};
+
+export function trackWhatsAppLead(context: TrackingContext) {
   window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push(whatsappLeadEvent);
+  window.dataLayer.push({
+    ...whatsappLeadEvent,
+    lead_section: context.section,
+    lead_city: context.city || "goiania",
+    lead_topic: context.topic || "defesa_criminal",
+    page_slug: context.pageSlug || "home",
+  });
 }
 
 export function openWhatsAppWithTracking(
   event: React.MouseEvent<HTMLAnchorElement>,
-  href: string
+  href: string,
+  context: TrackingContext = { section: "link" }
 ) {
   event.preventDefault();
-  trackWhatsAppLead();
+  trackWhatsAppLead(context);
 
   window.setTimeout(() => {
     window.open(href, "_blank", "noopener,noreferrer");
@@ -43,14 +56,21 @@ type WhatsAppButtonProps = {
   href: string;
   children: React.ReactNode;
   className?: string;
+  city?: string;
+  topic?: string;
+  pageSlug?: string;
   /** Botões compactos (topbar) fogem do padrão 52px/full-width. */
   compact?: boolean;
 };
 
 export function WhatsAppButton({
+  section,
   href,
   children,
   className,
+  city,
+  topic,
+  pageSlug,
   compact = false,
 }: WhatsAppButtonProps) {
   return (
@@ -58,7 +78,14 @@ export function WhatsAppButton({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      onClick={(event) => openWhatsAppWithTracking(event, href)}
+      onClick={(event) =>
+        openWhatsAppWithTracking(event, href, {
+          section,
+          city,
+          topic,
+          pageSlug,
+        })
+      }
       className={cn(
         "inline-flex items-center justify-center gap-2.5 rounded-md bg-whatsapp text-ink",
         "font-semibold transition-[background-color,transform] duration-200 hover:bg-[#1fc35c] active:scale-[0.99]",

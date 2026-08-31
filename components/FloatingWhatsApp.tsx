@@ -6,7 +6,19 @@ import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { openWhatsAppWithTracking } from "@/components/WhatsAppButton";
 import { cn } from "@/lib/utils";
 
-export function FloatingWhatsApp() {
+type FloatingWhatsAppProps = {
+  href?: string;
+  city?: string;
+  topic?: string;
+  pageSlug?: string;
+};
+
+export function FloatingWhatsApp({
+  href = WA_STANDARD,
+  city,
+  topic,
+  pageSlug,
+}: FloatingWhatsAppProps) {
   const [visible, setVisible] = useState(false);
   const visibleRef = useRef(false);
   const frameRef = useRef<number | null>(null);
@@ -40,11 +52,18 @@ export function FloatingWhatsApp() {
 
   return (
     <a
-      href={WA_STANDARD}
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Falar agora no WhatsApp"
-      onClick={(event) => openWhatsAppWithTracking(event, WA_STANDARD)}
+      aria-label="Solicitar atendimento pelo WhatsApp"
+      onClick={(event) =>
+        openWhatsAppWithTracking(event, href, {
+          section: "floating",
+          city,
+          topic,
+          pageSlug,
+        })
+      }
       className={cn(
         "pulse-ring fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full",
         "bg-whatsapp text-ink shadow-[0_8px_24px_rgba(0,0,0,0.45)]",

@@ -6,7 +6,7 @@ const steps: { number: string; title: string; description: React.ReactNode }[] =
     number: "01",
     title: "Contato imediato",
     description:
-      "Você chama no WhatsApp, descreve a situação em poucas linhas e recebe retorno rápido — 24 horas para casos urgentes.",
+      "Você chama no WhatsApp, descreve a situação em poucas linhas e recebe a confirmação de disponibilidade para o atendimento.",
   },
   {
     number: "02",
@@ -21,10 +21,10 @@ const steps: { number: string; title: string; description: React.ReactNode }[] =
       <>
         Após a análise, você recebe a{" "}
         <strong className="font-semibold text-ink">
-          proposta de honorários com total transparência
+          proposta profissional com escopo definido
         </strong>
-        , de acordo com a complexidade do caso, e as formas de pagamento. A
-        defesa começa assim que formalizada.
+        , de acordo com a complexidade do caso. A atuação começa após a
+        formalização da contratação.
       </>
     ),
   },

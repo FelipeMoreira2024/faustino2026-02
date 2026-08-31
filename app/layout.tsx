@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Fraunces, Inter } from "next/font/google";
+import { CookieConsent } from "@/components/CookieConsent";
+import {
+  absoluteUrl,
+  HOME_URL,
+  isVercelPreview,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/site";
 import "./globals.css";
 
 const gtmId = process.env.NEXT_PUBLIC_GTM_ID || "GTM-KXMJTXP";
@@ -20,51 +27,51 @@ const fraunces = Fraunces({
   weight: "variable",
 });
 
-const SITE_URL = "https://goiania.rodrigofaustinoadvocacia.com.br";
-
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Advogado Criminalista em Goiânia 24h | Dr. Rodrigo Faustino",
+  title: "Advogado Criminalista em Goiânia | Dr. Rodrigo Faustino",
   description:
-    "Advogado criminalista em Goiânia com plantão 24h. Defesa imediata em prisão em flagrante, audiência de custódia, inquéritos e processos criminais. Atendimento direto com o advogado.",
-  alternates: { canonical: "/" },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
+    "Advogado criminalista em Goiânia. Defesa em prisão em flagrante, audiência de custódia, inquéritos e processos criminais, com atendimento direto.",
+  alternates: { canonical: HOME_URL },
+  robots: isVercelPreview
+    ? { index: false, follow: false }
+    : {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          "max-image-preview": "large",
+          "max-snippet": -1,
+        },
+      },
   authors: [{ name: "Dr. Rodrigo Faustino" }],
   creator: "Dr. Rodrigo Faustino — Advogado Criminalista",
-  publisher: "Faustino Advocacia Especializada",
+  publisher: SITE_NAME,
   formatDetection: { telephone: true },
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: SITE_URL,
-    siteName: "Dr. Rodrigo Faustino — Advogado Criminalista",
-    title: "Advogado Criminalista em Goiânia 24h | Dr. Rodrigo Faustino",
+    url: HOME_URL,
+    siteName: SITE_NAME,
+    title: "Advogado Criminalista em Goiânia | Dr. Rodrigo Faustino",
     description:
-      "Defesa criminal imediata em Goiânia e região. Plantão 24h para prisão em flagrante, intimação e casos urgentes. Fale direto com o advogado.",
+      "Defesa criminal em Goiânia e região para prisões, intimações, investigações e processos. Atendimento direto com o advogado.",
     images: [
       {
-        url: "/images/og-image.jpg",
+        url: absoluteUrl("/images/og-image.jpg"),
         width: 1200,
         height: 630,
-        alt: "Faustino Advocacia Especializada — Advogado Criminalista em Goiânia",
+        alt: `${SITE_NAME} — Advogado Criminalista em Goiânia`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Advogado Criminalista em Goiânia 24h | Dr. Rodrigo Faustino",
+    title: "Advogado Criminalista em Goiânia | Dr. Rodrigo Faustino",
     description:
-      "Defesa criminal imediata em Goiânia e região. Plantão 24h. Fale direto com o advogado.",
-    images: ["/images/og-image.jpg"],
+      "Defesa criminal em Goiânia e região, com atendimento direto e orientação responsável.",
+    images: [absoluteUrl("/images/og-image.jpg")],
   },
 };
 
@@ -76,29 +83,13 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="js">
       <head>
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
-        {gtmId ? (
-          <Script id="gtm-base" strategy="lazyOnload">
-            {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`}
-          </Script>
-        ) : null}
         <noscript>
           <style>{`.reveal { opacity: 1 !important; transform: none !important; }`}</style>
         </noscript>
       </head>
       <body className={`${inter.variable} ${fraunces.variable} font-sans antialiased`}>
-        {gtmId ? (
-          <noscript>
-            <iframe
-              src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
-              height="0"
-              width="0"
-              style={{ display: "none", visibility: "hidden" }}
-            />
-          </noscript>
-        ) : null}
         {children}
+        <CookieConsent gtmId={gtmId} />
       </body>
     </html>
   );
