@@ -41,27 +41,31 @@ console.log(
     : `OVERFLOW em 390px: ${overflow.docWidth} > ${overflow.vw}\n${overflow.offenders.join("\n")}`
 );
 
-// Botão flutuante: oculto no topo, visível após 400px
 const hiddenAtTop = await page.evaluate(() => {
-  const btn = document.querySelector('a[aria-label="Falar agora no WhatsApp"]');
-  return getComputedStyle(btn).opacity === "0";
+  const btn =
+    document.querySelector('a[aria-label*="WhatsApp"]') ||
+    document.querySelector("a.pulse-ring");
+  return btn ? getComputedStyle(btn).opacity === "0" : null;
 });
 await page.evaluate(() => window.scrollTo(0, 600));
 await new Promise((r) => setTimeout(r, 600));
 const visibleAfterScroll = await page.evaluate(() => {
-  const btn = document.querySelector('a[aria-label="Falar agora no WhatsApp"]');
-  return getComputedStyle(btn).opacity === "1";
+  const btn =
+    document.querySelector('a[aria-label*="WhatsApp"]') ||
+    document.querySelector("a.pulse-ring");
+  return btn ? getComputedStyle(btn).opacity === "1" : null;
 });
 console.log(
   `Botão flutuante: oculto no topo=${hiddenAtTop}, visível após scroll=${visibleAfterScroll}`
 );
 
-// dataLayer push
+await page.evaluate(() => {
+  window.localStorage.setItem("faustino_cookie_consent", "accepted");
+});
 const dl = await page.evaluate(() => {
   window.dataLayer = [];
-  document.querySelector("main a[href^='https://wa.me']").dispatchEvent(
-    new MouseEvent("click", { bubbles: true, cancelable: true })
-  );
+  const link = document.querySelector("main a[href^='https://wa.me']");
+  link?.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true }));
   return window.dataLayer;
 });
 console.log("dataLayer:", JSON.stringify(dl));

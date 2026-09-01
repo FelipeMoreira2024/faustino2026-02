@@ -73,18 +73,28 @@ export function LandingPageView({ page }: { page: LandingPage }) {
     .map((slug) => landingPagesBySlug.get(slug))
     .filter((item): item is LandingPage => Boolean(item));
   const isGoiânia = page.city === "Goiânia";
+  const topbarLabel =
+    page.kind === "urgent" || page.kind === "investigation"
+      ? "ATENDIMENTO URGENTE"
+      : "ATENDIMENTO CRIMINAL";
 
   return (
     <>
+      <a
+        href="#conteudo"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[110] focus:bg-paper focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-ink"
+      >
+        Pular para o conteúdo
+      </a>
       <Topbar
         href={whatsappHref}
-        label={page.kind === "sensitive" ? "ATENDIMENTO CRIMINAL" : "ATENDIMENTO URGENTE"}
+        label={topbarLabel}
         city={page.city.toLowerCase()}
         topic={page.topic.toLowerCase()}
         pageSlug={page.slug}
       />
 
-      <main>
+      <main id="conteudo">
         <section className="relative overflow-hidden bg-ink">
           <div aria-hidden="true" className="absolute inset-y-0 left-8 hidden w-px bg-brass/25 lg:block" />
           <div className="mx-auto max-w-6xl px-5 pb-16 pt-8 sm:px-8 lg:px-20 lg:pb-24">
@@ -92,7 +102,7 @@ export function LandingPageView({ page }: { page: LandingPage }) {
               <ol className="flex flex-wrap items-center gap-2">
                 <li><Link className="link-underline" href={HOME_URL}>Início</Link></li>
                 <li aria-hidden="true">/</li>
-                <li>Defesa criminal</li>
+                <li><Link className="link-underline" href={HOME_URL}>Defesa criminal</Link></li>
                 <li aria-hidden="true">/</li>
                 <li aria-current="page" className="text-paper">{page.topic} em {page.city}</li>
               </ol>
@@ -105,14 +115,16 @@ export function LandingPageView({ page }: { page: LandingPage }) {
                 </span>
                 <h1 className="mt-6 font-display text-[clamp(2.35rem,6vw,4.2rem)] font-semibold leading-[1.05] tracking-[-0.02em] text-paper">
                   {page.h1}
-                  <span className="mt-2 block italic text-brass">{page.accent}</span>
                 </h1>
+                <p className="mt-2 font-display text-[clamp(1.35rem,3vw,2rem)] italic leading-snug text-brass">
+                  {page.accent}
+                </p>
                 <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
                   {page.lead}
                 </p>
                 <div className="mt-8">
                   <TrackingButton page={page} href={whatsappHref} section="hero">
-                    {page.kind === "sensitive" ? "Solicitar contato reservado" : "Solicitar atendimento jurídico"}
+                    Falar com o advogado
                   </TrackingButton>
                   <p className="mt-3 text-sm text-muted">
                     Atendimento particular, direto com o advogado e protegido pelo sigilo profissional.
@@ -255,7 +267,7 @@ export function LandingPageView({ page }: { page: LandingPage }) {
               </p>
               <div className="mt-6">
                 <TrackingButton page={page} href={whatsappHref} section="local">
-                  Iniciar contato reservado
+                  Falar com o advogado
                 </TrackingButton>
               </div>
               <a className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-ink underline-offset-4 hover:underline" href={PHONE_TEL}>
@@ -287,13 +299,13 @@ export function LandingPageView({ page }: { page: LandingPage }) {
         <section className="section-paper bg-paper text-ink">
           <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:px-20 lg:py-28">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brass-deep">PRÓXIMAS LEITURAS</p>
-            <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">Serviços relacionados ao seu momento</h2>
+            <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">Orientações relacionadas ao seu momento</h2>
             <div className="mt-10 grid gap-5 md:grid-cols-3">
               {relatedPages.map((related) => (
                 <Link key={related.slug} href={landingPath(related.slug)} className="group border border-ink/15 bg-white/25 p-6 transition-colors hover:border-brass-deep/60">
                   <FileCheck2 className="h-5 w-5 text-brass-deep" aria-hidden="true" />
                   <h3 className="mt-4 font-display text-xl font-semibold">{related.h1}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-ink-soft">{related.quickAnswer}</p>
+                  <p className="mt-3 line-clamp-4 text-sm leading-relaxed text-ink-soft">{related.quickAnswer}</p>
                   <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold">Ver orientação <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" /></span>
                 </Link>
               ))}
@@ -323,7 +335,7 @@ export function LandingPageView({ page }: { page: LandingPage }) {
             </p>
             <div className="mt-9 flex justify-center">
               <TrackingButton page={page} href={whatsappHref} section="cta-final">
-                Falar com o advogado no WhatsApp
+                Falar com o advogado
               </TrackingButton>
             </div>
             <p className="mt-4 text-xs text-muted">Atendimento particular. Nenhum contato representa promessa de resultado.</p>
@@ -343,7 +355,7 @@ export function LandingPageView({ page }: { page: LandingPage }) {
       </main>
 
       <SiteFooter />
-      <FloatingWhatsApp href={whatsappHref} city={page.city.toLowerCase()} topic={page.topic.toLowerCase()} pageSlug={page.slug} />
+      <FloatingWhatsApp href={whatsappHref} city={page.city.toLowerCase()} topic={page.topic.toLowerCase()} pageSlug={page.slug} ariaLabel="Falar com o advogado no WhatsApp" />
     </>
   );
 }

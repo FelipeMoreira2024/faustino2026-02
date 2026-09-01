@@ -7,6 +7,7 @@ type TopbarProps = {
   city?: string;
   topic?: string;
   pageSlug?: string;
+  home?: boolean;
 };
 
 export function Topbar({
@@ -15,6 +16,7 @@ export function Topbar({
   city,
   topic,
   pageSlug,
+  home = false,
 }: TopbarProps = {}) {
   return (
     <div className="sticky top-0 z-50 h-11 border-b border-brass/20 bg-ink shadow-[0_10px_28px_-18px_rgba(0,0,0,0.7)]">
@@ -26,11 +28,11 @@ export function Topbar({
           />
           <span className="truncate">
             <strong className="font-semibold tracking-wide">
-              {label}
+              {home ? "PLANTÃO CRIMINAL 24H" : label}
             </strong>
             <span className="hidden md:inline">
               {" "}
-              — Telefone para contato:
+              {home ? "— Acusado ou preso? Fale agora:" : "— Telefone para contato:"}
             </span>{" "}
             <a
               href={PHONE_TEL}

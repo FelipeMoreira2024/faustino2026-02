@@ -25,7 +25,7 @@ const sections = [
   },
   {
     title: "WhatsApp e serviços externos",
-    text: "Ao clicar no WhatsApp, telefone ou mapa, você acessa serviços de terceiros. O tratamento realizado por essas plataformas segue também suas próprias políticas. O clique pode ser registrado como evento de conversão antes do redirecionamento.",
+    text: "Ao clicar no WhatsApp, telefone ou mapa, você acessa serviços de terceiros. O tratamento realizado por essas plataformas segue também suas próprias políticas. O clique no WhatsApp só é registrado como evento de conversão se você tiver aceito os cookies de métricas. Sem essa aceitação, o redirecionamento ocorre normalmente, sem envio da tag.",
   },
   {
     title: "Sigilo profissional e segurança",

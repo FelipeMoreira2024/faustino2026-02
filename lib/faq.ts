@@ -1,9 +1,9 @@
 /** Perguntas da Seção 10 do docs/copy.md — texto exato, compartilhado com o JSON-LD FAQPage. */
 export const faqItems = [
   {
-    question: "Como funciona o atendimento em situações urgentes?",
+    question: "O atendimento é 24 horas?",
     answer:
-      "Envie pelo WhatsApp a cidade, a unidade responsável e o horário do próximo ato. A disponibilidade e a forma de atendimento são confirmadas diretamente no primeiro contato.",
+      "Sim. Para situações urgentes — prisão em flagrante, mandado de prisão, audiência de custódia — o plantão funciona 24h, todos os dias, em Goiânia, Aparecida de Goiânia e região.",
   },
   {
     question: "Vocês atendem vítimas de crimes ou de golpes?",
@@ -12,24 +12,24 @@ export const faqItems = [
     bold: "exclusiva em defesa criminal",
   },
   {
-    question: "Como é definido o serviço jurídico?",
+    question: "Quanto custa contratar a defesa?",
     answer:
-      "Depois da análise inicial, é apresentada uma proposta profissional que identifica o escopo da atuação, os atos abrangidos e os próximos passos. O atendimento é particular.",
+      "Os honorários são definidos após a análise do caso, de acordo com a complexidade e a urgência, e apresentados com total transparência, junto às formas de pagamento. O atendimento é particular.",
   },
   {
     question: "O atendimento é sigiloso?",
     answer:
-      "Sim. O contato profissional é tratado sob sigilo, com cuidado na solicitação e circulação de documentos desde a primeira conversa.",
+      "Absolutamente. Todo contato é protegido pelo sigilo profissional, desde a primeira mensagem no WhatsApp.",
   },
   {
     question: "Como funciona em caso de prisão em flagrante?",
     answer:
-      "Informe pelo WhatsApp ou telefone o nome da pessoa, a unidade e o horário conhecido. O advogado confirma a disponibilidade, orienta os primeiros passos e avalia o acompanhamento na delegacia e na audiência de custódia. Oriente o familiar detido a não prestar depoimento antes de receber orientação jurídica.",
+      "Entre em contato imediatamente pelo WhatsApp ou telefone. O advogado orienta os primeiros passos, acompanha na delegacia e atua na audiência de custódia. Oriente o familiar detido a não prestar depoimento antes da chegada do advogado.",
     bold: "Oriente o familiar detido a não prestar depoimento antes da chegada do advogado.",
   },
   {
     question: "Atendem em Aparecida de Goiânia?",
     answer:
-      "O escritório tem sede em Goiânia e avalia casos em Aparecida de Goiânia conforme disponibilidade, logística e necessidade do ato.",
+      "Sim — Goiânia, Aparecida de Goiânia e região metropolitana, com atendimento presencial e plantão 24h.",
   },
 ];

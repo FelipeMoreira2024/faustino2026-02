@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
+import { COOKIE_CONSENT_STORAGE_KEY } from "@/lib/consent";
 
 declare global {
   interface Window {
@@ -28,6 +29,12 @@ type TrackingContext = {
 };
 
 export function trackWhatsAppLead(context: TrackingContext) {
+  try {
+    if (window.localStorage.getItem(COOKIE_CONSENT_STORAGE_KEY) !== "accepted") return;
+  } catch {
+    return;
+  }
+
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({
     ...whatsappLeadEvent,

@@ -78,7 +78,7 @@ export const landingPages: LandingPage[] = [
     description:
       "Prisão em flagrante em Goiânia? Atendimento criminal urgente na delegacia, orientação à família e atuação na audiência de custódia.",
     h1: "Advogado para Flagrante em Goiânia",
-    accent: "Atuação imediata desde a delegacia",
+    accent: "Acompanhamento na delegacia, conforme disponibilidade",
     badge: "PLANTÃO CRIMINAL · GOIÂNIA",
     lead:
       "Quando alguém é preso, as primeiras informações costumam chegar incompletas. A defesa começa organizando o que já se sabe, localizando a ocorrência e acompanhando os atos que podem influenciar as etapas seguintes.",
@@ -123,7 +123,7 @@ export const landingPages: LandingPage[] = [
       },
       {
         title: "Próxima medida",
-        text: "A estratégia considera audiência de custódia, fiança, liberdade provisória ou outra providência juridicamente adequada.",
+        text: "A estratégia considera audiência de custódia, fiança, liberdade provisória ou o pedido que couber depois de ver o auto e a imputação.",
       },
     ],
     sections: [
@@ -301,7 +301,7 @@ export const landingPages: LandingPage[] = [
     localTitle: "Audiência de custódia em Goiânia",
     localParagraphs: [
       "O atendimento é iniciado pelo plantão para localizar o processo e confirmar os dados disponíveis. A sede do escritório fica no Setor Marista, em Goiânia.",
-      "Horário e forma de realização da audiência podem variar. A defesa confirma as informações no processo e nos canais oficiais, em vez de depender apenas de mensagens repassadas à família.",
+      "Horário e forma da audiência devem ser confirmados no processo ou na unidade responsável. Recados de familiares ajudam na triagem, mas não substituem o registro oficial.",
     ],
     localPoints: [
       "Preparação antes da audiência",
@@ -406,7 +406,7 @@ export const landingPages: LandingPage[] = [
         title: "Liberdade provisória, relaxamento e revogação não são sinônimos",
         paragraphs: [
           "O relaxamento discute uma prisão ilegal. A liberdade provisória permite responder ao processo em liberdade, eventualmente com cautelares. A revogação enfrenta a permanência dos motivos de uma prisão preventiva. O habeas corpus, por sua vez, possui função própria de proteção da liberdade diante de ilegalidade ou abuso.",
-          "A escolha errada pode desviar o foco do problema real. Por isso, a defesa precisa identificar o tipo de prisão, a decisão vigente e o órgão competente antes de elaborar a medida.",
+          "Liberdade provisória, relaxamento e habeas corpus não resolvem o mesmo problema. A defesa precisa ver primeiro que tipo de prisão está valendo, qual decisão existe e a qual órgão o pedido deve ser apresentado.",
         ],
       },
       {
@@ -681,8 +681,8 @@ export const landingPages: LandingPage[] = [
         eyebrow: "PRAZO",
         title: "O termo final depende do enquadramento e da decisão",
         paragraphs: [
-          "A Lei nº 7.960/1989 disciplina a prisão temporária e outras leis podem estabelecer regime diferente para determinadas hipóteses. O mandado deve indicar o período da medida, e eventual prorrogação exige nova análise judicial.",
-          "A defesa confere a data em que a prisão foi efetivamente cumprida, o tipo penal indicado e a existência de decisão de prorrogação. Essa conferência é mais segura do que aplicar um número genérico sem ler o processo.",
+          "A Lei nº 7.960/1989 disciplina a prisão temporária e, em regra, prevê prazo curto, prorrogável por decisão judicial. Hipóteses da legislação especial podem ser mais longas. O mandado deve indicar o período, e eventual prorrogação exige nova análise.",
+          "O número que vale é o do mandado e da data do cumprimento — não o de uma busca genérica na internet. A defesa confere também o tipo penal indicado e se já existe decisão de prorrogação.",
         ],
       },
       {
@@ -713,7 +713,7 @@ export const landingPages: LandingPage[] = [
       {
         question: "Qual é o prazo da prisão temporária?",
         answer:
-          "O prazo varia conforme a hipótese legal e deve constar no mandado. A data do cumprimento e eventual prorrogação precisam ser conferidas pela defesa.",
+          "Em regra a lei prevê prazo curto, prorrogável; algumas hipóteses têm regime próprio. O prazo concreto deve constar no mandado e ser conferido com a data do cumprimento.",
       },
       {
         question: "A prisão temporária pode ser prorrogada?",
@@ -753,7 +753,7 @@ export const landingPages: LandingPage[] = [
     lead:
       "Uma situação criminal pode começar com intimação, busca, flagrante, mandado ou citação. Identificar a fase correta permite agir com prioridade e evita tratar uma urgência como consulta comum.",
     quickAnswer:
-      "Rodrigo Faustino atua na defesa de pessoas presas, investigadas ou acusadas e atende normalmente em Anápolis. A sede do escritório fica em Goiânia, a uma curta distância, com deslocamento para atos presenciais sempre que o caso exigir.",
+      "Rodrigo Faustino atua na defesa de pessoas presas, investigadas ou acusadas. A sede fica em Goiânia; o atendimento em Anápolis, inclusive o deslocamento para atos presenciais, é combinado no primeiro contato.",
     notice:
       "Se houver prisão, audiência próxima, mandado ou intimação com prazo, informe isso logo no primeiro contato. Assim, o advogado pode identificar a urgência e orientar você sobre o próximo passo.",
     primaryKeyword: "advogado criminalista em Anápolis",
@@ -822,26 +822,26 @@ export const landingPages: LandingPage[] = [
         ],
       },
     ],
-    localTitle: "Defesa criminal em Anápolis com atendimento direto",
+    localTitle: "Defesa criminal em Anápolis",
     localParagraphs: [
-      "Se você está em Anápolis e precisa de um advogado criminalista, pode contar com atendimento direto de Rodrigo Faustino. Embora a sede do escritório fique em Goiânia, o advogado atende normalmente na cidade e se desloca para delegacias, fóruns, audiências e reuniões quando a presença física é necessária.",
-      "O primeiro contato pode ser feito por telefone ou WhatsApp para entender a fase do caso e a urgência. A partir dessas informações, o atendimento é organizado de forma presencial ou online, para que você receba orientação clara e saiba quais providências podem ser adotadas.",
+      "Quem está em Anápolis fala direto com o advogado. A sede é em Goiânia; o deslocamento para delegacia, fórum ou reunião é combinado no primeiro contato.",
+      "O telefone ou o WhatsApp servem para informar a fase do caso e a urgência. A partir disso, o atendimento pode ser presencial ou online, conforme o ato e a disponibilidade confirmada.",
     ],
     localPoints: [
-      "Atendimento regular de clientes em Anápolis",
-      "Deslocamento para delegacias, fóruns e audiências",
+      "Sede em Goiânia, com deslocamento a Anápolis quando o ato exigir",
+      "Delegacias, fóruns e audiências mediante confirmação",
       "Reuniões presenciais ou online conforme o momento do caso",
     ],
     faqs: [
       {
         question: "O escritório tem endereço em Anápolis?",
         answer:
-          "A sede física do escritório fica no Setor Marista, em Goiânia, mas o advogado atende normalmente em Anápolis e realiza os deslocamentos necessários para reuniões e atos do caso.",
+          "A sede física fica no Setor Marista, em Goiânia. O deslocamento para reuniões e atos em Anápolis é combinado no primeiro contato, conforme a urgência e a natureza do ato.",
       },
       {
         question: "Há atendimento para flagrante em Anápolis?",
         answer:
-          "Sim. Informe o nome da pessoa presa, o local, o horário aproximado e a unidade policial, se conhecida. Com esses dados, o advogado identifica a urgência e organiza o atendimento em Anápolis.",
+          "Informe o nome da pessoa presa, o local, o horário aproximado e a unidade policial, se conhecida. Com esses dados, o advogado confirma a disponibilidade e organiza o deslocamento, se for o caso.",
       },
       {
         question: "É possível fazer reunião online?",
@@ -872,7 +872,7 @@ export const landingPages: LandingPage[] = [
     kind: "sensitive",
     city: "Aparecida de Goiânia",
     topic: "Defesa em crimes sexuais",
-    seoTitle: "Advogado para Crimes Sexuais em Aparecida de Goiânia",
+    seoTitle: "Advogado para Crimes Sexuais em Aparecida de Goiânia | Faustino",
     description:
       "Defesa técnica e sigilosa para investigados ou acusados de crimes sexuais em Aparecida de Goiânia, desde a delegacia até o processo.",
     h1: "Advogado para Crimes Sexuais em Aparecida de Goiânia",
@@ -1086,11 +1086,11 @@ export const landingPages: LandingPage[] = [
     ],
     localTitle: "Atendimento reservado em Anápolis",
     localParagraphs: [
-      "Quem está em Anápolis pode falar diretamente com o advogado em um atendimento reservado e sem exposição desnecessária. A sede do escritório fica em Goiânia, a uma curta distância, e o advogado atende normalmente na cidade, inclusive com deslocamento para atos presenciais.",
+      "Quem está em Anápolis pode falar diretamente com o advogado, em atendimento reservado. A sede fica em Goiânia; o deslocamento para atos presenciais é combinado no primeiro contato.",
       "A primeira conversa pode ocorrer por telefone, videochamada ou presencialmente. Quando houver depoimento, perícia, audiência ou outro compromisso oficial, o atendimento é organizado de acordo com o local, o horário e a urgência do caso.",
     ],
     localPoints: [
-      "Atendimento regular e reservado em Anápolis",
+      "Atendimento reservado em Anápolis, com deslocamento combinado",
       "Deslocamento para atos presenciais quando necessário",
       "Atuação da investigação ao processo criminal",
     ],
@@ -1113,7 +1113,7 @@ export const landingPages: LandingPage[] = [
       {
         question: "O atendimento em Anápolis é presencial?",
         answer:
-          "Sim. O advogado atende presencialmente em Anápolis quando o caso ou o ato exige essa presença. Reuniões de orientação também podem ser realizadas online, de acordo com a necessidade e a preferência do cliente.",
+          "Quando o caso ou o ato exige presença, o deslocamento a Anápolis é combinado no contato. Reuniões de orientação também podem ser feitas online, conforme a necessidade e a segurança das informações.",
       },
       {
         question: "A defesa acompanha todas as fases?",

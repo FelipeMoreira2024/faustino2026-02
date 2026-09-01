@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: RouteProps): Promise<Metadata
             "max-snippet": -1,
           },
         },
-    authors: [{ name: "Dr. Rodrigo Faustino", url: "/sobre-rodrigo-faustino/" }],
+    authors: [{ name: "Dr. Rodrigo Faustino", url: "/sobre-rodrigo-faustino" }],
     openGraph: {
       type: "website",
       locale: "pt_BR",
@@ -118,7 +118,7 @@ export default async function LandingRoute({ params }: RouteProps) {
         "@type": "ListItem",
         position: 2,
         name: "Defesa criminal",
-        item: `${HOME_URL}/#areas-de-atuacao`,
+        item: HOME_URL,
       },
       {
         "@type": "ListItem",

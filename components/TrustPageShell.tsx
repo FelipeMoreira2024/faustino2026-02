@@ -14,8 +14,14 @@ type TrustPageShellProps = {
 export function TrustPageShell({ eyebrow, title, intro, children }: TrustPageShellProps) {
   return (
     <>
+      <a
+        href="#conteudo"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[110] focus:bg-paper focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-ink"
+      >
+        Pular para o conteúdo
+      </a>
       <Topbar />
-      <main>
+      <main id="conteudo">
         <section className="bg-ink">
           <div className="mx-auto max-w-5xl px-5 pb-16 pt-8 sm:px-8 lg:px-20 lg:pb-24">
             <nav aria-label="Breadcrumb" className="text-xs text-muted">
@@ -35,7 +41,7 @@ export function TrustPageShell({ eyebrow, title, intro, children }: TrustPageShe
         </div>
       </main>
       <SiteFooter />
-      <FloatingWhatsApp />
+      <FloatingWhatsApp ariaLabel="Falar com o advogado no WhatsApp" />
     </>
   );
 }

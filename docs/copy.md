@@ -1,4 +1,9 @@
 # Nova Landing Page — Advogado Criminalista Goiânia
+
+> **Documento desatualizado — não usar como fonte de publicação, anúncios ou Google Ads.**
+> A home vigente está em `app/page.tsx` e `components/sections/`. As landings estão em `lib/landing-pages.ts`.
+> Trechos abaixo como “24H”, “melhor avaliação” e “+950 defesas” foram retirados do site por incompatibilidade com o Provimento 205/2021 e o Código de Ética da OAB.
+
 ## Copy completa, seção por seção — foco em LEADS QUALIFICADOS (defesa criminal + pagante)
 
 **Objetivo:** manter a taxa de conversão alta, mas filtrar vítimas de golpe, público Maria da Penha e quem busca atendimento gratuito — ANTES do clique no WhatsApp.

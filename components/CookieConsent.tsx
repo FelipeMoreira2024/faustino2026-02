@@ -3,10 +3,11 @@
 import Link from "next/link";
 import Script from "next/script";
 import { useEffect, useState } from "react";
+import {
+  COOKIE_CONSENT_STORAGE_KEY as STORAGE_KEY,
+  COOKIE_SETTINGS_EVENT as SETTINGS_EVENT,
+} from "@/lib/consent";
 import { absoluteUrl } from "@/lib/site";
-
-const STORAGE_KEY = "faustino_cookie_consent";
-const SETTINGS_EVENT = "faustino:cookie-settings";
 
 type Consent = "accepted" | "rejected" | "pending" | null;
 

@@ -2,12 +2,12 @@ import { Clock, User, Lock, Briefcase } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { SectionMarker } from "@/components/SectionMarker";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
-import { WA_STANDARD } from "@/lib/whatsapp";
+import { WA_HOME_STANDARD } from "@/lib/whatsapp";
 
 const badges = [
-  { icon: Clock, label: "Triagem de situações urgentes" },
+  { icon: Clock, label: "Disponível 24h" },
   { icon: User, label: "Atendimento direto com o advogado" },
-  { icon: Lock, label: "Sigilo profissional" },
+  { icon: Lock, label: "Sigilo absoluto" },
   { icon: Briefcase, label: "Atendimento particular" },
 ];
 
@@ -18,18 +18,22 @@ export function FinalCta() {
       <div className="mx-auto max-w-3xl px-5 py-24 text-center sm:px-8 lg:py-36">
         <Reveal>
           <h2 className="font-display text-3xl font-semibold tracking-[-0.01em] text-paper sm:text-5xl">
-            Precisa de orientação em defesa criminal?
+            Precisa de defesa criminal agora?
           </h2>
           <p className="mx-auto mt-6 max-w-xl leading-relaxed text-muted">
-            Fale diretamente com o advogado para informar a fase do procedimento
-            e compreender quais documentos e próximos passos precisam ser avaliados.
+            Na defesa criminal,{" "}
+            <strong className="font-semibold text-paper">
+              cada hora conta
+            </strong>
+            . Fale diretamente com o advogado e entenda o próximo passo do seu
+            caso.
           </p>
         </Reveal>
 
         <Reveal delay={80}>
           <div className="mt-10 flex justify-center">
-            <WhatsAppButton section="cta-final" href={WA_STANDARD}>
-              Entrar em contato pelo WhatsApp
+            <WhatsAppButton section="cta-final" href={WA_HOME_STANDARD}>
+              Atendimento imediato no WhatsApp
             </WhatsAppButton>
           </div>
         </Reveal>

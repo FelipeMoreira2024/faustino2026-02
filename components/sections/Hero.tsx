@@ -1,13 +1,13 @@
 import Image from "next/image";
-import { User, Scale, Lock } from "lucide-react";
+import { Star, Scale, Lock } from "lucide-react";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
-import { WA_STANDARD } from "@/lib/whatsapp";
+import { WA_HOME_STANDARD } from "@/lib/whatsapp";
 import { SectionMarker } from "@/components/SectionMarker";
 
 const proofs = [
-  { icon: Scale, label: "OAB/GO 64.028" },
-  { icon: User, label: "Atendimento direto" },
-  { icon: Lock, label: "Sigilo profissional" },
+  { icon: Star, label: "Melhor avaliação de Goiânia no Google" },
+  { icon: Scale, label: "+950 defesas realizadas" },
+  { icon: Lock, label: "Sigilo total" },
 ];
 
 export function Hero() {
@@ -17,27 +17,27 @@ export function Hero() {
       <div className="mx-auto grid max-w-6xl gap-10 px-5 pb-14 pt-10 sm:px-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-16 lg:px-20 lg:pb-20 lg:pt-10">
         <div>
           <span className="inline-flex items-center rounded-full border border-brass/40 px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.13em] text-brass sm:text-xs sm:tracking-[0.15em]">
-            DEFESA CRIMINAL • ATENDIMENTO EM GOIÂNIA
+            DEFESA CRIMINAL • ATENDIMENTO 24 HORAS
           </span>
 
           <h1 className="mt-6 font-display text-[clamp(2.2rem,6vw,4rem)] font-semibold leading-[1.08] tracking-[-0.015em] text-paper">
             Advogado Criminalista em Goiânia
             <span className="mt-2 block italic text-brass">
-              Orientação desde o primeiro contato
+              Defesa imediata, 24 horas
             </span>
           </h1>
 
           <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
             Foi intimado ou acusado de crime? Ou teve um familiar preso agora?
-            Atuação em defesa criminal em Goiânia e região, conforme a fase e a disponibilidade confirmada no contato.
+            Atuação imediata na defesa criminal em Goiânia e região.
           </p>
 
           <div className="mt-8">
-            <WhatsAppButton section="hero" href={WA_STANDARD}>
-              Solicitar atendimento jurídico
+            <WhatsAppButton section="hero" href={WA_HOME_STANDARD}>
+              Falar agora com o advogado de defesa
             </WhatsAppButton>
             <p className="mt-3 text-sm text-muted">
-              Atendimento particular, direto com o advogado. Sigilo profissional.
+              Atendimento particular, direto com o advogado. Sigilo absoluto.
             </p>
           </div>
 

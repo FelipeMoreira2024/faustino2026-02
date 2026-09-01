@@ -11,6 +11,8 @@ type FloatingWhatsAppProps = {
   city?: string;
   topic?: string;
   pageSlug?: string;
+  home?: boolean;
+  ariaLabel?: string;
 };
 
 export function FloatingWhatsApp({
@@ -18,6 +20,8 @@ export function FloatingWhatsApp({
   city,
   topic,
   pageSlug,
+  home = false,
+  ariaLabel,
 }: FloatingWhatsAppProps) {
   const [visible, setVisible] = useState(false);
   const visibleRef = useRef(false);
@@ -55,7 +59,7 @@ export function FloatingWhatsApp({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Solicitar atendimento pelo WhatsApp"
+      aria-label={ariaLabel ?? (home ? "Falar agora no WhatsApp" : "Solicitar atendimento pelo WhatsApp")}
       onClick={(event) =>
         openWhatsAppWithTracking(event, href, {
           section: "floating",
