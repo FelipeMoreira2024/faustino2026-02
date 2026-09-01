@@ -753,9 +753,9 @@ export const landingPages: LandingPage[] = [
     lead:
       "Uma situação criminal pode começar com intimação, busca, flagrante, mandado ou citação. Identificar a fase correta permite agir com prioridade e evita tratar uma urgência como consulta comum.",
     quickAnswer:
-      "Rodrigo Faustino atua na defesa de pessoas presas, investigadas ou acusadas. O escritório tem sede em Goiânia e avalia o atendimento de casos em Anápolis conforme urgência, necessidade de deslocamento e forma de realização dos atos.",
+      "Rodrigo Faustino atua na defesa de pessoas presas, investigadas ou acusadas e atende normalmente em Anápolis. A sede do escritório fica em Goiânia, a uma curta distância, com deslocamento para atos presenciais sempre que o caso exigir.",
     notice:
-      "Não há indicação de sede física do escritório em Anápolis. O endereço oficial permanece no Setor Marista, em Goiânia; a logística é confirmada antes da contratação.",
+      "Se houver prisão, audiência próxima, mandado ou intimação com prazo, informe isso logo no primeiro contato. Assim, o advogado pode identificar a urgência e orientar você sobre o próximo passo.",
     primaryKeyword: "advogado criminalista em Anápolis",
     secondaryKeywords: [
       "advogado criminal Anápolis",
@@ -788,8 +788,8 @@ export const landingPages: LandingPage[] = [
         text: "Intimação, decisão, processo e documentos disponíveis ajudam a localizar o problema jurídico.",
       },
       {
-        title: "Confirmar a logística",
-        text: "Atendimento remoto, presencial e deslocamento para Anápolis são alinhados conforme o ato necessário.",
+        title: "Organizar o atendimento",
+        text: "O advogado define com você se o momento exige reunião online, encontro presencial ou deslocamento em Anápolis.",
       },
       {
         title: "Formalizar a atuação",
@@ -822,26 +822,26 @@ export const landingPages: LandingPage[] = [
         ],
       },
     ],
-    localTitle: "Como funciona o atendimento em Anápolis",
+    localTitle: "Defesa criminal em Anápolis com atendimento direto",
     localParagraphs: [
-      "O escritório está sediado em Goiânia. Casos em Anápolis são avaliados no primeiro contato para confirmar disponibilidade, necessidade de presença física e possibilidade de atos remotos.",
-      "Essa transparência evita criar a impressão de endereço local inexistente. Quando o deslocamento é necessário, ele integra o planejamento e a proposta de atuação.",
+      "Se você está em Anápolis e precisa de um advogado criminalista, pode contar com atendimento direto de Rodrigo Faustino. Embora a sede do escritório fique em Goiânia, o advogado atende normalmente na cidade e se desloca para delegacias, fóruns, audiências e reuniões quando a presença física é necessária.",
+      "O primeiro contato pode ser feito por telefone ou WhatsApp para entender a fase do caso e a urgência. A partir dessas informações, o atendimento é organizado de forma presencial ou online, para que você receba orientação clara e saiba quais providências podem ser adotadas.",
     ],
     localPoints: [
-      "Sede oficial em Goiânia",
-      "Atendimento de casos em Anápolis sob confirmação",
-      "Reuniões remotas ou presenciais conforme necessidade",
+      "Atendimento regular de clientes em Anápolis",
+      "Deslocamento para delegacias, fóruns e audiências",
+      "Reuniões presenciais ou online conforme o momento do caso",
     ],
     faqs: [
       {
         question: "O escritório tem endereço em Anápolis?",
         answer:
-          "Não. A sede informada fica no Setor Marista, em Goiânia. O atendimento de casos em Anápolis é confirmado conforme disponibilidade e necessidade de deslocamento.",
+          "A sede física do escritório fica no Setor Marista, em Goiânia, mas o advogado atende normalmente em Anápolis e realiza os deslocamentos necessários para reuniões e atos do caso.",
       },
       {
         question: "Há atendimento para flagrante em Anápolis?",
         answer:
-          "Situações urgentes passam por triagem imediata. A disponibilidade e o tempo de deslocamento são confirmados no contato, sem promessa prévia de chegada.",
+          "Sim. Informe o nome da pessoa presa, o local, o horário aproximado e a unidade policial, se conhecida. Com esses dados, o advogado identifica a urgência e organiza o atendimento em Anápolis.",
       },
       {
         question: "É possível fazer reunião online?",
@@ -1015,7 +1015,7 @@ export const landingPages: LandingPage[] = [
     lead:
       "Uma acusação pode envolver relatos, mensagens, arquivos, perícias e contextos anteriores. Organizar esses elementos com integridade é mais útil do que reagir com explicações precipitadas ou tentar influenciar pessoas envolvidas.",
     quickAnswer:
-      "A defesa atende investigados ou acusados, acompanha depoimentos e analisa provas digitais, documentais, testemunhais e periciais. O escritório tem sede em Goiânia e confirma a logística para atos em Anápolis.",
+      "A defesa atende investigados ou acusados em Anápolis, acompanha depoimentos e analisa provas digitais, documentais, testemunhais e periciais. A sede fica em Goiânia, com atendimento e deslocamento para Anápolis sempre que o caso exigir.",
     notice:
       "Não apague mensagens ou formate aparelhos. Também não procure a pessoa envolvida para pedir retratação, explicação ou acordo sem orientação jurídica.",
     primaryKeyword: "advogado para crimes sexuais em Anápolis",
@@ -1084,15 +1084,15 @@ export const landingPages: LandingPage[] = [
         ],
       },
     ],
-    localTitle: "Atendimento de casos em Anápolis",
+    localTitle: "Atendimento reservado em Anápolis",
     localParagraphs: [
-      "O escritório não anuncia sede em Anápolis. A base física fica em Goiânia, e a disponibilidade para deslocamentos e atos presenciais é confirmada de acordo com o procedimento.",
-      "Reuniões preliminares podem ocorrer de forma remota quando apropriado. Atos em delegacia, perícias e audiências são planejados conforme local e horário oficiais.",
+      "Quem está em Anápolis pode falar diretamente com o advogado em um atendimento reservado e sem exposição desnecessária. A sede do escritório fica em Goiânia, a uma curta distância, e o advogado atende normalmente na cidade, inclusive com deslocamento para atos presenciais.",
+      "A primeira conversa pode ocorrer por telefone, videochamada ou presencialmente. Quando houver depoimento, perícia, audiência ou outro compromisso oficial, o atendimento é organizado de acordo com o local, o horário e a urgência do caso.",
     ],
     localPoints: [
-      "Logística informada antes da contratação",
-      "Reunião reservada e atendimento particular",
-      "Atuação da investigação ao processo",
+      "Atendimento regular e reservado em Anápolis",
+      "Deslocamento para atos presenciais quando necessário",
+      "Atuação da investigação ao processo criminal",
     ],
     faqs: [
       {
@@ -1113,7 +1113,7 @@ export const landingPages: LandingPage[] = [
       {
         question: "O atendimento em Anápolis é presencial?",
         answer:
-          "Pode ser presencial ou remoto conforme o ato e a disponibilidade. A sede permanece em Goiânia e a logística é confirmada previamente.",
+          "Sim. O advogado atende presencialmente em Anápolis quando o caso ou o ato exige essa presença. Reuniões de orientação também podem ser realizadas online, de acordo com a necessidade e a preferência do cliente.",
       },
       {
         question: "A defesa acompanha todas as fases?",

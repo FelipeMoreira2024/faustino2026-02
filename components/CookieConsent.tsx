@@ -57,10 +57,10 @@ export function CookieConsent({ gtmId }: { gtmId?: string }) {
 
       {consent === "pending" ? (
         <section
-          aria-label="Preferências de privacidade"
+          aria-label="Preferências de privacidade e cookies"
           className="fixed inset-x-4 bottom-4 z-[100] mx-auto max-w-3xl border border-brass/30 bg-ink-elevated p-5 text-paper shadow-2xl sm:p-6"
         >
-          <h2 className="font-display text-xl font-semibold">Privacidade e métricas</h2>
+          <h2 className="font-display text-xl font-semibold">Privacidade e Cookies</h2>
           <p className="mt-2 text-sm leading-relaxed text-muted">
             Cookies de medição só serão ativados se você aceitar. O site funciona
             normalmente se você recusar. Consulte a{" "}
