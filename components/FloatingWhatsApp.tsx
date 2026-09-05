@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { WA_STANDARD } from "@/lib/whatsapp";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { openWhatsAppWithTracking } from "@/components/WhatsAppButton";
+import { useLeadTracking } from "@/components/LeadTrackingContext";
 import { cn } from "@/lib/utils";
 
 type FloatingWhatsAppProps = {
@@ -23,6 +24,7 @@ export function FloatingWhatsApp({
   home = false,
   ariaLabel,
 }: FloatingWhatsAppProps) {
+  const defaults = useLeadTracking();
   const [visible, setVisible] = useState(false);
   const visibleRef = useRef(false);
   const frameRef = useRef<number | null>(null);
@@ -65,7 +67,8 @@ export function FloatingWhatsApp({
           section: "floating",
           city,
           topic,
-          pageSlug,
+          pageSlug: pageSlug ?? defaults.pageSlug,
+          variant: defaults.variant,
         })
       }
       className={cn(

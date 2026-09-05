@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
+import { useLeadTracking } from "@/components/LeadTrackingContext";
 import { COOKIE_CONSENT_STORAGE_KEY } from "@/lib/consent";
 
 declare global {
@@ -21,28 +22,54 @@ const whatsappLeadEvent = {
   version: "v2_clean",
 };
 
-type TrackingContext = {
+export type TrackingContext = {
   section: string;
   city?: string;
   topic?: string;
   pageSlug?: string;
+  /** Variante do teste A/B; omitido = "a" (home original). */
+  variant?: string;
 };
 
-export function trackWhatsAppLead(context: TrackingContext) {
+function hasMetricsConsent() {
   try {
-    if (window.localStorage.getItem(COOKIE_CONSENT_STORAGE_KEY) !== "accepted") return;
+    return window.localStorage.getItem(COOKIE_CONSENT_STORAGE_KEY) === "accepted";
   } catch {
-    return;
+    return false;
   }
+}
+
+function pushLeadEvent(
+  overrides: { event: string; conversion_type: string },
+  context: TrackingContext
+) {
+  if (!hasMetricsConsent()) return;
 
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({
     ...whatsappLeadEvent,
+    ...overrides,
     lead_section: context.section,
     lead_city: context.city || "goiania",
     lead_topic: context.topic || "defesa_criminal",
     page_slug: context.pageSlug || "home",
+    ab_variant: context.variant || "a",
   });
+}
+
+export function trackWhatsAppLead(context: TrackingContext) {
+  pushLeadEvent(
+    { event: whatsappLeadEvent.event, conversion_type: "whatsapp_click" },
+    context
+  );
+}
+
+/** Clique em link `tel:` — evento separado para o GTM não misturar com WhatsApp. */
+export function trackPhoneLead(context: TrackingContext) {
+  pushLeadEvent(
+    { event: "lead_phone_rodrigo_faustino_v2", conversion_type: "phone_click" },
+    context
+  );
 }
 
 export function openWhatsAppWithTracking(
@@ -80,6 +107,8 @@ export function WhatsAppButton({
   pageSlug,
   compact = false,
 }: WhatsAppButtonProps) {
+  const defaults = useLeadTracking();
+
   return (
     <a
       href={href}
@@ -90,7 +119,8 @@ export function WhatsAppButton({
           section,
           city,
           topic,
-          pageSlug,
+          pageSlug: pageSlug ?? defaults.pageSlug,
+          variant: defaults.variant,
         })
       }
       className={cn(

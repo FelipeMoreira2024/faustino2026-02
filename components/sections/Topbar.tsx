@@ -8,6 +8,8 @@ type TopbarProps = {
   topic?: string;
   pageSlug?: string;
   home?: boolean;
+  /** Complemento após o label (só desktop). Sobrescreve o texto padrão. */
+  message?: string;
 };
 
 export function Topbar({
@@ -17,6 +19,7 @@ export function Topbar({
   topic,
   pageSlug,
   home = false,
+  message,
 }: TopbarProps = {}) {
   return (
     <div className="sticky top-0 z-50 h-11 border-b border-brass/20 bg-ink shadow-[0_10px_28px_-18px_rgba(0,0,0,0.7)]">
@@ -32,7 +35,8 @@ export function Topbar({
             </strong>
             <span className="hidden md:inline">
               {" "}
-              {home ? "— Acusado ou preso? Fale agora:" : "— Telefone para contato:"}
+              {message ??
+                (home ? "— Acusado ou preso? Fale agora:" : "— Telefone para contato:")}
             </span>{" "}
             <a
               href={PHONE_TEL}

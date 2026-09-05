@@ -24,6 +24,7 @@ npm run start  # servir build
 ## Estrutura
 
 - `app/page.tsx` — home (Goiânia)
+- `app/b/page.tsx` — **variante B da home** para teste A/B (`noindex`, canonical `/`). Seções alteradas em `components/sections/home-b/`; o restante é compartilhado. Leads saem com `page_slug: "home-b"` e `ab_variant: "b"`; cliques em telefone disparam `lead_phone_rodrigo_faustino_v2`.
 - `app/[slug]/page.tsx` — nove landings
 - `lib/landing-pages.ts` — conteúdo das landings
 - `lib/site.ts` — domínio, NAP, JSON-LD institucional

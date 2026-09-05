@@ -21,6 +21,15 @@ export const WA_HOME_STANDARD = createWhatsAppLink(
   "Olá, preciso conversar com um Advogado de Defesa Criminal."
 );
 
+/**
+ * Variante B da home (/b): o lead se autodeclara "defesa criminal" + "particular"
+ * e indica a situação antes da primeira resposta — triagem no clique.
+ */
+export const WA_HOME_B = createWhatsAppLink(
+  "Olá, Dr. Rodrigo. Preciso de defesa criminal e busco atendimento particular.\n" +
+    "Minha situação: (fui preso / familiar preso / recebi intimação / estou sendo investigado / respondo a processo)"
+);
+
 export const WA_FLAGRANTE = createWhatsAppLink(
   "URGENTE: prisão em flagrante. Preciso de um advogado criminalista agora."
 );
