@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CookieSettingsButton } from "@/components/CookieSettingsButton";
 import Image from "next/image";
 import { Topbar } from "@/components/sections/Topbar";
 import { Hero } from "@/components/sections/Hero";
@@ -186,6 +187,7 @@ export default function Page() {
       </main>
 
       <footer className="border-t border-brass/15 bg-ink">
+        <div className="px-6 pt-6 text-center text-sm text-muted"><CookieSettingsButton /></div>
         <div className="mx-auto max-w-6xl px-5 py-8 text-center sm:px-8 lg:px-20">
           <Image
             src="/images/logo-faustino.webp"

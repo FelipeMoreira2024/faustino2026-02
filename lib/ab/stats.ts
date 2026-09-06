@@ -31,11 +31,10 @@ export function evaluateAutomaticWinner(
   challenger: ParticipantResult[],
   iterations = 10_000
 ) {
-  const totalParticipants = baseline.length + challenger.length;
   const baselineConversions = baseline.reduce((sum, row) => sum + row.conversions, 0);
   const challengerConversions = challenger.reduce((sum, row) => sum + row.conversions, 0);
   if (
-    totalParticipants < 1_000 ||
+    baseline.length < 1_000 || challenger.length < 1_000 ||
     baselineConversions < 30 ||
     challengerConversions < 30 ||
     baseline.length === 0 ||

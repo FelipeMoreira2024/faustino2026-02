@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "ab:hash-password": "node scripts/hash-admin-password.mjs",
-    "ab:test": "tsx --test lib/ab/stats.test.ts",
+    "ab:test": "tsx --test lib/ab/stats.test.ts lib/ab/regression.test.mjs",
     "ab:migrate": "node --env-file=.env.local scripts/migrate-ab.mjs"
   },
   "dependencies": {

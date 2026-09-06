@@ -41,12 +41,14 @@ export function AdminDashboard() {
   const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
+    try {
     const response = await fetch("/api/admin/dashboard", { cache: "no-store" });
     const payload = await response.json();
     if (response.status === 401) return window.location.assign("/admin/login");
     if (!response.ok) return setError(payload.error ?? "Não foi possível carregar os dados.");
     setData(payload);
     setError("");
+    } catch { setError("Não foi possível atualizar os dados. Tentaremos novamente."); }
   }, []);
 
   useEffect(() => {
@@ -59,8 +61,10 @@ export function AdminDashboard() {
   const currentPage = data?.pages.find((page) => page.id === data.currentPageId);
 
   async function mutate(url: string, body: unknown) {
+    if (url.endsWith("/end") && !window.confirm("Encerrar este teste e tornar a página escolhida a home? Esta decisão será registrada como manual.")) return false;
     setBusy(true);
     setError("");
+    try {
     const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -74,6 +78,8 @@ export function AdminDashboard() {
     }
     await load();
     return true;
+    } catch { setError("Falha de conexão. Atualize os dados antes de tentar novamente."); return false; }
+    finally { setBusy(false); }
   }
 
   async function logout() {
@@ -146,7 +152,7 @@ function ActiveExperiment({ experiment, busy, mutate }: {
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#8a6c2d]">Teste ativo</p>
           <h2 className="mt-2 text-2xl font-semibold">{experiment.name}</h2>
-          <p className="mt-2 text-sm text-ink-soft">{leader} · diferença de {pct(Math.abs(aRate - bRate))}</p>
+          <p className="mt-2 text-sm text-ink-soft">{leader} · diferença de {Math.abs(aRate - bRate).toLocaleString("pt-BR", { maximumFractionDigits: 1 })} pontos percentuais</p>
         </div>
         <p className="text-sm text-ink-soft">{experiment.ends_at ? `Prazo: ${new Date(experiment.ends_at).toLocaleDateString("pt-BR")}` : "Encerramento manual"}</p>
       </div>
@@ -157,7 +163,7 @@ function ActiveExperiment({ experiment, busy, mutate }: {
       <div className="mt-6 flex flex-wrap gap-3">
         <button disabled={busy} onClick={() => mutate(`/api/admin/experiments/${experiment.id}/end`, { decisionType: "manual", winnerPageId: experiment.baseline_page_id })} className="bg-ink px-4 py-3 text-sm font-semibold text-paper disabled:opacity-50">Encerrar com A</button>
         <button disabled={busy} onClick={() => mutate(`/api/admin/experiments/${experiment.id}/end`, { decisionType: "manual", winnerPageId: experiment.challenger_page_id })} className="bg-ink px-4 py-3 text-sm font-semibold text-paper disabled:opacity-50">Encerrar com B</button>
-        <button disabled={busy} onClick={() => mutate(`/api/admin/experiments/${experiment.id}/end`, { decisionType: "automatic" })} className="border border-ink/25 px-4 py-3 text-sm font-semibold disabled:opacity-50">Avaliar evidência agora</button>
+        <p className="text-sm">A decisão automática ocorre somente no prazo definido, com pelo menos 1.000 navegadores e 30 conversões em cada página.</p>
       </div>
     </section>
   );

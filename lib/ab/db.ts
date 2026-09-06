@@ -6,6 +6,7 @@ import type { PublicExperimentConfig } from "@/lib/ab/types";
 let client: ReturnType<typeof postgres> | null | undefined;
 
 export function getDatabase() {
+  if (process.env.VERCEL_ENV !== "production") return null;
   if (client !== undefined) return client;
   const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL;
   client = connectionString
@@ -85,6 +86,7 @@ export async function recordVisit(payload: {
       VALUES (${payload.participantId}, ${payload.experimentId}, ${payload.pageId}, ${payload.variant})
       ON CONFLICT (experiment_id, id) DO NOTHING
     `;
+    await transaction`SELECT id FROM ab_participants WHERE experiment_id = ${payload.experimentId} AND id = ${payload.participantId} FOR UPDATE`;
     const existing = await transaction<{ id: string }[]>`
       SELECT id FROM ab_sessions
       WHERE experiment_id = ${payload.experimentId}
@@ -108,7 +110,10 @@ export async function recordVisit(payload: {
 export async function recordConversion(sessionId: string, experimentId: string, participantId: string) {
   const sql = getDatabase();
   if (!sql) return false;
-  const updated = await sql<{ id: string }[]>`
+  return sql.begin(async (transaction) => {
+  const active = await transaction`SELECT id FROM ab_experiments WHERE id = ${experimentId} AND status = 'active' FOR SHARE`;
+  if (!active[0]) return false;
+  const updated = await transaction<{ id: string }[]>`
     UPDATE ab_sessions s SET converted_at = COALESCE(s.converted_at, now()), last_seen_at = now()
     FROM ab_experiments e
     WHERE s.id = ${sessionId}
@@ -121,17 +126,17 @@ export async function recordConversion(sessionId: string, experimentId: string, 
     RETURNING s.id
   `;
   return Boolean(updated[0]);
+  });
 }
 
-async function participantResults(experimentId: string, variant: "a" | "b") {
-  const sql = getDatabase();
-  if (!sql) return [];
+async function participantResults(sql: postgres.TransactionSql, experimentId: string, variant: "a" | "b") {
   return sql<{ visits: number; conversions: number }[]>`
     SELECT count(*)::int AS visits,
       count(*) FILTER (WHERE converted_at IS NOT NULL)::int AS conversions
     FROM ab_sessions
     WHERE experiment_id = ${experimentId} AND variant = ${variant}
     GROUP BY participant_id
+    ORDER BY participant_id
   `;
 }
 
@@ -141,18 +146,23 @@ export async function endExperiment(
 ) {
   const sql = getDatabase();
   if (!sql) throw new Error("Banco de dados não configurado.");
-  const rows = await sql<{
+  return sql.begin(async (transaction) => {
+  const rows = await transaction<{
     id: string;
     baseline_page_id: string;
     challenger_page_id: string;
     mode: string;
     status: string;
-  }[]>`SELECT id, baseline_page_id, challenger_page_id, mode, status FROM ab_experiments WHERE id = ${experimentId}`;
+    ends_at: Date | null;
+  }[]>`SELECT id, baseline_page_id, challenger_page_id, mode, status, ends_at FROM ab_experiments WHERE id = ${experimentId} FOR UPDATE`;
   const experiment = rows[0];
   if (!experiment) throw new Error("Teste não encontrado.");
-  if (experiment.status !== "active") throw new Error("Este teste já foi encerrado.");
+  if (experiment.status !== "active") return { status: experiment.status };
+  if (options.decisionType === "automatic" && (experiment.mode !== "automatic" || !experiment.ends_at || experiment.ends_at.getTime() > Date.now())) {
+    throw new Error("A avaliação automática só pode ocorrer após o prazo definido.");
+  }
 
-  const metricRows = await sql<{
+  const metricRows = await transaction<{
     baseline_visits: number;
     baseline_conversions: number;
     challenger_visits: number;
@@ -182,8 +192,8 @@ export async function endExperiment(
     winnerPageId = options.winnerPageId;
   } else {
     const [baseline, challenger] = await Promise.all([
-      participantResults(experimentId, "a"),
-      participantResults(experimentId, "b"),
+      participantResults(transaction, experimentId, "a"),
+      participantResults(transaction, experimentId, "b"),
     ]);
     const result = evaluateAutomaticWinner(experimentId, baseline, challenger);
     details = result;
@@ -195,7 +205,6 @@ export async function endExperiment(
     }
   }
 
-  await sql.begin(async (transaction) => {
     const updated = await transaction<{ id: string }[]>`
       UPDATE ab_experiments SET status = ${status}, ended_at = now(),
         winner_page_id = ${winnerPageId}, decision_type = ${options.decisionType},
@@ -210,8 +219,8 @@ export async function endExperiment(
       VALUES ('current_home_page_id', ${winnerPageId}, now())
       ON CONFLICT (key) DO UPDATE SET value = excluded.value, updated_at = now()
     `;
-  });
   return { status, winnerPageId, details };
+  });
 }
 
 export async function finalizeExpiredExperiments(cleanup = false) {
@@ -252,10 +261,10 @@ export async function getAdminDashboard() {
         e.baseline_page_id, bp.name AS baseline_name, bp.path AS baseline_path,
         e.challenger_page_id, cp.name AS challenger_name, cp.path AS challenger_path,
         e.winner_page_id, wp.name AS winner_name, e.decision_type, e.decision_details,
-        COALESCE(NULLIF(count(s.id) FILTER (WHERE s.variant = 'a'), 0), (e.final_metrics->>'baseline_visits')::bigint, 0)::int AS baseline_visits,
-        COALESCE(NULLIF(count(s.id) FILTER (WHERE s.variant = 'a' AND s.converted_at IS NOT NULL), 0), (e.final_metrics->>'baseline_conversions')::bigint, 0)::int AS baseline_conversions,
-        COALESCE(NULLIF(count(s.id) FILTER (WHERE s.variant = 'b'), 0), (e.final_metrics->>'challenger_visits')::bigint, 0)::int AS challenger_visits,
-        COALESCE(NULLIF(count(s.id) FILTER (WHERE s.variant = 'b' AND s.converted_at IS NOT NULL), 0), (e.final_metrics->>'challenger_conversions')::bigint, 0)::int AS challenger_conversions
+        (CASE WHEN e.status = 'active' THEN count(s.id) FILTER (WHERE s.variant = 'a') ELSE COALESCE((e.final_metrics->>'baseline_visits')::bigint, 0) END)::int AS baseline_visits,
+        (CASE WHEN e.status = 'active' THEN count(s.id) FILTER (WHERE s.variant = 'a' AND s.converted_at IS NOT NULL) ELSE COALESCE((e.final_metrics->>'baseline_conversions')::bigint, 0) END)::int AS baseline_conversions,
+        (CASE WHEN e.status = 'active' THEN count(s.id) FILTER (WHERE s.variant = 'b') ELSE COALESCE((e.final_metrics->>'challenger_visits')::bigint, 0) END)::int AS challenger_visits,
+        (CASE WHEN e.status = 'active' THEN count(s.id) FILTER (WHERE s.variant = 'b' AND s.converted_at IS NOT NULL) ELSE COALESCE((e.final_metrics->>'challenger_conversions')::bigint, 0) END)::int AS challenger_conversions
       FROM ab_experiments e
       JOIN ab_pages bp ON bp.id = e.baseline_page_id
       JOIN ab_pages cp ON cp.id = e.challenger_page_id

@@ -11,7 +11,7 @@ export async function GET() {
   } catch {
     return NextResponse.json(
       { experiment: null, permanentPath: "/" },
-      { headers: { "Cache-Control": "private, no-store" } }
+      { status: 503, headers: { "Cache-Control": "private, no-store" } }
     );
   }
 }

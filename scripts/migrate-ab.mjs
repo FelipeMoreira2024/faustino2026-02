@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import process from "node:process";
 import postgres from "postgres";
 
-const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL;
+const connectionString = process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL || process.env.POSTGRES_URL;
 if (!connectionString) {
   console.error("DATABASE_URL ou POSTGRES_URL não está configurada.");
   process.exit(1);

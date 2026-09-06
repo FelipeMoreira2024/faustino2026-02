@@ -14,7 +14,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Use uma página do domínio de Goiânia." }, { status: 400 });
     }
     path = parsed.pathname.replace(/\/$/, "") || "/";
-    if (!/^\/[a-z0-9/_-]*$/.test(path)) {
+    if (!/^\/[a-z0-9/_-]*$/.test(path) || /^\/(admin|api)(\/|$)/.test(path) || parsed.search || parsed.hash) {
       return NextResponse.json({ error: "O caminho da página não é válido." }, { status: 400 });
     }
     const target = `https://goiania.rodrigofaustinoadvocacia.com.br${path}`;

@@ -7,18 +7,26 @@ function isRobot(userAgent: string) {
 }
 
 export async function middleware(request: NextRequest) {
-  if (request.method !== "GET" || isRobot(request.headers.get("user-agent") ?? "")) {
+  const allowed = process.env.VERCEL_ENV === "production" && request.nextUrl.hostname === "goiania.rodrigofaustinoadvocacia.com.br";
+  if (request.nextUrl.pathname.startsWith("/api/ab/") || request.nextUrl.pathname.startsWith("/api/admin/")) {
+    if (!allowed) return NextResponse.json({ error: "A/B disponível somente no domínio de produção." }, { status: 403 });
+    if (request.method !== "GET" && request.headers.get("origin") !== request.nextUrl.origin) {
+      return NextResponse.json({ error: "Origem inválida." }, { status: 403 });
+    }
+    return NextResponse.next();
+  }
+  if (!allowed || request.method !== "GET") {
     return NextResponse.next();
   }
 
   try {
     const configUrl = new URL("/api/ab/config", request.url);
-    const configResponse = await fetch(configUrl, { cache: "no-store" });
-    if (!configResponse.ok) return NextResponse.next();
+    const configResponse = await fetch(configUrl, { cache: "no-store", signal: AbortSignal.timeout(5000) });
+    if (!configResponse.ok) throw new Error("Configuração indisponível");
     const config = (await configResponse.json()) as PublicExperimentConfig;
     const secret = process.env.AB_SIGNING_SECRET;
 
-    if (request.cookies.get(AB_OPTOUT_COOKIE)?.value === "1") {
+    if (request.cookies.get(AB_OPTOUT_COOKIE)?.value === "1" || isRobot(request.headers.get("user-agent") ?? "")) {
       if (config.permanentPath === "/") return NextResponse.next();
       const optOutUrl = request.nextUrl.clone();
       optOutUrl.pathname = config.permanentPath;
@@ -76,8 +84,11 @@ export async function middleware(request: NextRequest) {
     }
     return response;
   } catch {
-    return NextResponse.next();
+    const response = NextResponse.next();
+    response.cookies.delete(ASSIGNMENT_COOKIE);
+    response.headers.set("Cache-Control", "private, no-store");
+    return response;
   }
 }
 
-export const config = { matcher: ["/"] };
+export const config = { matcher: ["/", "/api/ab/:path*", "/api/admin/:path*"] };
