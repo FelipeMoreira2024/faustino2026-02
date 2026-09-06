@@ -14,10 +14,11 @@ CREATE TABLE IF NOT EXISTS ab_experiments (
   challenger_page_id uuid NOT NULL REFERENCES ab_pages(id),
   baseline_allocation integer NOT NULL DEFAULT 50 CHECK (baseline_allocation BETWEEN 1 AND 99),
   mode text NOT NULL CHECK (mode IN ('manual', 'automatic')),
-  status text NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'completed', 'inconclusive')),
+  status text NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'paused', 'completed', 'inconclusive', 'cancelled')),
   started_at timestamptz NOT NULL DEFAULT now(),
   ends_at timestamptz,
   ended_at timestamptz,
+  paused_at timestamptz,
   winner_page_id uuid REFERENCES ab_pages(id),
   decision_type text CHECK (decision_type IN ('manual', 'automatic')),
   decision_details jsonb,
@@ -26,8 +27,8 @@ CREATE TABLE IF NOT EXISTS ab_experiments (
   CHECK (baseline_page_id <> challenger_page_id)
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS ab_one_active_experiment
-  ON ab_experiments ((status)) WHERE status = 'active';
+CREATE UNIQUE INDEX IF NOT EXISTS ab_one_running_experiment
+  ON ab_experiments ((1)) WHERE status IN ('active', 'paused');
 
 CREATE TABLE IF NOT EXISTS ab_participants (
   id uuid NOT NULL,

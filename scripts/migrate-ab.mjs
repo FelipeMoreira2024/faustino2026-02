@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import process from "node:process";
 import postgres from "postgres";
 
@@ -8,11 +8,14 @@ if (!connectionString) {
   process.exit(1);
 }
 
-const migration = await readFile(new URL("../db/001_ab_testing.sql", import.meta.url), "utf8");
 const sql = postgres(connectionString, { max: 1 });
 try {
-  await sql.unsafe(migration);
-  console.log("Migração do sistema A/B concluída.");
+  const directory = new URL("../db/", import.meta.url);
+  const files = (await readdir(directory)).filter((file) => /^\d+.*\.sql$/.test(file)).sort();
+  for (const file of files) {
+    await sql.unsafe(await readFile(new URL(file, directory), "utf8"));
+    console.log(`Migração aplicada: ${file}`);
+  }
 } finally {
   await sql.end();
 }

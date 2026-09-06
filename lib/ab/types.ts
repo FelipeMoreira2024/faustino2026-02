@@ -1,5 +1,5 @@
 export type ExperimentMode = "manual" | "automatic";
-export type ExperimentStatus = "active" | "completed" | "inconclusive";
+export type ExperimentStatus = "active" | "paused" | "completed" | "inconclusive" | "cancelled";
 
 export type AssignmentPayload = {
   experimentId: string;

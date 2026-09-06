@@ -7,7 +7,7 @@ type Experiment = {
   id: string;
   name: string;
   mode: "manual" | "automatic";
-  status: "active" | "completed" | "inconclusive";
+  status: "active" | "paused" | "completed" | "inconclusive" | "cancelled";
   started_at: string;
   ends_at: string | null;
   ended_at: string | null;
@@ -26,6 +26,8 @@ type Experiment = {
   challenger_conversions: number;
 };
 type Dashboard = { pages: Page[]; experiments: Experiment[]; currentPageId: string | null };
+const SITE_URL = "https://goiania.rodrigofaustinoadvocacia.com.br";
+const pageUrl = (path: string) => `${SITE_URL}${path === "/" ? "" : path}`;
 
 function rate(conversions: number, visits: number) {
   return visits ? (conversions / visits) * 100 : 0;
@@ -57,11 +59,10 @@ export function AdminDashboard() {
     return () => window.clearInterval(timer);
   }, [load]);
 
-  const active = data?.experiments.find((experiment) => experiment.status === "active");
+  const active = data?.experiments.find((experiment) => ["active", "paused"].includes(experiment.status));
   const currentPage = data?.pages.find((page) => page.id === data.currentPageId);
 
   async function mutate(url: string, body: unknown) {
-    if (url.endsWith("/end") && !window.confirm("Encerrar este teste e tornar a página escolhida a home? Esta decisão será registrada como manual.")) return false;
     setBusy(true);
     setError("");
     try {
@@ -94,7 +95,9 @@ export function AdminDashboard() {
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#8a6c2d]">Faustino Advocacia</p>
             <h1 className="mt-2 font-display text-4xl font-semibold">Testes A/B</h1>
-            <p className="mt-2 text-sm text-ink-soft">Home atual: {currentPage ? `${currentPage.name} (${currentPage.path})` : "—"}</p>
+            <p className="mt-2 text-sm text-ink-soft">URL de entrada e referência do teste</p>
+            <a className="mt-1 block font-semibold underline" href={SITE_URL} target="_blank" rel="noreferrer">{SITE_URL}/</a>
+            <p className="mt-1 text-xs text-ink-soft">Página exibida quando o teste está pausado ou encerrado: {currentPage ? `${currentPage.name} — ${pageUrl(currentPage.path)}` : "—"}</p>
           </div>
           <button onClick={logout} className="border border-ink/20 px-4 py-2 text-sm font-semibold">Sair</button>
         </header>
@@ -126,7 +129,7 @@ function ResultCard({ label, name, path, visits, conversions }: {
     <article className="border border-ink/15 bg-white p-5">
       <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#8a6c2d]">{label}</p>
       <h3 className="mt-2 text-xl font-semibold">{name}</h3>
-      <p className="text-sm text-ink-soft">{path}</p>
+      <a href={pageUrl(path)} target="_blank" rel="noreferrer" className="text-sm text-ink-soft underline">{pageUrl(path)}</a>
       <div className="mt-5 grid grid-cols-3 gap-3">
         <Metric label="Visitas" value={String(visits)} />
         <Metric label="Conversões" value={String(conversions)} />
@@ -146,24 +149,42 @@ function ActiveExperiment({ experiment, busy, mutate }: {
   const aRate = rate(experiment.baseline_conversions, experiment.baseline_visits);
   const bRate = rate(experiment.challenger_conversions, experiment.challenger_visits);
   const leader = aRate === bRate ? "Empate no momento" : `${aRate > bRate ? experiment.baseline_name : experiment.challenger_name} está à frente no momento`;
+  const paused = experiment.status === "paused";
+  async function chooseWinner(pageId: string, name: string, path: string) {
+    if (!window.confirm(`Finalizar o teste e exibir ${name} (${pageUrl(path)}) na URL principal?`)) return;
+    await mutate(`/api/admin/experiments/${experiment.id}/end`, { decisionType: "manual", winnerPageId: pageId });
+  }
+  async function control(action: "pause" | "resume" | "cancel") {
+    if (action === "cancel" && !window.confirm("Encerrar o teste sem vencedora? A página de referência atual continuará na home e os resultados ficarão no histórico.")) return;
+    await mutate(`/api/admin/experiments/${experiment.id}/control`, { action });
+  }
   return (
     <section className="mt-8 border border-[#b99a54]/40 bg-[#fffaf0] p-6">
       <div className="flex flex-wrap justify-between gap-4">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#8a6c2d]">Teste ativo</p>
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#8a6c2d]">{paused ? "Teste pausado" : "Teste ativo"}</p>
           <h2 className="mt-2 text-2xl font-semibold">{experiment.name}</h2>
           <p className="mt-2 text-sm text-ink-soft">{leader} · diferença de {Math.abs(aRate - bRate).toLocaleString("pt-BR", { maximumFractionDigits: 1 })} pontos percentuais</p>
         </div>
         <p className="text-sm text-ink-soft">{experiment.ends_at ? `Prazo: ${new Date(experiment.ends_at).toLocaleDateString("pt-BR")}` : "Encerramento manual"}</p>
       </div>
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-4 border border-ink/15 bg-white p-4">
+        <div><p className="font-semibold">Distribuição e coleta</p><p className="text-sm text-ink-soft">{paused ? "Pausadas. Todos veem a página de referência e nenhum dado é coletado." : "Ativas. A URL principal distribui visitantes entre A e B."}</p></div>
+        <button role="switch" aria-checked={!paused} disabled={busy} onClick={() => void control(paused ? "resume" : "pause")} className={`min-w-32 rounded-full px-4 py-2 text-sm font-semibold text-white disabled:opacity-50 ${paused ? "bg-slate-500" : "bg-emerald-700"}`}>{paused ? "Retomar teste" : "Pausar teste"}</button>
+      </div>
       <div className="mt-6 grid gap-4 md:grid-cols-2">
-        <ResultCard label="Versão A · base" name={experiment.baseline_name} path={experiment.baseline_path} visits={experiment.baseline_visits} conversions={experiment.baseline_conversions} />
+        <ResultCard label="Versão A · página de referência atual" name={experiment.baseline_name} path={experiment.baseline_path} visits={experiment.baseline_visits} conversions={experiment.baseline_conversions} />
         <ResultCard label="Versão B · concorrente" name={experiment.challenger_name} path={experiment.challenger_path} visits={experiment.challenger_visits} conversions={experiment.challenger_conversions} />
       </div>
-      <div className="mt-6 flex flex-wrap gap-3">
-        <button disabled={busy} onClick={() => mutate(`/api/admin/experiments/${experiment.id}/end`, { decisionType: "manual", winnerPageId: experiment.baseline_page_id })} className="bg-ink px-4 py-3 text-sm font-semibold text-paper disabled:opacity-50">Encerrar com A</button>
-        <button disabled={busy} onClick={() => mutate(`/api/admin/experiments/${experiment.id}/end`, { decisionType: "manual", winnerPageId: experiment.challenger_page_id })} className="bg-ink px-4 py-3 text-sm font-semibold text-paper disabled:opacity-50">Encerrar com B</button>
-        <p className="text-sm">A decisão automática ocorre somente no prazo definido, com pelo menos 1.000 navegadores e 30 conversões em cada página.</p>
+      <div className="mt-6 border-t border-ink/15 pt-5">
+        <p className="font-semibold">Finalizar e escolher a página da URL principal</p>
+        <p className="mt-1 text-sm text-ink-soft">Escolher uma página encerra o teste e passa a exibi-la em {SITE_URL}/.</p>
+        <div className="mt-3 flex flex-wrap gap-3">
+          <button disabled={busy} onClick={() => void chooseWinner(experiment.baseline_page_id, experiment.baseline_name, experiment.baseline_path)} className="bg-ink px-4 py-3 text-sm font-semibold text-paper disabled:opacity-50">Finalizar e manter {experiment.baseline_name}</button>
+          <button disabled={busy} onClick={() => void chooseWinner(experiment.challenger_page_id, experiment.challenger_name, experiment.challenger_path)} className="bg-ink px-4 py-3 text-sm font-semibold text-paper disabled:opacity-50">Finalizar e usar {experiment.challenger_name}</button>
+          <button disabled={busy} onClick={() => void control("cancel")} className="border border-red-700 px-4 py-3 text-sm font-semibold text-red-800 disabled:opacity-50">Encerrar sem vencedora</button>
+        </div>
+        <p className="mt-3 text-sm">A decisão automática ocorre somente no prazo definido, com pelo menos 1.000 navegadores e 30 conversões em cada página.</p>
       </div>
     </section>
   );
@@ -186,7 +207,7 @@ function CreateExperiment({ pages, currentPageId, busy, mutate }: {
   return (
     <section className="mt-8 border border-ink/15 bg-white p-6">
       <h2 className="text-2xl font-semibold">Iniciar novo teste</h2>
-      <p className="mt-2 text-sm text-ink-soft">A vencedora atual será a versão A. As visitas da home serão divididas igualmente.</p>
+      <p className="mt-2 text-sm text-ink-soft">A referência atual será a versão A. Os acessos a {SITE_URL}/ serão divididos igualmente.</p>
       <form onSubmit={submit} className="mt-6 grid gap-4 md:grid-cols-2">
         <Field label="Nome do teste"><input name="name" required placeholder="Ex.: Home original × Home B" className="admin-input" /></Field>
         <Field label="Página concorrente"><select name="challengerPageId" required className="admin-input"><option value="">Selecione</option>{candidates.map((page) => <option key={page.id} value={page.id}>{page.name} ({page.path})</option>)}</select></Field>
@@ -219,7 +240,7 @@ function AddPage({ busy, mutate }: { busy: boolean; mutate: (url: string, body: 
 }
 
 function Pages({ pages }: { pages: Page[] }) {
-  return <section className="border border-ink/15 bg-white p-6"><h2 className="text-xl font-semibold">Páginas disponíveis</h2><ul className="mt-5 divide-y divide-ink/10">{pages.map((page) => <li key={page.id} className="flex justify-between gap-4 py-3"><span className="font-semibold">{page.name}</span><span className="text-ink-soft">{page.path}</span></li>)}</ul></section>;
+  return <section className="border border-ink/15 bg-white p-6"><h2 className="text-xl font-semibold">Páginas disponíveis</h2><ul className="mt-5 divide-y divide-ink/10">{pages.map((page) => <li key={page.id} className="flex justify-between gap-4 py-3"><span className="font-semibold">{page.name}</span><a href={pageUrl(page.path)} target="_blank" rel="noreferrer" className="break-all text-right text-ink-soft underline">{pageUrl(page.path)}</a></li>)}</ul></section>;
 }
 
 function History({ experiments }: { experiments: Experiment[] }) {
@@ -227,7 +248,7 @@ function History({ experiments }: { experiments: Experiment[] }) {
     <section className="mt-8">
       <h2 className="text-2xl font-semibold">Histórico</h2>
       {experiments.length === 0 ? <p className="mt-3 text-sm text-ink-soft">Nenhum teste encerrado.</p> : (
-        <div className="mt-4 space-y-4">{experiments.map((experiment) => <article key={experiment.id} className="border border-ink/15 bg-white p-5"><div className="flex flex-wrap justify-between gap-3"><div><h3 className="font-semibold">{experiment.name}</h3><p className="mt-1 text-sm text-ink-soft">{experiment.baseline_name}: {pct(rate(experiment.baseline_conversions, experiment.baseline_visits))} · {experiment.challenger_name}: {pct(rate(experiment.challenger_conversions, experiment.challenger_visits))}</p></div><div className="text-right text-sm"><p className="font-semibold">{experiment.status === "inconclusive" ? "Inconclusivo" : `Vencedora: ${experiment.winner_name}`}</p><p className="text-ink-soft">{experiment.ended_at ? new Date(experiment.ended_at).toLocaleDateString("pt-BR") : "—"}</p></div></div></article>)}</div>
+        <div className="mt-4 space-y-4">{experiments.map((experiment) => <article key={experiment.id} className="border border-ink/15 bg-white p-5"><div className="flex flex-wrap justify-between gap-3"><div><h3 className="font-semibold">{experiment.name}</h3><p className="mt-1 text-sm text-ink-soft">{experiment.baseline_name}: {experiment.baseline_visits} visitas, {experiment.baseline_conversions} conversões, {pct(rate(experiment.baseline_conversions, experiment.baseline_visits))} · {experiment.challenger_name}: {experiment.challenger_visits} visitas, {experiment.challenger_conversions} conversões, {pct(rate(experiment.challenger_conversions, experiment.challenger_visits))}</p></div><div className="text-right text-sm"><p className="font-semibold">{experiment.status === "cancelled" ? "Encerrado sem vencedora" : experiment.status === "inconclusive" ? "Inconclusivo — referência mantida" : `Página escolhida: ${experiment.winner_name}`}</p><p className="text-ink-soft">{experiment.ended_at ? new Date(experiment.ended_at).toLocaleDateString("pt-BR") : "—"}</p></div></div></article>)}</div>
       )}
     </section>
   );

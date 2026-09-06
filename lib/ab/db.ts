@@ -157,9 +157,12 @@ export async function endExperiment(
   }[]>`SELECT id, baseline_page_id, challenger_page_id, mode, status, ends_at FROM ab_experiments WHERE id = ${experimentId} FOR UPDATE`;
   const experiment = rows[0];
   if (!experiment) throw new Error("Teste não encontrado.");
-  if (experiment.status !== "active") return { status: experiment.status };
+  if (!["active", "paused"].includes(experiment.status)) return { status: experiment.status };
   if (options.decisionType === "automatic" && (experiment.mode !== "automatic" || !experiment.ends_at || experiment.ends_at.getTime() > Date.now())) {
     throw new Error("A avaliação automática só pode ocorrer após o prazo definido.");
+  }
+  if (options.decisionType === "automatic" && experiment.status !== "active") {
+    throw new Error("Retome o teste antes da avaliação automática.");
   }
 
   const metricRows = await transaction<{
@@ -210,7 +213,7 @@ export async function endExperiment(
         winner_page_id = ${winnerPageId}, decision_type = ${options.decisionType},
         decision_details = ${transaction.json(details)},
         final_metrics = ${transaction.json(finalMetrics)}
-      WHERE id = ${experimentId} AND status = 'active'
+      WHERE id = ${experimentId} AND status IN ('active', 'paused')
       RETURNING id
     `;
     if (!updated[0]) throw new Error("O teste foi encerrado por outra solicitação.");
@@ -220,6 +223,53 @@ export async function endExperiment(
       ON CONFLICT (key) DO UPDATE SET value = excluded.value, updated_at = now()
     `;
   return { status, winnerPageId, details };
+  });
+}
+
+export async function controlExperiment(experimentId: string, action: "pause" | "resume" | "cancel") {
+  const sql = getDatabase();
+  if (!sql) throw new Error("Banco de dados não configurado.");
+  return sql.begin(async (transaction) => {
+    const rows = await transaction<{ status: string; paused_at: Date | null }[]>`
+      SELECT status, paused_at FROM ab_experiments WHERE id = ${experimentId} FOR UPDATE
+    `;
+    const experiment = rows[0];
+    if (!experiment) throw new Error("Teste não encontrado.");
+
+    if (action === "pause") {
+      if (experiment.status !== "active") throw new Error("Somente um teste ativo pode ser pausado.");
+      await transaction`UPDATE ab_experiments SET status = 'paused', paused_at = now() WHERE id = ${experimentId}`;
+      return { status: "paused" as const };
+    }
+    if (action === "resume") {
+      if (experiment.status !== "paused" || !experiment.paused_at) throw new Error("Somente um teste pausado pode ser retomado.");
+      await transaction`
+        UPDATE ab_experiments SET status = 'active',
+          ends_at = CASE WHEN ends_at IS NULL THEN NULL ELSE ends_at + (now() - paused_at) END,
+          paused_at = NULL
+        WHERE id = ${experimentId}
+      `;
+      return { status: "active" as const };
+    }
+    if (!['active', 'paused'].includes(experiment.status)) throw new Error("Este teste já foi encerrado.");
+    const metrics = await transaction<{
+      baseline_visits: number; baseline_conversions: number;
+      challenger_visits: number; challenger_conversions: number;
+    }[]>`
+      SELECT count(*) FILTER (WHERE variant = 'a')::int AS baseline_visits,
+        count(*) FILTER (WHERE variant = 'a' AND converted_at IS NOT NULL)::int AS baseline_conversions,
+        count(*) FILTER (WHERE variant = 'b')::int AS challenger_visits,
+        count(*) FILTER (WHERE variant = 'b' AND converted_at IS NOT NULL)::int AS challenger_conversions
+      FROM ab_sessions WHERE experiment_id = ${experimentId}
+    `;
+    await transaction`
+      UPDATE ab_experiments SET status = 'cancelled', ended_at = now(), paused_at = NULL,
+        winner_page_id = NULL, decision_type = 'manual',
+        decision_details = ${transaction.json({ reason: "stopped_without_winner" })},
+        final_metrics = ${transaction.json(metrics[0])}
+      WHERE id = ${experimentId}
+    `;
+    return { status: "cancelled" as const };
   });
 }
 
@@ -261,10 +311,10 @@ export async function getAdminDashboard() {
         e.baseline_page_id, bp.name AS baseline_name, bp.path AS baseline_path,
         e.challenger_page_id, cp.name AS challenger_name, cp.path AS challenger_path,
         e.winner_page_id, wp.name AS winner_name, e.decision_type, e.decision_details,
-        (CASE WHEN e.status = 'active' THEN count(s.id) FILTER (WHERE s.variant = 'a') ELSE COALESCE((e.final_metrics->>'baseline_visits')::bigint, 0) END)::int AS baseline_visits,
-        (CASE WHEN e.status = 'active' THEN count(s.id) FILTER (WHERE s.variant = 'a' AND s.converted_at IS NOT NULL) ELSE COALESCE((e.final_metrics->>'baseline_conversions')::bigint, 0) END)::int AS baseline_conversions,
-        (CASE WHEN e.status = 'active' THEN count(s.id) FILTER (WHERE s.variant = 'b') ELSE COALESCE((e.final_metrics->>'challenger_visits')::bigint, 0) END)::int AS challenger_visits,
-        (CASE WHEN e.status = 'active' THEN count(s.id) FILTER (WHERE s.variant = 'b' AND s.converted_at IS NOT NULL) ELSE COALESCE((e.final_metrics->>'challenger_conversions')::bigint, 0) END)::int AS challenger_conversions
+        (CASE WHEN e.status IN ('active', 'paused') THEN count(s.id) FILTER (WHERE s.variant = 'a') ELSE COALESCE((e.final_metrics->>'baseline_visits')::bigint, 0) END)::int AS baseline_visits,
+        (CASE WHEN e.status IN ('active', 'paused') THEN count(s.id) FILTER (WHERE s.variant = 'a' AND s.converted_at IS NOT NULL) ELSE COALESCE((e.final_metrics->>'baseline_conversions')::bigint, 0) END)::int AS baseline_conversions,
+        (CASE WHEN e.status IN ('active', 'paused') THEN count(s.id) FILTER (WHERE s.variant = 'b') ELSE COALESCE((e.final_metrics->>'challenger_visits')::bigint, 0) END)::int AS challenger_visits,
+        (CASE WHEN e.status IN ('active', 'paused') THEN count(s.id) FILTER (WHERE s.variant = 'b' AND s.converted_at IS NOT NULL) ELSE COALESCE((e.final_metrics->>'challenger_conversions')::bigint, 0) END)::int AS challenger_conversions
       FROM ab_experiments e
       JOIN ab_pages bp ON bp.id = e.baseline_page_id
       JOIN ab_pages cp ON cp.id = e.challenger_page_id
