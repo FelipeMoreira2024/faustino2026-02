@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import Image from "next/image";
 import { LeadTrackingProvider } from "@/components/LeadTrackingContext";
 import { Topbar } from "@/components/sections/Topbar";
@@ -32,7 +33,7 @@ import { WA_HOME_B } from "@/lib/whatsapp";
 
 const SITE_URL = "https://goiania.rodrigofaustinoadvocacia.com.br";
 
-export const metadata: Metadata = {
+const directMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Advogado Criminalista em Goiânia 24h | Dr. Rodrigo Faustino",
   description:
@@ -61,6 +62,17 @@ export const metadata: Metadata = {
     ],
   },
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const shownAtHome = (await headers()).get("x-ab-home-rewrite") === "1";
+  if (!shownAtHome) return directMetadata;
+  return {
+    ...directMetadata,
+    alternates: { canonical: "/" },
+    robots: { index: true, follow: true },
+    openGraph: { ...directMetadata.openGraph, url: SITE_URL },
+  };
+}
 
 export default function PageB() {
   return (

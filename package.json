@@ -6,7 +6,10 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "ab:hash-password": "node scripts/hash-admin-password.mjs",
+    "ab:test": "tsx --test lib/ab/stats.test.ts",
+    "ab:migrate": "node --env-file=.env.local scripts/migrate-ab.mjs"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.15",
@@ -14,6 +17,7 @@
     "clsx": "^2.1.1",
     "lucide-react": "^1.23.0",
     "next": "^15.5.25",
+    "postgres": "^3.4.9",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "tailwind-merge": "^3.6.0"
@@ -28,6 +32,7 @@
     "eslint-config-next": "^15.5.25",
     "puppeteer-core": "^25.3.0",
     "tailwindcss": "^4",
+    "tsx": "^4.23.13",
     "typescript": "^5"
   },
   "overrides": {

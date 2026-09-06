@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import { JsonLd } from "@/components/JsonLd";
 import { LandingPageView } from "@/components/landing/LandingPageView";
 import {
@@ -26,6 +27,7 @@ export async function generateMetadata({ params }: RouteProps): Promise<Metadata
   const { slug } = await params;
   const page = getLandingPage(slug);
   if (!page) return {};
+  const shownAtHome = (await headers()).get("x-ab-home-rewrite") === "1";
 
   const canonical = landingPath(page.slug);
 
@@ -33,7 +35,7 @@ export async function generateMetadata({ params }: RouteProps): Promise<Metadata
     title: page.seoTitle,
     description: page.description,
     keywords: [page.primaryKeyword, ...page.secondaryKeywords],
-    alternates: { canonical },
+    alternates: { canonical: shownAtHome ? "/" : canonical },
     robots: isVercelPreview
       ? { index: false, follow: false }
       : {
@@ -50,7 +52,7 @@ export async function generateMetadata({ params }: RouteProps): Promise<Metadata
     openGraph: {
       type: "website",
       locale: "pt_BR",
-      url: absoluteUrl(canonical),
+      url: shownAtHome ? HOME_URL : absoluteUrl(canonical),
       siteName: SITE_NAME,
       title: page.seoTitle,
       description: page.description,

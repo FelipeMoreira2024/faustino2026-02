@@ -267,3 +267,18 @@ button {
   content-visibility: auto;
   contain-intrinsic-size: auto 720px;
 }
+
+@layer components {
+  .admin-input {
+    width: 100%;
+    min-height: 3rem;
+    border: 1px solid rgb(16 20 24 / 0.2);
+    background: white;
+    padding: 0.7rem 0.85rem;
+    color: var(--ink);
+    outline: none;
+  }
+  .admin-input:focus {
+    border-color: var(--brass);
+  }
+}

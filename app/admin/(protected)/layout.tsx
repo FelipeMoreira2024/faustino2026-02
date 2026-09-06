@@ -1,0 +1,7 @@
+import { redirect } from "next/navigation";
+import { isAdmin } from "@/lib/ab/auth";
+
+export default async function AdminProtectedLayout({ children }: { children: React.ReactNode }) {
+  if (!(await isAdmin())) redirect("/admin/login");
+  return children;
+}

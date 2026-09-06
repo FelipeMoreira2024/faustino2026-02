@@ -10,7 +10,7 @@ export function GET(request: Request) {
   const canonicalOrigin = host === HOME_HOST ? HOME_URL : SITE_URL;
   const body = preview
     ? "User-agent: *\nDisallow: /\n"
-    : `User-agent: *\nAllow: /\n\nSitemap: ${canonicalOrigin}/sitemap.xml\n`;
+    : `User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /api/\n\nSitemap: ${canonicalOrigin}/sitemap.xml\n`;
 
   return new Response(body, {
     headers: {

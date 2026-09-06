@@ -43,3 +43,18 @@ Scripts em `scripts/` (servidor em `localhost:3000`):
 ## Deploy
 
 Vercel. `NEXT_PUBLIC_GTM_ID` carrega o GTM **somente** depois de aceitar cookies de métricas.
+
+## Testes A/B
+
+O painel privado fica em `/admin/experimentos`. Ele distribui a home 50/50,
+mantém a página por navegador e mede uma conversão por sessão de 30 minutos.
+
+1. Crie um Neon Postgres pelo Marketplace da Vercel e conecte-o ao projeto.
+2. Execute `db/001_ab_testing.sql` no console SQL do banco.
+3. Gere o hash da senha com `npm run ab:hash-password -- "sua-senha-segura"`.
+4. Configure na Vercel: `DATABASE_URL`, `AB_ADMIN_PASSWORD_HASH`,
+   `AB_SESSION_SECRET`, `AB_SIGNING_SECRET` e `CRON_SECRET`.
+5. Faça o deploy, entre no painel, confira as páginas `/` e `/b` e inicie o teste.
+
+Use valores aleatórios longos e diferentes para os três segredos. A coleta própria
+é independente do GTM; o Google Analytics continua condicionado ao consentimento.

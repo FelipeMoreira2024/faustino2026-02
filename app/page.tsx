@@ -15,6 +15,7 @@ import { FinalCta } from "@/components/sections/FinalCta";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { faqItems } from "@/lib/faq";
 import { WA_HOME_STANDARD } from "@/lib/whatsapp";
+import { LeadTrackingProvider } from "@/components/LeadTrackingContext";
 
 const SITE_URL = "https://goiania.rodrigofaustinoadvocacia.com.br";
 
@@ -148,7 +149,7 @@ const faqJsonLd = {
 
 export default function Page() {
   return (
-    <>
+    <LeadTrackingProvider pageSlug="home" variant="a">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(legalServiceJsonLd) }}
@@ -212,6 +213,6 @@ export default function Page() {
       </footer>
 
       <FloatingWhatsApp home href={WA_HOME_STANDARD} />
-    </>
+    </LeadTrackingProvider>
   );
 }

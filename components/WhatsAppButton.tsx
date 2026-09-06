@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { useLeadTracking } from "@/components/LeadTrackingContext";
 import { COOKIE_CONSENT_STORAGE_KEY } from "@/lib/consent";
+import { trackExperimentConversion } from "@/components/ExperimentTracker";
 
 declare global {
   interface Window {
@@ -78,6 +79,7 @@ export function openWhatsAppWithTracking(
   context: TrackingContext = { section: "link" }
 ) {
   event.preventDefault();
+  trackExperimentConversion();
   trackWhatsAppLead(context);
 
   window.setTimeout(() => {

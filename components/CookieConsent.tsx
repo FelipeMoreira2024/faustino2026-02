@@ -17,10 +17,12 @@ type ConsentWindow = Window & {
 
 export function CookieConsent({ gtmId }: { gtmId?: string }) {
   const [consent, setConsent] = useState<Consent>(null);
+  const [abOptOut, setAbOptOut] = useState(false);
 
   useEffect(() => {
     const saved = window.localStorage.getItem(STORAGE_KEY);
     setConsent(saved === "accepted" || saved === "rejected" ? saved : "pending");
+    setAbOptOut(document.cookie.split(";").some((cookie) => cookie.trim() === "faustino_ab_optout=1"));
 
     const reopen = () => setConsent("pending");
     window.addEventListener(SETTINGS_EVENT, reopen);
@@ -48,6 +50,17 @@ export function CookieConsent({ gtmId }: { gtmId?: string }) {
     setConsent(value);
   }
 
+  async function toggleAbMeasurement() {
+    const enabled = !abOptOut;
+    await fetch("/api/ab/optout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ enabled }),
+    });
+    setAbOptOut(enabled);
+    window.location.reload();
+  }
+
   return (
     <>
       {consent === "accepted" && gtmId ? (
@@ -63,8 +76,9 @@ export function CookieConsent({ gtmId }: { gtmId?: string }) {
         >
           <h2 className="font-display text-xl font-semibold">Privacidade e Cookies</h2>
           <p className="mt-2 text-sm leading-relaxed text-muted">
-            Cookies de medição só serão ativados se você aceitar. O site funciona
-            normalmente se você recusar. Consulte a{" "}
+            O site usa um identificador aleatório essencial para distribuir e medir
+            testes de página. As ferramentas de métricas do Google só serão ativadas
+            se você aceitar. Consulte a{" "}
             <Link
               className="font-semibold text-paper underline underline-offset-4"
               href={absoluteUrl("/politica-de-privacidade")}
@@ -76,17 +90,24 @@ export function CookieConsent({ gtmId }: { gtmId?: string }) {
           <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:justify-end">
             <button
               type="button"
+              className="min-h-11 px-3 text-xs font-semibold text-muted underline underline-offset-4"
+              onClick={toggleAbMeasurement}
+            >
+              {abOptOut ? "Participar do teste de página" : "Não participar do teste de página"}
+            </button>
+            <button
+              type="button"
               className="min-h-11 border border-paper/25 px-5 text-sm font-semibold transition-colors hover:bg-paper/10"
               onClick={() => choose("rejected")}
             >
-              Recusar métricas
+              Recusar Google Analytics
             </button>
             <button
               type="button"
               className="min-h-11 bg-brass px-5 text-sm font-semibold text-ink transition-colors hover:bg-brass-light"
               onClick={() => choose("accepted")}
             >
-              Aceitar métricas
+              Aceitar Google Analytics
             </button>
           </div>
         </section>

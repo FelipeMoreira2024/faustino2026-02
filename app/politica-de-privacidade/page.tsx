@@ -24,8 +24,12 @@ const sections = [
     text: "Ferramentas de mensuração por meio do Google Tag Manager somente são carregadas após a aceitação de cookies de métricas. Se você recusar, o site continua funcionando sem essas tags. A escolha fica registrada no navegador e pode ser alterada pelo link ‘Preferências de cookies’ no rodapé.",
   },
   {
+    title: "Testes de página",
+    text: "O site pode comparar versões da página inicial para entender qual facilita o contato, com fundamento no interesse legítimo de avaliar o funcionamento e melhorar a clareza do canal digital. Um identificador aleatório próprio mantém a versão exibida e permite contar uma visita e, quando ocorrer, o primeiro clique no WhatsApp daquela sessão. Não são armazenados nome, telefone, conteúdo da conversa, endereço IP ou a URL completa para essa finalidade. Os registros pseudônimos são mantidos por até 90 dias após o fim do teste; resultados agregados podem ser preservados no histórico. A participação pode ser desativada em ‘Preferências de cookies’.",
+  },
+  {
     title: "WhatsApp e serviços externos",
-    text: "Ao clicar no WhatsApp, telefone ou mapa, você acessa serviços de terceiros. O tratamento realizado por essas plataformas segue também suas próprias políticas. O clique no WhatsApp só é registrado como evento de conversão se você tiver aceito os cookies de métricas. Sem essa aceitação, o redirecionamento ocorre normalmente, sem envio da tag.",
+    text: "Ao clicar no WhatsApp, telefone ou mapa, você acessa serviços de terceiros. O tratamento realizado por essas plataformas segue também suas próprias políticas. Durante um teste de página, o primeiro clique no WhatsApp pode ser contado pelo sistema próprio mesmo sem ativar o Google Analytics. O redirecionamento ocorre normalmente se a medição estiver indisponível.",
   },
   {
     title: "Sigilo profissional e segurança",
@@ -42,7 +46,7 @@ export default function PrivacyPage() {
     <TrustPageShell
       eyebrow="PRIVACIDADE E LGPD"
       title="Política de Privacidade"
-      intro="Esta política explica como dados podem ser tratados durante a navegação e o contato com o escritório. Última revisão: 31 de agosto de 2026."
+      intro="Esta política explica como dados podem ser tratados durante a navegação e o contato com o escritório. Última revisão: 6 de setembro de 2026."
     >
       <div className="space-y-10">
         {sections.map((section) => (
