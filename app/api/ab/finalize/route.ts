@@ -6,6 +6,6 @@ export async function GET(request: Request) {
   if (!process.env.CRON_SECRET || authorization !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Não autorizado." }, { status: 401 });
   }
-  await finalizeExpiredExperiments();
+  await finalizeExpiredExperiments(true);
   return NextResponse.json({ ok: true });
 }

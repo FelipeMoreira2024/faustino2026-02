@@ -214,7 +214,7 @@ export async function endExperiment(
   return { status, winnerPageId, details };
 }
 
-export async function finalizeExpiredExperiments() {
+export async function finalizeExpiredExperiments(cleanup = false) {
   const sql = getDatabase();
   if (!sql) return;
   const expired = await sql<{ id: string }[]>`
@@ -229,14 +229,16 @@ export async function finalizeExpiredExperiments() {
       if (!(error instanceof Error) || !error.message.includes("outra solicitação")) throw error;
     }
   }
-  await sql`
-    DELETE FROM ab_sessions s USING ab_experiments e
-    WHERE s.experiment_id = e.id AND e.ended_at < now() - interval '90 days'
-  `;
-  await sql`
-    DELETE FROM ab_participants p USING ab_experiments e
-    WHERE p.experiment_id = e.id AND e.ended_at < now() - interval '90 days'
-  `;
+  if (cleanup) {
+    await sql`
+      DELETE FROM ab_sessions s USING ab_experiments e
+      WHERE s.experiment_id = e.id AND e.ended_at < now() - interval '90 days'
+    `;
+    await sql`
+      DELETE FROM ab_participants p USING ab_experiments e
+      WHERE p.experiment_id = e.id AND e.ended_at < now() - interval '90 days'
+    `;
+  }
 }
 
 export async function getAdminDashboard() {
