@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { WA_STANDARD } from "@/lib/whatsapp";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
-import { openWhatsAppWithTracking } from "@/components/WhatsAppButton";
+import { trackWhatsAppInteraction } from "@/components/WhatsAppButton";
 import { useLeadTracking } from "@/components/LeadTrackingContext";
 import { cn } from "@/lib/utils";
 
@@ -62,8 +62,8 @@ export function FloatingWhatsApp({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={ariaLabel ?? (home ? "Falar agora no WhatsApp" : "Solicitar atendimento pelo WhatsApp")}
-      onClick={(event) =>
-        openWhatsAppWithTracking(event, href, {
+      onClick={() =>
+        trackWhatsAppInteraction({
           section: "floating",
           city,
           topic,

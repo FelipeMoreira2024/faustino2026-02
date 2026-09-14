@@ -12,8 +12,6 @@ declare global {
   }
 }
 
-const WHATSAPP_REDIRECT_DELAY_MS = 300;
-
 const whatsappLeadEvent = {
   event: "lead_whatsapp_rodrigo_faustino_v2",
   conversion_type: "whatsapp_click",
@@ -73,18 +71,9 @@ export function trackPhoneLead(context: TrackingContext) {
   );
 }
 
-export function openWhatsAppWithTracking(
-  event: React.MouseEvent<HTMLAnchorElement>,
-  href: string,
-  context: TrackingContext = { section: "link" }
-) {
-  event.preventDefault();
+export function trackWhatsAppInteraction(context: TrackingContext = { section: "link" }) {
   trackExperimentConversion();
   trackWhatsAppLead(context);
-
-  window.setTimeout(() => {
-    window.open(href, "_blank", "noopener,noreferrer");
-  }, WHATSAPP_REDIRECT_DELAY_MS);
 }
 
 type WhatsAppButtonProps = {
@@ -116,8 +105,8 @@ export function WhatsAppButton({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      onClick={(event) =>
-        openWhatsAppWithTracking(event, href, {
+      onClick={() =>
+        trackWhatsAppInteraction({
           section,
           city,
           topic,
