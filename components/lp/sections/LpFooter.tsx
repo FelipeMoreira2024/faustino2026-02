@@ -35,16 +35,6 @@ export function LpFooter() {
           </a>
         </div>
       </div>
-      <p className="pb-6 text-center text-[11px] tracking-wide text-muted/80">
-        <a
-          href="https://maquinadeclientes.goexpert.com.br/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block py-3 transition-colors hover:text-muted"
-        >
-          feito com máquina de clientes
-        </a>
-      </p>
     </footer>
   );
 }
