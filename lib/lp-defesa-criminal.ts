@@ -165,13 +165,14 @@ export const reviews = [
   },
 ];
 
+/** Abre o Perfil da Empresa no Google Maps direto na aba de avaliações (`!9m1!1b1`). */
 export const GOOGLE_REVIEWS_URL =
-  "https://www.google.com/search?q=Rodrigo+Faustino+Advogado+Criminalista+Goi%C3%A2nia";
+  "https://www.google.com/maps/place//data=!4m4!3m3!1s0x935ef125d318e55f:0x979360c733412b7f!9m1!1b1";
 
 export const steps = [
   {
     title: "Você conta o que aconteceu",
-    text: "Pelo WhatsApp ou por telefone, em poucas linhas. Se tiver, envie a foto da intimação, o número do processo ou o nome da delegacia.",
+    text: "Pelo WhatsApp ou por telefone, em poucas linhas: a cidade, a fase do caso e a data do próximo ato, se houver. Documentos, só quando o advogado pedir.",
   },
   {
     title: "O advogado avalia a urgência",

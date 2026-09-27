@@ -23,7 +23,10 @@ export function LpTopbar() {
           <p className="flex min-w-0 items-center gap-2 text-[11px] leading-none text-paper sm:text-xs">
             <span aria-hidden="true" className="pulse-dot h-2 w-2 shrink-0 rounded-full bg-whatsapp" />
             <span className="truncate">
-              <strong className="font-semibold tracking-[0.08em]">PLANTÃO CRIMINAL 24H</strong>
+              {/* Em telas estreitas (320–379px) some o "CRIMINAL" para o telefone caber inteiro */}
+              <strong className="font-semibold tracking-[0.08em]">
+                PLANTÃO <span className="hidden min-[380px]:inline">CRIMINAL </span>24H
+              </strong>
               <span className="hidden text-muted md:inline"> · ligue ou chame no WhatsApp:</span>{" "}
               <LpPhoneLink
                 section="topbar"
@@ -37,9 +40,9 @@ export function LpTopbar() {
         <LpWhatsAppLink
           section="topbar"
           ariaLabel="Falar no WhatsApp"
-          className="inline-flex shrink-0 items-center gap-1.5 rounded-[5px] bg-whatsapp px-3 py-2 text-xs font-semibold text-[#0b1a10] transition-colors hover:bg-[#2fdc72]"
+          className="inline-flex h-11 min-w-11 shrink-0 items-center justify-center gap-1.5 rounded-md bg-whatsapp text-xs font-semibold text-[#0b1a10] transition-colors hover:bg-[#2fdc72] sm:h-9 sm:px-3.5"
         >
-          <WhatsAppIcon className="h-3.5 w-3.5 shrink-0" />
+          <WhatsAppIcon className="h-5 w-5 shrink-0 sm:h-4 sm:w-4" />
           <span className="hidden sm:inline">WhatsApp</span>
         </LpWhatsAppLink>
       </div>
