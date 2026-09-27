@@ -19,7 +19,8 @@ type ConsentWindow = Window & {
 /**
  * Páginas que carregam o GTM na hora, sem aviso de cookies, com todos os
  * consentimentos concedidos (decisão do cliente para a landing de anúncios).
- * As demais páginas, incluindo a home, seguem com o aviso.
+ * Quem desativa pelo link do rodapé (`LpCookieOptOut`) fica com "rejected" e
+ * o GTM deixa de carregar. As demais páginas, incluindo a home, seguem com o aviso.
  */
 export const AUTO_CONSENT_PATHS = ["/defesa-criminal"];
 
@@ -75,7 +76,8 @@ export function CookieConsent({ gtmId }: { gtmId?: string }) {
   }
 
   if (autoConsent) {
-    return gtmId ? (
+    // `consent` só é lido depois de montar; null evita carregar antes de saber se houve recusa.
+    return gtmId && consent !== null && consent !== "rejected" ? (
       <Script id="gtm-auto" strategy="afterInteractive">
         {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{analytics_storage:'granted',ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted'});(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`}
       </Script>

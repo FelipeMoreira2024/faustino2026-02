@@ -1,4 +1,5 @@
 import { trackExperimentConversion } from "@/components/ExperimentTracker";
+import { COOKIE_CONSENT_STORAGE_KEY } from "@/lib/consent";
 import { LP_SLUG } from "@/lib/lp-defesa-criminal";
 import { PHONE_E164 } from "@/lib/site";
 
@@ -27,6 +28,15 @@ const baseParams = {
   lead_city: "goiania",
 };
 
+/** true se o visitante desativou as métricas pelo link do rodapé. */
+export function isMeasurementOptedOut() {
+  try {
+    return window.localStorage.getItem(COOKIE_CONSENT_STORAGE_KEY) === "rejected";
+  } catch {
+    return false;
+  }
+}
+
 export function trackLpLead(
   channel: keyof typeof LP_EVENTS,
   section: string,
@@ -35,7 +45,9 @@ export function trackLpLead(
   // Só conta no A/B interno se a página estiver sendo servida em "/".
   if (channel === "whatsapp") trackExperimentConversion();
 
-  // Esta página carrega o GTM sem aviso de cookies (ver AUTO_CONSENT_PATHS).
+  // Esta página carrega o GTM sem aviso de cookies (ver AUTO_CONSENT_PATHS),
+  // exceto para quem recusou pelo link do rodapé.
+  if (isMeasurementOptedOut()) return;
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({
     event: LP_EVENTS[channel],

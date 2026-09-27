@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { LpCookieOptOut } from "@/components/lp/LpCookieOptOut";
 import { CONTAINER } from "@/components/lp/ui";
 import { absoluteUrl, OFFICE_ADDRESS_DISPLAY } from "@/lib/site";
 
@@ -33,6 +34,7 @@ export function LpFooter() {
           >
             <span className="link-underline">Política de privacidade</span>
           </a>
+          <LpCookieOptOut />
         </div>
       </div>
     </footer>
