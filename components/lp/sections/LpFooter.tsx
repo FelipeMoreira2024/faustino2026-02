@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { CookieSettingsButton } from "@/components/CookieSettingsButton";
 import { CONTAINER } from "@/components/lp/ui";
 import { absoluteUrl, OFFICE_ADDRESS_DISPLAY } from "@/lib/site";
 
@@ -34,10 +33,6 @@ export function LpFooter() {
           >
             <span className="link-underline">Política de privacidade</span>
           </a>
-          {/* Área de toque de 44px sem alterar o botão compartilhado com a home */}
-          <span className="inline-flex min-h-11 items-center [&>button]:relative [&>button]:hover:text-paper [&>button]:after:absolute [&>button]:after:-inset-x-1 [&>button]:after:-inset-y-3.5">
-            <CookieSettingsButton />
-          </span>
         </div>
       </div>
       <p className="pb-6 text-center text-[11px] tracking-wide text-muted/80">
