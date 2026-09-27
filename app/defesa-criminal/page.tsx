@@ -28,16 +28,14 @@ import "./lp.css";
  * - Conteúdo em `lib/lp-defesa-criminal.ts`; seções em `components/lp/sections/`.
  */
 
+// Só o eixo de peso (122 KB). O eixo de tamanho óptico (opsz) deixava os títulos
+// mais finos, mas levava a fonte a 279 KB e derrubava o LCP no PageSpeed mobile.
+// Com preload, a fonte baixa em paralelo ao CSS em vez de encadeada atrás dele.
 const serif = Newsreader({
   subsets: ["latin"],
   style: ["normal", "italic"],
-  // Tamanho óptico: títulos grandes com o desenho de display, mais fino e contrastado.
-  axes: ["opsz"],
   variable: "--font-lp-serif",
   display: "swap",
-  // Sem preload: os 279 KB da fonte não disputam banda com a foto do topo (LCP).
-  // O texto aparece na hora com o fallback ajustado e troca quando a fonte chega.
-  preload: false,
 });
 
 const title = "Advogado Criminalista em Goiânia | Plantão 24h | Dr. Rodrigo Faustino";
