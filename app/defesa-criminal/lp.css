@@ -69,10 +69,6 @@
   color: var(--paper);
 }
 
-.lp-btn-line-paper {
-  border: 1px solid rgb(17 16 14 / 0.28);
-  color: var(--ink);
-}
 
 @media (hover: hover) {
   .lp-btn-wa:hover {
@@ -85,10 +81,6 @@
   .lp-btn-line:hover {
     border-color: var(--brass);
     background: rgb(201 169 97 / 0.08);
-  }
-  .lp-btn-line-paper:hover {
-    border-color: var(--ink);
-    background: rgb(17 16 14 / 0.04);
   }
 }
 

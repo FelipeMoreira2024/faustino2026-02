@@ -58,7 +58,7 @@ export function LpTriage() {
             <LpWhatsAppLink
               section="triagem"
               topic="outra_situacao"
-              className="link-underline font-semibold text-paper"
+              className="link-underline relative font-semibold text-paper after:absolute after:inset-x-0 after:-inset-y-3"
             >
               Escreva com as suas palavras
             </LpWhatsAppLink>

@@ -35,6 +35,9 @@ const serif = Newsreader({
   axes: ["opsz"],
   variable: "--font-lp-serif",
   display: "swap",
+  // Sem preload: os 279 KB da fonte não disputam banda com a foto do topo (LCP).
+  // O texto aparece na hora com o fallback ajustado e troca quando a fonte chega.
+  preload: false,
 });
 
 const title = "Advogado Criminalista em Goiânia | Plantão 24h | Dr. Rodrigo Faustino";

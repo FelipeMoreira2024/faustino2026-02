@@ -18,7 +18,11 @@ export function LpFaq() {
             </h2>
             <p className="mt-5 leading-relaxed text-ink-soft">
               Não encontrou a sua dúvida?{" "}
-              <LpWhatsAppLink section="perguntas" topic="duvida" className="link-underline font-semibold text-ink">
+              <LpWhatsAppLink
+                section="perguntas"
+                topic="duvida"
+                className="link-underline relative font-semibold text-ink after:absolute after:inset-x-0 after:-inset-y-3"
+              >
                 Pergunte diretamente ao advogado
               </LpWhatsAppLink>
               .
