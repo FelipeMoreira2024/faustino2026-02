@@ -25,6 +25,7 @@ npm run start  # servir build
 
 - `app/page.tsx` — home (Goiânia)
 - `app/b/page.tsx` — **variante B da home** para teste A/B (`noindex`, canonical `/`). Seções alteradas em `components/sections/home-b/`; o restante é compartilhado. Leads saem com `page_slug: "home-b"` e `ab_variant: "b"`; cliques em telefone disparam `lead_phone_rodrigo_faustino_v2`.
+- `app/defesa-criminal/page.tsx` — **landing de anúncios** (Google Ads), independente da home. Ver seção abaixo.
 - `app/[slug]/page.tsx` — nove landings
 - `lib/landing-pages.ts` — conteúdo das landings
 - `lib/site.ts` — domínio, NAP, JSON-LD institucional
@@ -43,6 +44,30 @@ Scripts em `scripts/` (servidor em `localhost:3000`):
 ## Deploy
 
 Vercel. `NEXT_PUBLIC_GTM_ID` carrega o GTM **somente** depois de aceitar cookies de métricas.
+
+## Landing de anúncios `/defesa-criminal`
+
+URL: `https://goiania.rodrigofaustinoadvocacia.com.br/defesa-criminal` — página estática,
+`noindex, follow` (não disputa a busca orgânica com a home).
+
+- Conteúdo (textos, situações da triagem, FAQ, honrarias): `lib/lp-defesa-criminal.ts`
+- Seções: `components/lp/sections/`; estilos isolados em `app/defesa-criminal/lp.css`
+- Fotos otimizadas: `public/images/lp/` (inclui `og-defesa-criminal.jpg` para o preview no WhatsApp)
+
+**Conversão própria** (a home continua com `_v2`), com a mesma regra de consentimento
+de cookies — o evento só vai para o `dataLayer` depois de o visitante aceitar métricas:
+
+| Evento | Quando |
+| --- | --- |
+| `lead_whatsapp_rodrigo_faustino_v3` | clique em qualquer botão/link de WhatsApp da página |
+| `lead_phone_rodrigo_faustino_v3` | clique em link de telefone |
+
+Parâmetros: `lead_section` (hero, triagem, topbar, cta-final…), `lead_topic`
+(`familiar_preso`, `intimacao`, `investigacao`, `acusacao_sensivel`, `processo`…),
+`page_slug: "defesa-criminal"`, `version: "v3_lp_defesa_criminal"`.
+
+A mensagem do WhatsApp começa com "Bom dia/Boa tarde/Boa noite, Dr. Rodrigo." (conforme
+o horário do visitante), o que identifica no atendimento os leads vindos desta página.
 
 ## Testes A/B
 
