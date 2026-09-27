@@ -23,7 +23,7 @@ import "./lp.css";
  *
  * Página própria para o Google Ads, independente da home (`app/page.tsx`):
  * - Conversão nova: `lead_whatsapp_rodrigo_faustino_v3` e `lead_phone_rodrigo_faustino_v3`
- *   (a home segue com `_v2`). Mesma regra de consentimento de cookies da home.
+ *   (a home segue com `_v2`). GTM carrega sem aviso de cookies; recusa pelo link do rodapé.
  * - `noindex`: existe para tráfego pago e não disputa a busca orgânica com a home.
  * - Conteúdo em `lib/lp-defesa-criminal.ts`; seções em `components/lp/sections/`.
  */

@@ -13,7 +13,13 @@ export const LP_PATH = `/${LP_SLUG}`;
 export const DEFAULT_MESSAGE = "Preciso falar com um advogado criminalista.";
 
 export type Situation = {
-  /** Vai para o dataLayer como `lead_topic`. */
+  /**
+   * Vai para o dataLayer como `lead_topic`. Código neutro de propósito: o tema
+   * (prisão, investigação, crime sexual…) nunca sai do site, mesmo que um dia
+   * uma variável do GTM passe a ler esse campo. O mapa é a ordem desta lista:
+   * situacao_1 familiar preso · situacao_2 intimação · situacao_3 investigação ·
+   * situacao_4 acusação sensível · situacao_5 processo.
+   */
   key: string;
   title: string;
   detail: string;
@@ -23,34 +29,34 @@ export type Situation = {
 /** Triagem de um toque: cada opção abre o WhatsApp com a mensagem já escrita. */
 export const situations: Situation[] = [
   {
-    key: "familiar_preso",
+    key: "situacao_1",
     title: "Um familiar foi preso",
     detail: "Flagrante, delegacia ou audiência de custódia",
     message:
       "Um familiar foi preso e preciso de um advogado criminalista com urgência.",
   },
   {
-    key: "intimacao",
+    key: "situacao_2",
     title: "Recebi uma intimação",
     detail: "Para depor na delegacia ou em juízo",
     message:
       "Recebi uma intimação e preciso de um advogado criminalista para me acompanhar.",
   },
   {
-    key: "investigacao",
+    key: "situacao_3",
     title: "Estou sendo investigado",
     detail: "Inquérito, mandado de busca ou de prisão",
     message: "Estou sendo investigado e preciso de um advogado criminalista.",
   },
   {
-    key: "acusacao_sensivel",
+    key: "situacao_4",
     title: "Fui acusado de crime sexual",
     detail: "Atendimento reservado, com sigilo absoluto",
     message:
       "Preciso de defesa em uma acusação delicada e gostaria de atendimento sigiloso.",
   },
   {
-    key: "processo",
+    key: "situacao_5",
     title: "Respondo a um processo",
     detail: "Defesa, audiências, júri ou recursos",
     message: "Respondo a um processo criminal e preciso de um advogado.",

@@ -54,8 +54,11 @@ URL: `https://goiania.rodrigofaustinoadvocacia.com.br/defesa-criminal` — pági
 - Seções: `components/lp/sections/`; estilos isolados em `app/defesa-criminal/lp.css`
 - Fotos otimizadas: `public/images/lp/` (inclui `og-defesa-criminal.jpg` para o preview no WhatsApp)
 
-**Conversão própria** (a home continua com `_v2`), com a mesma regra de consentimento
-de cookies — o evento só vai para o `dataLayer` depois de o visitante aceitar métricas:
+**Conversão própria** (a home continua com `_v2`). Diferente da home, esta página
+carrega o GTM sem aviso de cookies, com todos os consentimentos concedidos
+(`AUTO_CONSENT_PATHS` em `components/CookieConsent.tsx`). O visitante pode recusar
+pelo link do rodapé (`components/lp/LpCookieOptOut.tsx`); a partir daí o GTM não
+carrega e os eventos não vão para o `dataLayer`:
 
 | Evento | Quando |
 | --- | --- |
@@ -63,7 +66,8 @@ de cookies — o evento só vai para o `dataLayer` depois de o visitante aceitar
 | `lead_phone_rodrigo_faustino_v3` | clique em link de telefone |
 
 Parâmetros: `lead_section` (hero, triagem, topbar, cta-final…), `lead_topic`
-(`familiar_preso`, `intimacao`, `investigacao`, `acusacao_sensivel`, `processo`…),
+(códigos neutros `situacao_1` a `situacao_5`, mapeados em `lib/lp-defesa-criminal.ts`,
+para o tema do caso não sair do site; também `outra_situacao`, `duvida`, `defesa_criminal`),
 `page_slug: "defesa-criminal"`, `version: "v3_lp_defesa_criminal"`.
 
 A mensagem do WhatsApp começa com "Bom dia/Boa tarde/Boa noite, Dr. Rodrigo." (conforme

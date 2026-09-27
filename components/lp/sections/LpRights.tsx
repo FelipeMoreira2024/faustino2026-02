@@ -22,7 +22,6 @@ export function LpRights() {
           <p className="mt-8">
             <LpWhatsAppLink
               section="antes-de-falar"
-              topic="depoimento"
               message={DEPOSITION_MESSAGE}
               className="group inline-block py-2.5 font-semibold text-ink"
             >

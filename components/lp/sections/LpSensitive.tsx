@@ -45,7 +45,7 @@ export function LpSensitive() {
           <div className="mt-10 flex flex-col items-center gap-3">
             <LpWhatsAppLink
               section="acusacoes-sensiveis"
-              topic="acusacao_sensivel"
+              topic="situacao_4"
               message={SENSITIVE_MESSAGE}
               className="lp-btn lp-btn-wa w-full sm:w-auto"
             >
