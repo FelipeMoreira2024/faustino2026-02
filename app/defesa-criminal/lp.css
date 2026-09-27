@@ -29,7 +29,7 @@
 }
 
 .lp-serif {
-  font-family: var(--font-lp-serif), Georgia, "Times New Roman", serif;
+  font-family: var(--font-fraunces), Georgia, "Times New Roman", serif;
   font-feature-settings: "kern", "liga";
 }
 
@@ -90,7 +90,7 @@
 /* ---- Tipografia de apoio ---- */
 
 .lp-caption {
-  font-family: var(--font-lp-serif), Georgia, serif;
+  font-family: var(--font-fraunces), Georgia, serif;
   font-style: italic;
   font-size: 0.875rem;
   line-height: 1.45;

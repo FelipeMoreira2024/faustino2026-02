@@ -29,6 +29,39 @@ const legacyRedirects = [
   ["/crimes-sexuais", "/advogado-crimes-sexuais-goiania"],
 ];
 
+/**
+ * CSP da landing /defesa-criminal (só dela; as demais páginas não mudam).
+ * Libera o próprio site e o que GTM, GA4 e Google Ads usam. `unsafe-inline`
+ * continua necessário para os scripts inline do Next (página estática, sem nonce)
+ * e para o carregador do GTM. Ao adicionar outra ferramenta no GTM (ex.: Pixel
+ * da Meta), inclua os domínios dela aqui, senão ela será bloqueada.
+ */
+const googleTagOrigins = [
+  "https://*.googletagmanager.com",
+  "https://*.google-analytics.com",
+  "https://*.analytics.google.com",
+  "https://*.g.doubleclick.net",
+  "https://*.doubleclick.net",
+  "https://*.googleadservices.com",
+  "https://*.googlesyndication.com",
+  "https://*.google.com",
+  "https://*.google.com.br",
+].join(" ");
+
+const landingCsp = [
+  "default-src 'self'",
+  `script-src 'self' 'unsafe-inline' ${googleTagOrigins}`,
+  "style-src 'self' 'unsafe-inline'",
+  `img-src 'self' data: blob: ${googleTagOrigins}`,
+  "font-src 'self' data:",
+  `connect-src 'self' ${googleTagOrigins}`,
+  `frame-src ${googleTagOrigins}`,
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'self'",
+].join("; ");
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: {
@@ -49,6 +82,10 @@ const nextConfig: NextConfig = {
             value: "camera=(), microphone=(), geolocation=()",
           },
         ],
+      },
+      {
+        source: "/defesa-criminal",
+        headers: [{ key: "Content-Security-Policy", value: landingCsp }],
       },
       {
         source: "/images/:path*",

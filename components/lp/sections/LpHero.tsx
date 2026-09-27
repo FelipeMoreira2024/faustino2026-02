@@ -32,7 +32,7 @@ export function LpHero() {
             Plantão 24 horas · Goiânia e região
           </p>
 
-          <h1 className="lp-serif mt-3 text-[clamp(2rem,9vw,4.75rem)] font-medium leading-[1.02] tracking-[-0.025em] text-paper lg:text-[4.1rem] xl:text-[4.75rem]">
+          <h1 className="lp-serif mt-3 text-[clamp(1.85rem,8.1vw,4.75rem)] font-medium leading-[1.04] tracking-[-0.03em] text-paper lg:text-[4.1rem] xl:text-[4.75rem]">
             Advogado criminalista <span className="whitespace-nowrap">em Goiânia</span>
             <em className="mt-3 block text-[0.62em] font-normal leading-[1.1] tracking-[-0.012em] text-brass">
               Defesa desde a primeira hora.
