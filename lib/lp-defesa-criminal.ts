@@ -102,7 +102,6 @@ export const practiceAreas = [
 
 export const notServed = [
   "é vítima e quer registrar ocorrência ou pedir medida protetiva;",
-  "sofreu um golpe e quer recuperar valores;",
   "procura o atendimento gratuito da Defensoria Pública.",
 ];
 
@@ -191,6 +190,11 @@ export const faqs = [
       "Sim. Em situações urgentes, como prisão em flagrante, mandado de prisão ou audiência de custódia, o plantão funciona 24 horas, todos os dias, inclusive fins de semana.",
   },
   {
+    question: "O Dr. Rodrigo atua na defesa de quem foi acusado de crime sexual?",
+    answer:
+      "Sim. A defesa em acusações de crimes sexuais é uma das principais áreas de atuação do Dr. Rodrigo Faustino, em casos de estupro, importunação, assédio e crimes praticados pela internet. O atendimento é reservado e segue sigilo absoluto desde o primeiro contato, e a estratégia é definida antes de qualquer depoimento ou manifestação.",
+  },
+  {
     question: "Meu familiar foi preso. O que eu faço agora?",
     answer:
       "Fale com o advogado imediatamente, pelo WhatsApp ou por telefone, e informe o nome completo da pessoa e onde ela está. Oriente-a a não prestar depoimento antes da chegada da defesa.",
@@ -209,11 +213,6 @@ export const faqs = [
     question: "A conversa pelo WhatsApp é sigilosa?",
     answer:
       "Sim. Tudo o que você relata é protegido pelo sigilo profissional desde a primeira mensagem.",
-  },
-  {
-    question: "Vocês atendem vítimas de crimes ou de golpes?",
-    answer:
-      "Não. O escritório atua exclusivamente na defesa de pessoas presas, investigadas ou acusadas. Para recuperar valores de um golpe, o indicado é um advogado da área cível ou do consumidor.",
   },
   {
     question: "Atendem em Aparecida de Goiânia e em outras cidades?",
