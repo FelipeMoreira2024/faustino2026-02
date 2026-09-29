@@ -1,0 +1,10 @@
+---
+description: Deploy automatico de producao pela Vercel ao fazer push na main
+alwaysApply: true
+---
+
+# Deploy em producao
+
+- Neste projeto, fazer commit e push na branch `main` dispara automaticamente o deploy da Vercel e publica as alteracoes em producao.
+- Trate qualquer push na `main` como uma publicacao em producao ao avaliar o escopo autorizado pelo usuario.
+- Um commit local, sem push, nao dispara esse deploy.

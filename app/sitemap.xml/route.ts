@@ -1,20 +1,23 @@
 import { landingPages, landingPath } from "@/lib/landing-pages";
-import { absoluteUrl, HOME_URL } from "@/lib/site";
+import { LP_PATH } from "@/lib/lp-defesa-criminal";
+import { absoluteUrl, homeUrl, HOME_URL } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
 const HOME_HOST = "goiania.rodrigofaustinoadvocacia.com.br";
 const LAST_MODIFIED = "2026-08-31T15:00:00.000Z";
+const DEFESA_CRIMINAL_URL = homeUrl(LP_PATH);
 
 function entry(url: string) {
-  return `<url><loc>${url}</loc><lastmod>${LAST_MODIFIED}</lastmod></url>`;
+  const lastModified = url === DEFESA_CRIMINAL_URL ? "2026-09-29" : LAST_MODIFIED;
+  return `<url><loc>${url}</loc><lastmod>${lastModified}</lastmod></url>`;
 }
 
 export function GET(request: Request) {
   const host = request.headers.get("host")?.split(":")[0].toLowerCase();
   const urls =
     host === HOME_HOST
-      ? [HOME_URL]
+      ? [HOME_URL, DEFESA_CRIMINAL_URL]
       : [
           ...landingPages.map((page) => absoluteUrl(landingPath(page.slug))),
           absoluteUrl("/sobre-rodrigo-faustino"),
