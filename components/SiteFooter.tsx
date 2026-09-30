@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { AgencyCredit } from "@/components/AgencyCredit";
 import Link from "next/link";
 import { CookieSettingsButton } from "@/components/CookieSettingsButton";
 import { landingPath } from "@/lib/landing-pages";
@@ -85,6 +86,7 @@ export function SiteFooter() {
       <div className="border-t border-brass/10 px-5 py-5 text-center text-[11px] leading-relaxed text-muted/70">
         Publicidade informativa em conformidade com o Provimento 205/2021 da OAB.
         Nenhum conteúdo representa promessa de resultado.
+        <p className="mt-4 text-muted/50"><AgencyCredit /></p>
       </div>
     </footer>
   );

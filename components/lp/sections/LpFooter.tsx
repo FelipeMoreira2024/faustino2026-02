@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { AgencyCredit } from "@/components/AgencyCredit";
 import { LpCookieOptOut } from "@/components/lp/LpCookieOptOut";
 import { CONTAINER } from "@/components/lp/ui";
 import { absoluteUrl, OFFICE_ADDRESS_DISPLAY } from "@/lib/site";
@@ -36,6 +37,9 @@ export function LpFooter() {
           </a>
           <LpCookieOptOut />
         </div>
+      </div>
+      <div className={`${CONTAINER} border-t border-brass/10 py-4 text-center text-[11px] text-muted/50`}>
+        <AgencyCredit />
       </div>
     </footer>
   );
