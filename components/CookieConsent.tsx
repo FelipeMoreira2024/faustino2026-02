@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import {
   COOKIE_CONSENT_STORAGE_KEY as STORAGE_KEY,
   COOKIE_SETTINGS_EVENT as SETTINGS_EVENT,
+  isAutoConsentPath,
 } from "@/lib/consent";
 import { absoluteUrl } from "@/lib/site";
 
@@ -20,13 +21,9 @@ type ConsentWindow = Window & {
  * Páginas que carregam o GTM na hora, sem aviso de cookies, com todos os
  * consentimentos concedidos (decisão do cliente para a landing de anúncios).
  * Quem desativa pelo link do rodapé (`LpCookieOptOut`) fica com "rejected" e
- * o GTM deixa de carregar. As demais páginas, incluindo a home, seguem com o aviso.
+ * o GTM deixa de carregar. As demais páginas seguem com o aviso.
  */
-export const AUTO_CONSENT_PATHS = ["/defesa-criminal"];
-
-export function isAutoConsentPath(pathname: string | null) {
-  return AUTO_CONSENT_PATHS.some((path) => pathname === path || pathname?.startsWith(`${path}/`));
-}
+export { AUTO_CONSENT_PATHS, isAutoConsentPath } from "@/lib/consent";
 
 export function CookieConsent({ gtmId }: { gtmId?: string }) {
   const autoConsent = isAutoConsentPath(usePathname());

@@ -29,7 +29,7 @@ npm run start  # servir build
 - `app/[slug]/page.tsx` — nove landings
 - `lib/landing-pages.ts` — conteúdo das landings
 - `lib/site.ts` — domínio, NAP, JSON-LD institucional
-- `components/WhatsAppButton.tsx` — contato WhatsApp; evento `lead_whatsapp_rodrigo_faustino_v2` só após consentimento de métricas
+- `components/WhatsAppButton.tsx` — contato WhatsApp; evento `lead_whatsapp_rodrigo_faustino_v2`; na home, respeita a recusa de métricas
 - `lib/whatsapp.ts` — deep-links
 - `app/sitemap.xml/route.ts` e `app/robots.txt/route.ts` — respostas por `Host`
 
@@ -43,7 +43,7 @@ Scripts em `scripts/` (servidor em `localhost:3000`):
 
 ## Deploy
 
-Vercel. `NEXT_PUBLIC_GTM_ID` carrega o GTM **somente** depois de aceitar cookies de métricas.
+Vercel. Na home (/) e em /defesa-criminal, `NEXT_PUBLIC_GTM_ID` carrega o GTM por padrão, salvo recusa pelo link no rodapé. Nas demais páginas, o carregamento depende da aceitação de cookies de métricas.
 
 ## Landing de anúncios `/defesa-criminal`
 
@@ -54,7 +54,7 @@ URL: `https://goiania.rodrigofaustinoadvocacia.com.br/defesa-criminal` — pági
 - Seções: `components/lp/sections/`; estilos isolados em `app/defesa-criminal/lp.css`
 - Fotos otimizadas: `public/images/lp/` (inclui `og-defesa-criminal.jpg` para o preview no WhatsApp)
 
-**Conversão própria** (a home continua com `_v2`). Diferente da home, esta página
+**Conversão própria** (a home continua com `_v2`). Assim como a home, esta página
 carrega o GTM sem aviso de cookies, com todos os consentimentos concedidos
 (`AUTO_CONSENT_PATHS` em `components/CookieConsent.tsx`). O visitante pode recusar
 pelo link do rodapé (`components/lp/LpCookieOptOut.tsx`); a partir daí o GTM não
@@ -70,8 +70,7 @@ Parâmetros: `lead_section` (hero, triagem, topbar, cta-final…), `lead_topic`
 para o tema do caso não sair do site; também `outra_situacao`, `duvida`, `defesa_criminal`),
 `page_slug: "defesa-criminal"`, `version: "v3_lp_defesa_criminal"`.
 
-A mensagem do WhatsApp começa com "Bom dia/Boa tarde/Boa noite, Dr. Rodrigo." (conforme
-o horário do visitante), o que identifica no atendimento os leads vindos desta página.
+Todos os botões de WhatsApp da landing usam a mesma mensagem da home: "Olá, preciso conversar com um Advogado de Defesa Criminal."
 
 ## Testes A/B
 

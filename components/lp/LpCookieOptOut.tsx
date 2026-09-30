@@ -30,10 +30,13 @@ export function LpCookieOptOut() {
       const name = cookie.split("=")[0]?.trim();
       if (name && /^(_ga|_gid|_gat|_gcl_)/.test(name)) {
         document.cookie = `${name}=; Max-Age=0; path=/; SameSite=Lax`;
+        document.cookie = `${name}=; Max-Age=0; path=/; domain=${window.location.hostname}; SameSite=Lax`;
         document.cookie = `${name}=; Max-Age=0; path=/; domain=.rodrigofaustinoadvocacia.com.br; SameSite=Lax`;
       }
     }
     setOptedOut(true);
+    // Remove as tags desta visita também, para impedir novos envios após a recusa.
+    window.location.reload();
   }
 
   function optIn() {

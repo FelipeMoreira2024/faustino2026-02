@@ -1,38 +1,35 @@
 "use client";
 
-import { DEFAULT_MESSAGE } from "@/lib/lp-defesa-criminal";
-import { greetingNow, lpWhatsAppUrl, trackLpLead } from "@/components/lp/tracking";
+import { WA_HOME_STANDARD } from "@/lib/whatsapp";
+import { trackLpLead } from "@/components/lp/tracking";
 
 type LpWhatsAppLinkProps = {
   section: string;
   topic?: string;
-  message?: string;
   className?: string;
   ariaLabel?: string;
   children: React.ReactNode;
 };
 
 /**
- * Link de WhatsApp da landing. O HTML sai com "Olá" (funciona sem JS); no
- * clique a saudação vira "Bom dia/Boa tarde/Boa noite" e o lead é registrado.
+ * Todos os links da landing usam a mesma mensagem da home, inclusive sem JS.
+ * O clique mantém o evento de conversão próprio da landing.
  */
 export function LpWhatsAppLink({
   section,
   topic,
-  message = DEFAULT_MESSAGE,
   className,
   ariaLabel,
   children,
 }: LpWhatsAppLinkProps) {
   return (
     <a
-      href={lpWhatsAppUrl(message)}
+      href={WA_HOME_STANDARD}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={ariaLabel}
       className={className}
-      onClick={(event) => {
-        event.currentTarget.href = lpWhatsAppUrl(message, greetingNow());
+      onClick={() => {
         trackLpLead("whatsapp", section, topic);
       }}
     >

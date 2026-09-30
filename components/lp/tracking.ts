@@ -1,7 +1,6 @@
 import { trackExperimentConversion } from "@/components/ExperimentTracker";
 import { COOKIE_CONSENT_STORAGE_KEY } from "@/lib/consent";
 import { LP_SLUG } from "@/lib/lp-defesa-criminal";
-import { PHONE_E164 } from "@/lib/site";
 
 declare global {
   interface Window {
@@ -56,17 +55,4 @@ export function trackLpLead(
     lead_section: section,
     lead_topic: topic,
   });
-}
-
-/** Saudação pelo horário de quem escreve; também identifica leads desta página no WhatsApp. */
-export function greetingNow(date = new Date()) {
-  const hour = date.getHours();
-  if (hour >= 5 && hour < 12) return "Bom dia";
-  if (hour >= 12 && hour < 18) return "Boa tarde";
-  return "Boa noite";
-}
-
-export function lpWhatsAppUrl(message: string, greeting = "Olá") {
-  const text = `${greeting}, Dr. Rodrigo. ${message}`;
-  return `https://wa.me/${PHONE_E164.replace("+", "")}?text=${encodeURIComponent(text)}`;
 }

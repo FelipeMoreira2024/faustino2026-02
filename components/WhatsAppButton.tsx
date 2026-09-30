@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { useLeadTracking } from "@/components/LeadTrackingContext";
-import { COOKIE_CONSENT_STORAGE_KEY } from "@/lib/consent";
+import { COOKIE_CONSENT_STORAGE_KEY, isAutoConsentPath } from "@/lib/consent";
 import { trackExperimentConversion } from "@/components/ExperimentTracker";
 
 declare global {
@@ -32,7 +32,8 @@ export type TrackingContext = {
 
 function hasMetricsConsent() {
   try {
-    return window.localStorage.getItem(COOKIE_CONSENT_STORAGE_KEY) === "accepted";
+    const saved = window.localStorage.getItem(COOKIE_CONSENT_STORAGE_KEY);
+    return saved !== "rejected" && (isAutoConsentPath(window.location.pathname) || saved === "accepted");
   } catch {
     return false;
   }

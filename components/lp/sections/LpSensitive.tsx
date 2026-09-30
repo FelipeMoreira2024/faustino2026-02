@@ -3,7 +3,6 @@ import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { Reveal } from "@/components/Reveal";
 import { LpWhatsAppLink } from "@/components/lp/LpWhatsAppLink";
 import { SectionLabel } from "@/components/lp/ui";
-import { SENSITIVE_MESSAGE } from "@/lib/lp-defesa-criminal";
 
 const scope = [
   "Acusações de estupro, importunação e assédio",
@@ -46,7 +45,6 @@ export function LpSensitive() {
             <LpWhatsAppLink
               section="acusacoes-sensiveis"
               topic="situacao_4"
-              message={SENSITIVE_MESSAGE}
               className="lp-btn lp-btn-wa w-full sm:w-auto"
             >
               <WhatsAppIcon className="h-5 w-5 shrink-0" />

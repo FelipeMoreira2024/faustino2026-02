@@ -21,7 +21,7 @@ const sections = [
   },
   {
     title: "Analytics e publicidade",
-    text: "Nas páginas do site em geral, as ferramentas de mensuração do Google (Google Tag Manager, Google Analytics e Google Ads) só são carregadas depois que você aceita os cookies de métricas. Se você recusar, o site continua funcionando sem essas tags, e a escolha pode ser alterada pelo link ‘Preferências de cookies’ no rodapé. Na página de atendimento em defesa criminal (/defesa-criminal), utilizada em anúncios, essas ferramentas são carregadas ao abrir a página, para medir visitas e contatos iniciados pelo WhatsApp ou pelo telefone e avaliar o desempenho dos anúncios. Nessa página, você pode recusar a qualquer momento pelo link ‘Não permitir cookies de métricas e anúncios’, no rodapé: a medição é interrompida, os cookies do Google gravados pelo site são apagados e a escolha fica registrada no navegador para as próximas visitas.",
+    text: "Nas páginas do site em geral, as ferramentas de mensuração do Google (Google Tag Manager, Google Analytics e Google Ads) só são carregadas depois que você aceita os cookies de métricas. Se você recusar, o site continua funcionando sem essas tags, e a escolha pode ser alterada pelo link ‘Preferências de cookies’ no rodapé. Na página inicial (/) e na página de atendimento em defesa criminal (/defesa-criminal), essas ferramentas são carregadas ao abrir a página, para medir visitas e contatos iniciados pelo WhatsApp ou pelo telefone e avaliar o desempenho dos anúncios. Nessas duas páginas, você pode recusar a qualquer momento pelo link ‘Não permitir cookies de métricas e anúncios’, no rodapé: a medição é interrompida, os cookies do Google gravados pelo site são apagados e a escolha fica registrada no navegador para as próximas visitas.",
   },
   {
     title: "Testes de página",
@@ -46,7 +46,7 @@ export default function PrivacyPage() {
     <TrustPageShell
       eyebrow="PRIVACIDADE E LGPD"
       title="Política de Privacidade"
-      intro="Esta política explica como dados podem ser tratados durante a navegação e o contato com o escritório. Última revisão: 27 de setembro de 2026."
+      intro="Esta política explica como dados podem ser tratados durante a navegação e o contato com o escritório. Última revisão: 29 de setembro de 2026."
     >
       <div className="space-y-10">
         {sections.map((section) => (

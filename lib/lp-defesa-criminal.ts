@@ -9,9 +9,6 @@
 export const LP_SLUG = "defesa-criminal";
 export const LP_PATH = `/${LP_SLUG}`;
 
-/** Corpo padrão da mensagem de WhatsApp (a saudação é montada no clique). */
-export const DEFAULT_MESSAGE = "Preciso falar com um advogado criminalista.";
-
 export type Situation = {
   /**
    * Vai para o dataLayer como `lead_topic`. Código neutro de propósito: o tema
@@ -23,7 +20,6 @@ export type Situation = {
   key: string;
   title: string;
   detail: string;
-  message: string;
 };
 
 /** Triagem de um toque: cada opção abre o WhatsApp com a mensagem já escrita. */
@@ -32,42 +28,28 @@ export const situations: Situation[] = [
     key: "situacao_1",
     title: "Um familiar foi preso",
     detail: "Flagrante, delegacia ou audiência de custódia",
-    message:
-      "Um familiar foi preso e preciso de um advogado criminalista com urgência.",
   },
   {
     key: "situacao_2",
     title: "Recebi uma intimação",
     detail: "Para depor na delegacia ou em juízo",
-    message:
-      "Recebi uma intimação e preciso de um advogado criminalista para me acompanhar.",
   },
   {
     key: "situacao_3",
     title: "Estou sendo investigado",
     detail: "Inquérito, mandado de busca ou de prisão",
-    message: "Estou sendo investigado e preciso de um advogado criminalista.",
   },
   {
     key: "situacao_4",
     title: "Fui acusado de crime sexual",
     detail: "Atendimento reservado, com sigilo absoluto",
-    message:
-      "Preciso de defesa em uma acusação delicada e gostaria de atendimento sigiloso.",
   },
   {
     key: "situacao_5",
     title: "Respondo a um processo",
     detail: "Defesa, audiências, júri ou recursos",
-    message: "Respondo a um processo criminal e preciso de um advogado.",
   },
 ];
-
-export const DEPOSITION_MESSAGE =
-  "Preciso de um advogado para me orientar antes de um depoimento.";
-
-export const SENSITIVE_MESSAGE =
-  "Preciso de defesa em uma acusação delicada e gostaria de atendimento sigiloso.";
 
 export const practiceAreas = [
   {

@@ -2,7 +2,6 @@ import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { LpWhatsAppLink } from "@/components/lp/LpWhatsAppLink";
 import { CONTAINER, SectionLabel } from "@/components/lp/ui";
-import { DEPOSITION_MESSAGE } from "@/lib/lp-defesa-criminal";
 
 export function LpRights() {
   return (
@@ -22,7 +21,6 @@ export function LpRights() {
           <p className="mt-8">
             <LpWhatsAppLink
               section="antes-de-falar"
-              message={DEPOSITION_MESSAGE}
               className="group inline-block py-2.5 font-semibold text-ink"
             >
               <span className="link-underline">Falar com o advogado antes do depoimento</span>

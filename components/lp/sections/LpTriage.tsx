@@ -29,7 +29,6 @@ export function LpTriage() {
                   <LpWhatsAppLink
                     section="triagem"
                     topic={situation.key}
-                    message={situation.message}
                     className="lp-triage-row group -mx-3 flex min-h-[4.75rem] items-center gap-4 px-3 py-4 sm:gap-6"
                   >
                     <span aria-hidden="true" className="lp-serif w-6 shrink-0 text-lg italic text-brass">
