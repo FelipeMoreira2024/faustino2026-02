@@ -2,54 +2,39 @@ import { Clock, User, Lock, Briefcase } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { SectionMarker } from "@/components/SectionMarker";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
-import { PhoneLink } from "@/components/PhoneLink";
-import { PHONE_DISPLAY, WA_HOME_B } from "@/lib/whatsapp";
+import { WA_HOME_STANDARD } from "@/lib/whatsapp";
 
-/**
- * Variante B do CTA final.
- * Diferenças em relação ao FinalCta original:
- * - Headline repete o gatilho de qualificação do hero (preso / intimado / acusado).
- * - Texto fala em "riscos imediatos" e "próximo passo da sua defesa" (posse do problema).
- * - CTA nomeia pessoa + canal; CTA secundário de ligação.
- * - "Atendimento particular" sobe para o primeiro badge.
- */
 const badges = [
-  { icon: Briefcase, label: "Atendimento particular" },
-  { icon: User, label: "Direto com o advogado" },
-  { icon: Clock, label: "Plantão 24 horas" },
+  { icon: Clock, label: "Disponível 24h" },
+  { icon: User, label: "Atendimento direto com o advogado" },
   { icon: Lock, label: "Sigilo absoluto" },
+  { icon: Briefcase, label: "Atendimento particular" },
 ];
 
 export function FinalCtaB() {
   return (
     <section className="cv-auto relative bg-ink" id="cta-final">
-      <SectionMarker number="12" tone="ink" />
+      <SectionMarker number="11" tone="ink" />
       <div className="mx-auto max-w-3xl px-5 py-24 text-center sm:px-8 lg:py-36">
         <Reveal>
           <h2 className="font-display text-3xl font-semibold tracking-[-0.01em] text-paper sm:text-5xl">
-            Foi preso, intimado ou está sendo acusado?
+            Precisa de defesa criminal agora?
           </h2>
           <p className="mx-auto mt-6 max-w-xl leading-relaxed text-muted">
-            Não espere a situação avançar sem defesa. Fale diretamente com o{" "}
+            Na defesa criminal,{" "}
             <strong className="font-semibold text-paper">
-              Dr. Rodrigo Faustino
+              cada hora conta
             </strong>
-            , entenda os riscos imediatos e o próximo passo da sua defesa.
+            . Fale diretamente com o advogado e entenda o próximo passo do seu
+            caso.
           </p>
         </Reveal>
 
         <Reveal delay={80}>
-          <div className="mt-10 flex flex-col items-center gap-2">
-            <WhatsAppButton
-              section="cta-final"
-              href={WA_HOME_B}
-              className="sm:whitespace-nowrap"
-            >
-              Falar agora com o Dr. Rodrigo no WhatsApp
+          <div className="mt-10 flex justify-center">
+            <WhatsAppButton section="cta-final" href={WA_HOME_STANDARD}>
+              Atendimento imediato no WhatsApp
             </WhatsAppButton>
-            <PhoneLink section="cta-final" variant="text">
-              Ou ligue agora: {PHONE_DISPLAY}
-            </PhoneLink>
           </div>
         </Reveal>
 
