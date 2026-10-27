@@ -1,37 +1,23 @@
 import type { Metadata } from "next";
-import { AgencyCredit } from "@/components/AgencyCredit";
-import { CookieSettingsButton } from "@/components/CookieSettingsButton";
 import { headers } from "next/headers";
 import Image from "next/image";
-import { LeadTrackingProvider } from "@/components/LeadTrackingContext";
+import { AgencyCredit } from "@/components/AgencyCredit";
+import { CookieSettingsButton } from "@/components/CookieSettingsButton";
 import { Topbar } from "@/components/sections/Topbar";
-import { HeroB } from "@/components/sections/home-b/HeroB";
-import { UrgentSituations } from "@/components/sections/UrgentSituations";
-import { QualificationFilterB } from "@/components/sections/home-b/QualificationFilterB";
-import { PracticeAreas } from "@/components/sections/PracticeAreas";
-import { Authority } from "@/components/sections/Authority";
-import { HowItWorks } from "@/components/sections/HowItWorks";
-import { SexualCrimesDefense } from "@/components/sections/SexualCrimesDefense";
-import { Testimonials } from "@/components/sections/Testimonials";
-import { Faq } from "@/components/sections/Faq";
-import { Location } from "@/components/sections/Location";
-import { FinalCtaB } from "@/components/sections/home-b/FinalCtaB";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
-import { WA_HOME_B } from "@/lib/whatsapp";
-
-/**
- * HOME — VARIANTE B (teste A/B).
- *
- * Duplicata da home (`app/page.tsx`) com ajustes de copy e CTA focados em
- * lead qualificado (acusado / familiar de preso, pagante). Seções sem
- * alteração são reaproveitadas dos componentes originais; as alteradas vivem
- * em `components/sections/home-b/`.
- *
- * - URL de destino para o anúncio: https://goiania.rodrigofaustinoadvocacia.com.br/b
- * - `noindex` + canonical para "/" — a página existe só para o teste, não para SEO.
- * - Eventos de lead saem com `page_slug: "home-b"` e `ab_variant: "b"` (a home
- *   original sai como "home" / "a"), para comparação no GTM/GA4.
- */
+import { LeadTrackingProvider } from "@/components/LeadTrackingContext";
+import { WA_HOME_STANDARD } from "@/lib/whatsapp";
+import { HeroB } from "@/components/sections/home-b/HeroB";
+import { UrgentSituationsB } from "@/components/sections/home-b/UrgentSituationsB";
+import { QualificationFilterB } from "@/components/sections/home-b/QualificationFilterB";
+import { PracticeAreasB } from "@/components/sections/home-b/PracticeAreasB";
+import { AuthorityB } from "@/components/sections/home-b/AuthorityB";
+import { HowItWorksB } from "@/components/sections/home-b/HowItWorksB";
+import { SexualCrimesDefenseB } from "@/components/sections/home-b/SexualCrimesDefenseB";
+import { TestimonialsB } from "@/components/sections/home-b/TestimonialsB";
+import { FaqB } from "@/components/sections/home-b/FaqB";
+import { LocationB } from "@/components/sections/home-b/LocationB";
+import { FinalCtaB } from "@/components/sections/home-b/FinalCtaB";
 
 const SITE_URL = "https://goiania.rodrigofaustinoadvocacia.com.br";
 
@@ -79,11 +65,8 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function PageB() {
   return (
     <LeadTrackingProvider pageSlug="home-b" variant="b">
-      <Topbar
-        home
-        href={WA_HOME_B}
-        message="— Preso, intimado ou investigado? Fale agora:"
-      />
+
+      <Topbar home href={WA_HOME_STANDARD} />
 
       <main className="relative" data-ab-variant="b">
         {/* Hairline assinatura: lombada do dossiê, só desktop */}
@@ -93,15 +76,15 @@ export default function PageB() {
         />
 
         <HeroB />
-        <UrgentSituations />
+        <UrgentSituationsB />
         <QualificationFilterB />
-        <PracticeAreas />
-        <Authority />
-        <HowItWorks />
-        <SexualCrimesDefense />
-        <Testimonials />
-        <Faq />
-        <Location />
+        <PracticeAreasB />
+        <AuthorityB />
+        <HowItWorksB />
+        <SexualCrimesDefenseB />
+        <TestimonialsB />
+        <FaqB />
+        <LocationB />
         <FinalCtaB />
       </main>
 
@@ -126,7 +109,7 @@ export default function PageB() {
         </div>
       </footer>
 
-      <FloatingWhatsApp home href={WA_HOME_B} />
+      <FloatingWhatsApp home href={WA_HOME_STANDARD} />
     </LeadTrackingProvider>
   );
 }
