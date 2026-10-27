@@ -1,6 +1,10 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { Star } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { SectionMarker } from "@/components/SectionMarker";
+import { shuffle } from "@/lib/shuffle";
 
 const testimonials = [
   {
@@ -22,6 +26,12 @@ const testimonials = [
 ];
 
 export function TestimonialsB() {
+  const [orderedTestimonials, setOrderedTestimonials] = useState(testimonials);
+
+  useEffect(() => {
+    setOrderedTestimonials(shuffle(testimonials));
+  }, []);
+
   return (
     <section className="cv-auto relative bg-ink" id="depoimentos">
       <SectionMarker number="08" tone="ink" />
@@ -39,7 +49,7 @@ export function TestimonialsB() {
         </Reveal>
 
         <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-          {testimonials.map(({ name, text }, i) => (
+          {orderedTestimonials.map(({ name, text }, i) => (
             <Reveal key={name} delay={i * 70}>
               <figure className="hover-lift flex h-full flex-col border border-brass/15 bg-ink-elevated p-6 hover:border-brass/40 sm:p-7">
                 <div

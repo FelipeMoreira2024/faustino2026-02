@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Check } from "lucide-react";
 import { Eyebrow } from "@/components/Eyebrow";
-import { HonorsCarousel } from "@/components/HonorsCarousel";
+import { ShuffledGalleryB } from "@/components/sections/home-b/ShuffledGalleryB";
 import { Reveal } from "@/components/Reveal";
 import { SectionMarker } from "@/components/SectionMarker";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
@@ -98,7 +98,7 @@ export function AuthorityB() {
               Atuação junto às principais autoridades do direito
             </h3>
             <div className="mt-10">
-              <HonorsCarousel slides={gallery} />
+              <ShuffledGalleryB slides={gallery} />
             </div>
           </div>
         </Reveal>
