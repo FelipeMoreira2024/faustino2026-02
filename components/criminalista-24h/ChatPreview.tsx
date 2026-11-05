@@ -4,6 +4,30 @@ import { AVATAR_SRC } from "@/components/criminalista-24h/ui";
 import { cn } from "@/lib/utils";
 import { WA_HOME_MESSAGE } from "@/lib/whatsapp";
 
+/** Selo azul de conta verificada, como aparece no WhatsApp do Dr. Rodrigo. */
+function VerifiedBadge({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" role="img" aria-label="Conta verificada" className={className}>
+      <title>Conta verificada</title>
+      <polygon
+        points="22.2,12 20.31,14.23 20.83,17.1 18.08,18.08 17.1,20.83 14.23,20.31 12,22.2 9.77,20.31 6.9,20.83 5.92,18.08 3.17,17.1 3.69,14.23 1.8,12 3.69,9.77 3.17,6.9 5.92,5.92 6.9,3.17 9.77,3.69 12,1.8 14.23,3.69 17.1,3.17 18.08,5.92 20.83,6.9 20.31,9.77"
+        fill="#0095F6"
+        stroke="#0095F6"
+        strokeWidth={1.6}
+        strokeLinejoin="round"
+      />
+      <path
+        d="M7.9 12.4l2.8 2.8 5.5-5.9"
+        fill="none"
+        stroke="#fff"
+        strokeWidth={2.1}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 /**
  * Prévia fiel do que acontece no clique: o WhatsApp abre com esta mensagem já
  * escrita. Tira o medo de "o que eu escrevo?" sem inventar resposta nenhuma.
@@ -25,7 +49,10 @@ export function C24ChatPreview({ className }: { className?: string }) {
           className="h-10 w-10 shrink-0 rounded-full object-cover"
         />
         <div className="min-w-0 leading-tight">
-          <p className="truncate text-[15px] font-semibold text-[#e9edef]">Dr. Rodrigo Faustino</p>
+          <p className="flex items-center gap-1 text-[15px] font-semibold text-[#e9edef]">
+            <span className="truncate">Dr. Rodrigo Faustino</span>
+            <VerifiedBadge className="h-[17px] w-[17px] shrink-0" />
+          </p>
           <p className="truncate text-xs text-[#8696a0]">Advogado criminalista · plantão 24h</p>
         </div>
       </div>

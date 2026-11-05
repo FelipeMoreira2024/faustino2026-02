@@ -112,12 +112,15 @@ export function C24Hero() {
               className="object-cover object-[center_14%]"
             />
           </div>
-          <figcaption className="absolute inset-x-3 bottom-3 rounded-xl border border-brass/25 bg-ink/85 px-4 py-3 backdrop-blur-md sm:inset-x-auto sm:-left-6 sm:bottom-8 sm:max-w-[19rem] sm:p-4">
-            <span className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-brass">
-              ABRACRIM/GO
+          <figcaption className="absolute inset-x-3 bottom-3 rounded-xl border border-brass/25 bg-ink/85 px-4 py-3 backdrop-blur-md sm:inset-x-auto sm:-left-6 sm:bottom-8 sm:max-w-[20rem] sm:p-4">
+            <span className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+              <span className="text-[15px] font-semibold text-paper">Dr. Rodrigo Faustino</span>
+              <span className="text-[12px] font-semibold tracking-[0.06em] text-brass">
+                OAB/GO 64.028
+              </span>
             </span>
-            <span className="mt-1 block text-[13px] font-semibold leading-snug text-paper sm:text-sm">
-              Secretário-Geral da Comissão de Direitos e Prerrogativas
+            <span className="mt-1 block text-[13px] leading-snug text-paper/85 sm:text-sm">
+              Secretário-Geral da Comissão de Direitos e Prerrogativas da ABRACRIM/GO
             </span>
             <span className="mt-1 hidden text-xs leading-snug text-muted sm:block">
               Associação Brasileira dos Advogados Criminalistas
