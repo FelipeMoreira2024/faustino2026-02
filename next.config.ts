@@ -88,6 +88,15 @@ const nextConfig: NextConfig = {
         headers: [{ key: "Content-Security-Policy", value: landingCsp }],
       },
       {
+        // /criminalista-24h é estática e o HTML dela é indexável (é a versão para
+        // a home). Acessada pelo próprio endereço, fica fora do Google por este
+        // cabeçalho. Servida em "/" pelo middleware do A/B, o pedido é "/" e traz
+        // `x-ab-home-rewrite`, então a regra não vale e a home segue indexável.
+        source: "/criminalista-24h",
+        missing: [{ type: "header", key: "x-ab-home-rewrite" }],
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+      },
+      {
         source: "/images/:path*",
         headers: [
           {

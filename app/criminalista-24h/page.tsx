@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { headers } from "next/headers";
 import { LeadTrackingProvider } from "@/components/LeadTrackingContext";
 import { C24Attorney } from "@/components/criminalista-24h/Attorney";
 import { C24Faq } from "@/components/criminalista-24h/Faq";
@@ -15,9 +14,8 @@ import { C24Sensitive } from "@/components/criminalista-24h/Sensitive";
 import { C24Situations } from "@/components/criminalista-24h/Situations";
 import { C24StickyCta } from "@/components/criminalista-24h/StickyCta";
 import { C24TopBar } from "@/components/criminalista-24h/TopBar";
-import { C24_PATH, C24_SLUG, C24_VARIANT, faqs } from "@/lib/criminalista-24h";
+import { C24_SLUG, C24_VARIANT, faqs } from "@/lib/criminalista-24h";
 import { HOME_URL, OFFICE_ADDRESS, PHONE_E164 } from "@/lib/site";
-import "./c24.css";
 
 /**
  * PÁGINA DESAFIANTE DA HOME — https://goiania.rodrigofaustinoadvocacia.com.br/criminalista-24h
@@ -30,8 +28,12 @@ import "./c24.css";
  *   `lead_phone_..._v2` no telefone), com `page_slug: "criminalista-24h"` e
  *   `ab_variant: "c"`. O painel conta o clique de WhatsApp quando servida em "/".
  * - Mesma mensagem pré-preenchida da home em todos os botões (`WA_HOME_STANDARD`).
- * - Acesso direto: `noindex` e canonical "/" (não disputa a busca com a home).
- *   Servida na home pelo teste: indexável, com canonical "/".
+ * - Página estática (sai pronta do CDN, sem renderizar a cada visita). Por
+ *   isso ela não lê cabeçalhos: o HTML é sempre o da home (indexável, canonical
+ *   "/"), e o acesso direto a `/criminalista-24h` recebe `X-Robots-Tag: noindex`
+ *   pelo `next.config.ts` (não disputa a busca com a home). Servida em "/" pelo
+ *   middleware, o pedido continua sendo "/" e chega com `x-ab-home-rewrite`, então
+ *   o noindex não se aplica.
  * - Copy em `lib/criminalista-24h.ts`; seções em `components/criminalista-24h/`.
  */
 
@@ -40,18 +42,23 @@ const description =
   "Plantão criminal 24h em Goiânia: prisão em flagrante, audiência de custódia, intimação e investigação. Atendimento particular e direto com o advogado. OAB/GO 64.028.";
 const ogImage = "/images/criminalista-24h/og-criminalista-24h.jpg";
 
-const baseMetadata: Metadata = {
+/* Sem `headers()` aqui: ler o pedido faria a página renderizar a cada visita. */
+export const metadata: Metadata = {
   metadataBase: new URL(HOME_URL),
   title,
   description,
   alternates: { canonical: "/" },
-  robots: { index: false, follow: true, googleBot: { index: false, follow: true } },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+  },
   formatDetection: { telephone: false },
   authors: [{ name: "Dr. Rodrigo Faustino" }],
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: C24_PATH,
+    // Sem og:url: cada endereço ("/" ou "/criminalista-24h") vale por si nas prévias.
     siteName: "Dr. Rodrigo Faustino — Advogado Criminalista",
     title,
     description:
@@ -72,20 +79,6 @@ const baseMetadata: Metadata = {
     images: [ogImage],
   },
 };
-
-export async function generateMetadata(): Promise<Metadata> {
-  const shownAtHome = (await headers()).get("x-ab-home-rewrite") === "1";
-  if (!shownAtHome) return baseMetadata;
-  return {
-    ...baseMetadata,
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
-    },
-    openGraph: { ...baseMetadata.openGraph, url: "/" },
-  };
-}
 
 export const viewport: Viewport = {
   themeColor: "#101418",

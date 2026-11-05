@@ -1,6 +1,8 @@
 /*
  * Estilos exclusivos da /criminalista-24h. Os tokens de cor são os mesmos da
  * home (app/globals.css); aqui ficam só detalhes de botão, foto, FAQ e barra fixa.
+ * Entra pelo @import de app/globals.css (não importe na página: viraria outro
+ * arquivo de CSS travando a primeira pintura).
  */
 
 /* ---- Botão de WhatsApp ---- */
