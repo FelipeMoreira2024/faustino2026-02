@@ -58,7 +58,7 @@ export function HeroB() {
           </ul>
         </div>
 
-        <div className="tone-warm relative -mt-[2cm] aspect-[4/5] w-full max-w-[32rem] overflow-hidden justify-self-center lg:justify-self-end">
+        <div className="tone-warm relative lg:-mt-[2cm] aspect-[4/5] w-full max-w-[32rem] overflow-hidden justify-self-center lg:justify-self-end">
           <Image
             src="/images/home-b/retrato-biblioteca.webp"
             alt="Dr. Rodrigo Faustino, advogado criminalista em Goiânia"
