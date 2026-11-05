@@ -1,0 +1,69 @@
+/*
+ * Estilos exclusivos da /criminalista-24h. Os tokens de cor são os mesmos da
+ * home (app/globals.css); aqui ficam só detalhes de botão, foto, FAQ e barra fixa.
+ */
+
+/* ---- Botão de WhatsApp ---- */
+.c24-btn-wa {
+  box-shadow: 0 12px 30px -14px rgba(37, 211, 102, 0.6);
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.2s ease;
+}
+.c24-btn-wa:hover {
+  background-color: #1fc35c;
+}
+.c24-btn-wa:active {
+  transform: scale(0.99);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .c24-btn-wa:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px -12px rgba(37, 211, 102, 0.62);
+  }
+}
+
+/* ---- Foto do hero: escurece a base para a legenda ---- */
+.c24-shade::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(16, 20, 24, 0) 52%, rgba(16, 20, 24, 0.82) 100%);
+}
+
+/* ---- FAQ com <details> ---- */
+.c24-faq summary {
+  list-style: none;
+}
+.c24-faq summary::-webkit-details-marker {
+  display: none;
+}
+.c24-faq details[open] .c24-faq-icon {
+  transform: rotate(45deg);
+}
+
+/* ---- Prévia da conversa ---- */
+.c24-chat-bg {
+  background-color: #0b141a;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+/* ---- Barra fixa / pílula flutuante ---- */
+.c24-dock {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.25s ease;
+}
+.c24-dock[data-visible="false"] {
+  transform: translateY(120%);
+  opacity: 0;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .c24-dock {
+    transition: none;
+  }
+}

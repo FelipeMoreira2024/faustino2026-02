@@ -17,9 +17,10 @@ export const WA_STANDARD = createWhatsAppLink(
   "Olá, preciso conversar com um advogado de defesa criminal."
 );
 
-export const WA_HOME_STANDARD = createWhatsAppLink(
-  "Olá, preciso conversar com um Advogado de Defesa Criminal."
-);
+/** Mensagem pré-preenchida da home; também exibida na prévia da conversa da /criminalista-24h. */
+export const WA_HOME_MESSAGE = "Olá, preciso conversar com um Advogado de Defesa Criminal.";
+
+export const WA_HOME_STANDARD = createWhatsAppLink(WA_HOME_MESSAGE);
 
 /**
  * Variante B da home (/b): o lead se autodeclara "defesa criminal" + "particular"
