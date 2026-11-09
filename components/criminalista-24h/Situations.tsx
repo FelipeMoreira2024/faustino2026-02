@@ -39,9 +39,9 @@ export function C24Situations() {
                   <C24WhatsAppLink
                     section="situacoes"
                     topic={key}
-                    className="group flex h-full min-h-[76px] items-center gap-4 rounded-xl border border-brass/20 bg-ink-elevated px-4 py-3.5 transition-[border-color,background-color] duration-300 hover:border-brass/60 hover:bg-[#1e252e] sm:px-5"
+                    className="group flex h-full min-h-[76px] items-center gap-4 rounded-xl border border-brass/20 bg-ink-elevated px-4 py-3.5 c24-card c24-spot hover:border-brass/60 hover:bg-[#1e252e] sm:px-5"
                   >
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brass/10 text-brass">
+                    <span className="c24-card-icon flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brass/10 text-brass">
                       <Icon className="h-5 w-5" strokeWidth={1.6} aria-hidden="true" />
                     </span>
                     <span className="min-w-0 flex-1">
@@ -49,7 +49,7 @@ export function C24Situations() {
                       <span className="mt-0.5 block text-[13px] leading-snug text-muted">{detail}</span>
                     </span>
                     <ChevronRight
-                      className="h-5 w-5 shrink-0 text-whatsapp transition-transform duration-300 group-hover:translate-x-0.5"
+                      className="h-5 w-5 shrink-0 text-whatsapp transition-transform duration-300 group-hover:translate-x-1"
                       strokeWidth={2}
                       aria-hidden="true"
                     />

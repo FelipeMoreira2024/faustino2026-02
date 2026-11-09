@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { LeadTrackingProvider } from "@/components/LeadTrackingContext";
 import { C24Attorney } from "@/components/criminalista-24h/Attorney";
+import { C24Effects } from "@/components/criminalista-24h/Effects";
 import { C24Faq } from "@/components/criminalista-24h/Faq";
 import { C24FinalCta } from "@/components/criminalista-24h/FinalCta";
 import { C24FirstHours } from "@/components/criminalista-24h/FirstHours";
@@ -162,7 +163,7 @@ export default function Criminalista24hPage() {
 
       <C24TopBar />
 
-      <main data-ab-variant={C24_VARIANT}>
+      <main data-ab-variant={C24_VARIANT} className="c24-page">
         <C24Hero />
         <C24Situations />
         <C24FirstHours />
@@ -178,6 +179,7 @@ export default function Criminalista24hPage() {
 
       <C24Footer />
       <C24StickyCta />
+      <C24Effects />
     </LeadTrackingProvider>
   );
 }

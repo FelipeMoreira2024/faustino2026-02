@@ -1,10 +1,15 @@
 import Image from "next/image";
 import { Star } from "lucide-react";
+import { Reveal } from "@/components/Reveal";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
+import { C24CountUp } from "@/components/criminalista-24h/CountUp";
 import { PlantaoStatus } from "@/components/criminalista-24h/PlantaoStatus";
 import { C24WhatsAppLink } from "@/components/criminalista-24h/WhatsAppLink";
 import { AVATAR_SRC, BTN_WA, CONTAINER, HERO_CTA_ID } from "@/components/criminalista-24h/ui";
 import { GOOGLE_RATING, GOOGLE_REVIEWS_COUNT } from "@/lib/criminalista-24h";
+
+/** "4,9" → 4.9, para o contador animar o mesmo número que está em `lib/criminalista-24h.ts`. */
+const RATING_VALUE = Number(GOOGLE_RATING.replace(",", "."));
 
 /**
  * Mesmo título da home (casa com a busca e já provou que converte). O que muda:
@@ -13,10 +18,10 @@ import { GOOGLE_RATING, GOOGLE_REVIEWS_COUNT } from "@/lib/criminalista-24h";
  */
 export function C24Hero() {
   return (
-    <section id="inicio" className="relative overflow-hidden bg-ink">
+    <section id="inicio" className="relative overflow-clip bg-ink">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-40 top-0 hidden h-[44rem] w-[44rem] rounded-full bg-[radial-gradient(closest-side,rgba(201,169,97,0.13),transparent)] lg:block"
+        className="c24-glow pointer-events-none absolute -right-40 top-0 hidden h-[44rem] w-[44rem] rounded-full bg-[radial-gradient(closest-side,rgba(201,169,97,0.13),transparent)] lg:block"
       />
 
       <div
@@ -48,7 +53,7 @@ export function C24Hero() {
 
           <h1 className="mt-5 font-display text-[clamp(2.15rem,8.9vw,4.2rem)] font-semibold leading-[1.03] tracking-[-0.022em] text-paper">
             Advogado Criminalista em Goiânia
-            <span className="mt-2 block text-[0.74em] italic leading-[1.1] tracking-[-0.012em] text-brass lg:text-[0.7em]">
+            <span className="c24-wipe mt-2 block text-[0.74em] italic leading-[1.1] tracking-[-0.012em] text-brass lg:text-[0.7em]">
               Defesa imediata, 24 horas
             </span>
           </h1>
@@ -61,7 +66,7 @@ export function C24Hero() {
 
           <div id={HERO_CTA_ID} className="mt-5">
             <PlantaoStatus className="mb-3" />
-            <C24WhatsAppLink section="hero" className={BTN_WA}>
+            <C24WhatsAppLink section="hero" className={`${BTN_WA} c24-shine-load`}>
               <WhatsAppIcon className="h-5 w-5 shrink-0" />
               Falar com o advogado agora
             </C24WhatsAppLink>
@@ -70,37 +75,40 @@ export function C24Hero() {
             </p>
           </div>
 
-          <ul className="mt-8 grid max-w-[34rem] grid-cols-3 divide-x divide-brass/15 border-y border-brass/15 py-4 text-center sm:text-left">
-            <li className="px-2 first:pl-0 sm:px-5">
-              <span className="flex items-center justify-center gap-1 font-display text-[1.6rem] font-semibold leading-none text-paper sm:justify-start">
-                {GOOGLE_RATING}
-                <Star className="h-4 w-4 fill-brass text-brass" strokeWidth={1} aria-hidden="true" />
-              </span>
-              <span className="mt-1.5 block text-[12px] leading-snug text-muted sm:text-[13px]">
-                {GOOGLE_REVIEWS_COUNT} avaliações no Google
-              </span>
-            </li>
-            <li className="px-2 sm:px-5">
-              <span className="block font-display text-[1.6rem] font-semibold leading-none text-paper">
-                +950
-              </span>
-              <span className="mt-1.5 block text-[12px] leading-snug text-muted sm:text-[13px]">
-                casos de defesa criminal
-              </span>
-            </li>
-            <li className="px-2 last:pr-0 sm:px-5">
-              <span className="block font-display text-[1.6rem] font-semibold leading-none text-paper">
-                24h
-              </span>
-              <span className="mt-1.5 block text-[12px] leading-snug text-muted sm:text-[13px]">
-                plantão, todos os dias
-              </span>
-            </li>
-          </ul>
+          {/* Os números contam até o valor quando a faixa entra na tela. */}
+          <Reveal className="mt-8 max-w-[34rem]">
+            <ul className="grid grid-cols-3 divide-x divide-brass/15 border-y border-brass/15 py-4 text-center sm:text-left">
+              <li className="px-2 first:pl-0 sm:px-5">
+                <span className="flex items-center justify-center gap-1 font-display text-[1.6rem] font-semibold leading-none text-paper sm:justify-start">
+                  <C24CountUp to={RATING_VALUE} decimals={1} />
+                  <Star className="h-4 w-4 fill-brass text-brass" strokeWidth={1} aria-hidden="true" />
+                </span>
+                <span className="mt-1.5 block text-[12px] leading-snug text-muted sm:text-[13px]">
+                  {GOOGLE_REVIEWS_COUNT} avaliações no Google
+                </span>
+              </li>
+              <li className="px-2 sm:px-5">
+                <span className="block font-display text-[1.6rem] font-semibold leading-none text-paper">
+                  <C24CountUp to={950} prefix="+" />
+                </span>
+                <span className="mt-1.5 block text-[12px] leading-snug text-muted sm:text-[13px]">
+                  casos de defesa criminal
+                </span>
+              </li>
+              <li className="px-2 last:pr-0 sm:px-5">
+                <span className="block font-display text-[1.6rem] font-semibold leading-none text-paper">
+                  <C24CountUp to={24} suffix="h" duration={1200} />
+                </span>
+                <span className="mt-1.5 block text-[12px] leading-snug text-muted sm:text-[13px]">
+                  plantão, todos os dias
+                </span>
+              </li>
+            </ul>
+          </Reveal>
         </div>
 
         <figure className="relative mx-auto w-full max-w-[34rem] lg:mr-0">
-          <div className="c24-shade relative aspect-[4/5] overflow-hidden rounded-2xl bg-ink-elevated">
+          <div className="c24-shade c24-photo relative aspect-[4/5] overflow-clip rounded-2xl bg-ink-elevated">
             <Image
               src="/images/criminalista-24h/dr-rodrigo-retrato.webp"
               alt="Dr. Rodrigo Faustino, advogado criminalista em Goiânia, em seu escritório"
@@ -109,10 +117,10 @@ export function C24Hero() {
               fetchPriority="high"
               quality={75}
               sizes="(min-width: 1024px) 34rem, (min-width: 640px) 34rem, calc(100vw - 2.5rem)"
-              className="object-cover object-[center_14%]"
+              className="c24-photo-img c24-hero-img object-cover object-[center_14%]"
             />
           </div>
-          <figcaption className="absolute inset-x-3 bottom-3 rounded-xl border border-brass/25 bg-ink/85 px-4 py-3 backdrop-blur-md sm:inset-x-auto sm:-left-6 sm:bottom-8 sm:max-w-[20rem] sm:p-4">
+          <figcaption className="c24-cap absolute inset-x-3 bottom-3 rounded-xl border border-brass/25 bg-ink/85 px-4 py-3 backdrop-blur-md sm:inset-x-auto sm:-left-6 sm:bottom-8 sm:max-w-[20rem] sm:p-4">
             <span className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
               <span className="text-[15px] font-semibold text-paper">Dr. Rodrigo Faustino</span>
               <span className="text-[12px] font-semibold tracking-[0.06em] text-brass">

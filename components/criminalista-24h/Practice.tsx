@@ -23,7 +23,7 @@ export function C24Practice() {
 
         <ul className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-brass/15 bg-brass/15 sm:grid-cols-2 lg:grid-cols-4">
           {practiceAreas.map(({ title, text }, i) => (
-            <li key={title} className="bg-ink-elevated p-5 sm:p-6">
+            <li key={title} className="c24-cell bg-ink-elevated p-5 sm:p-6">
               <Reveal delay={Math.min(i * 40, 200)}>
                 <h3 className="font-display text-[1.07rem] font-semibold leading-snug text-paper [text-wrap:pretty]">
                   {title}

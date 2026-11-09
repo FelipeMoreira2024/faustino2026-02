@@ -12,16 +12,16 @@ export function C24Attorney() {
     <section id="dr-rodrigo-faustino" className="cv-auto relative bg-ink">
       <div className={`${CONTAINER} py-16 lg:py-28`}>
         <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-16">
-          <Reveal className="lg:col-span-5">
+          <Reveal className="c24-reveal-photo lg:col-span-5">
             <figure>
-              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-ink-elevated">
+              <div className="c24-photo relative aspect-[4/5] w-full overflow-clip rounded-2xl bg-ink-elevated">
                 <Image
                   src="/images/criminalista-24h/dr-rodrigo-escritorio.webp"
                   alt="Dr. Rodrigo Faustino em pé, atrás da mesa do escritório"
                   fill
                   quality={70}
                   sizes="(min-width: 1024px) 26rem, (min-width: 640px) 34rem, calc(100vw - 2.5rem)"
-                  className="object-cover object-[center_32%]"
+                  className="c24-photo-img object-cover object-[center_32%]"
                 />
               </div>
               <figcaption className="mt-3 text-xs text-muted">

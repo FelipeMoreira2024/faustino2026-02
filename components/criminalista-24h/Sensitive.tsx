@@ -8,7 +8,7 @@ import { sensitivePoints } from "@/lib/criminalista-24h";
 
 export function C24Sensitive() {
   return (
-    <section id="defesa-sigilosa" className="cv-auto relative overflow-hidden bg-ink-elevated">
+    <section id="defesa-sigilosa" className="cv-auto relative overflow-clip bg-ink-elevated">
       <div className={`${CONTAINER} py-16 lg:py-28`}>
         <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-16">
           <Reveal className="lg:col-span-7">
@@ -42,15 +42,15 @@ export function C24Sensitive() {
             </div>
           </Reveal>
 
-          <Reveal delay={100} className="hidden lg:col-span-5 lg:block">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-ink">
+          <Reveal className="c24-reveal-photo hidden lg:col-span-5 lg:block">
+            <div className="c24-photo relative aspect-[4/5] overflow-clip rounded-2xl bg-ink">
               <Image
                 src="/images/criminalista-24h/dr-rodrigo-estudo.webp"
                 alt="Dr. Rodrigo Faustino lendo em um tablet, em frente a livros de Direito Criminal"
                 fill
                 quality={70}
                 sizes="26rem"
-                className="object-cover object-[center_30%]"
+                className="c24-photo-img object-cover object-[center_30%]"
               />
             </div>
           </Reveal>

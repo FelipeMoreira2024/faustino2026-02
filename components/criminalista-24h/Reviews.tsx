@@ -36,10 +36,14 @@ export function C24Reviews() {
               href={GOOGLE_REVIEWS_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-5 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-brass underline-offset-4 hover:underline lg:mt-0 lg:shrink-0"
+              className="group mt-5 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-brass underline-offset-4 hover:underline lg:mt-0 lg:shrink-0"
             >
               Ver todas no Google
-              <ArrowUpRight className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
+              <ArrowUpRight
+                className="h-4 w-4 transition-transform duration-300 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transform-none"
+                strokeWidth={1.8}
+                aria-hidden="true"
+              />
             </a>
           </div>
         </Reveal>
@@ -47,7 +51,7 @@ export function C24Reviews() {
         <div className="mt-10 grid gap-4 md:grid-cols-3 lg:gap-5">
           {reviews.map(({ name, text }, i) => (
             <Reveal key={name} delay={i * 70} className="h-full">
-              <figure className="flex h-full flex-col rounded-xl border border-brass/15 bg-ink p-6 sm:p-7">
+              <figure className="c24-spot flex h-full flex-col rounded-xl border border-brass/15 bg-ink p-6 transition-colors duration-300 hover:border-brass/40 sm:p-7">
                 <Stars />
                 <blockquote className="mt-4 flex-1 text-[15px] leading-relaxed text-paper">
                   “{text}”

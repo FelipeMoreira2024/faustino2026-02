@@ -34,6 +34,11 @@ export function C24TopBar() {
           WhatsApp
         </C24WhatsAppLink>
       </div>
+      {/* Fio de progresso de leitura: cresce com o scroll, só por CSS (c24.css). */}
+      <span
+        aria-hidden="true"
+        className="c24-progress pointer-events-none absolute inset-x-0 -bottom-px h-px bg-brass"
+      />
     </header>
   );
 }

@@ -14,15 +14,15 @@ export function C24Office() {
     <section id="escritorio" className="cv-auto relative bg-ink">
       <div className={`${CONTAINER} py-16 lg:py-28`}>
         <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-16">
-          <Reveal className="order-last lg:order-first lg:col-span-5">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-ink-elevated">
+          <Reveal className="c24-reveal-photo order-last lg:order-first lg:col-span-5">
+            <div className="c24-photo relative aspect-[4/5] overflow-clip rounded-2xl bg-ink-elevated">
               <Image
                 src="/images/criminalista-24h/dr-rodrigo-janela.webp"
                 alt="Dr. Rodrigo Faustino no escritório do Setor Marista, em Goiânia"
                 fill
                 quality={70}
                 sizes="(min-width: 1024px) 26rem, (min-width: 640px) 34rem, calc(100vw - 2.5rem)"
-                className="object-cover object-[center_25%]"
+                className="c24-photo-img object-cover object-[center_25%]"
               />
             </div>
           </Reveal>
@@ -69,9 +69,13 @@ export function C24Office() {
                 href={MAPS_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[56px] w-full items-center justify-center gap-2.5 rounded-lg border border-brass/35 px-7 font-semibold text-paper transition-[border-color,background-color] duration-300 hover:border-brass hover:bg-brass/10 sm:w-auto"
+                className="group inline-flex min-h-[56px] w-full items-center justify-center gap-2.5 rounded-lg border border-brass/35 px-7 font-semibold text-paper transition-[border-color,background-color] duration-300 hover:border-brass hover:bg-brass/10 sm:w-auto"
               >
-                <MapPin className="h-4 w-4 text-brass" strokeWidth={1.6} aria-hidden="true" />
+                <MapPin
+                  className="h-4 w-4 text-brass transition-transform duration-300 ease-out group-hover:-translate-y-0.5 motion-reduce:transform-none"
+                  strokeWidth={1.6}
+                  aria-hidden="true"
+                />
                 Como chegar
               </a>
             </div>

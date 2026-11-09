@@ -15,16 +15,16 @@ const assurances = [
 
 export function C24FinalCta() {
   return (
-    <section id={FINAL_CTA_ID} className="relative overflow-hidden border-t border-brass/15 bg-ink">
+    <section id={FINAL_CTA_ID} className="relative overflow-clip border-t border-brass/15 bg-ink">
       <div className="absolute inset-y-0 right-0 hidden w-[42%] lg:block">
-        <div className="relative h-full w-full">
+        <div className="c24-photo relative h-full w-full overflow-clip">
           <Image
             src="/images/criminalista-24h/dr-rodrigo-analise.webp"
             alt=""
             fill
             quality={65}
             sizes="42vw"
-            className="object-cover object-[center_35%]"
+            className="c24-photo-img object-cover object-[center_35%]"
           />
           <div
             aria-hidden="true"

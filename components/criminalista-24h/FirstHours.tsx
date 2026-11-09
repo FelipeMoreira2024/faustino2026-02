@@ -25,17 +25,25 @@ export function C24FirstHours() {
           </p>
         </Reveal>
 
-        <div className="relative mt-12">
+        {/*
+          Linha do tempo: no celular a linha desce pela esquerda; no desktop ela
+          liga os três números na horizontal (do centro do 1 ao centro do 3).
+          Conforme a pessoa rola, a linha se desenha e os números acendem
+          (c24.css, "Linha do tempo"). Sem suporte no navegador, fica a linha clara.
+        */}
+        <div className="c24-tl relative mt-12">
           <span
             aria-hidden="true"
-            className="absolute bottom-8 left-[1.125rem] top-8 w-px bg-brass-deep/30 lg:hidden"
-          />
+            className="absolute bottom-8 left-[1.125rem] top-8 w-px bg-brass-deep/30 lg:bottom-auto lg:top-[1.125rem] lg:h-px lg:w-[calc(66.667%+1.667rem)]"
+          >
+            <span className="c24-tl-fill absolute inset-0 bg-brass-deep" />
+          </span>
           <ol className="grid gap-9 lg:grid-cols-3 lg:gap-10">
             {firstHours.map(({ when, title, text }, i) => (
               <li key={title} className="relative pl-14 lg:pl-0">
                 <span
                   aria-hidden="true"
-                  className="absolute left-0 top-0 flex h-9 w-9 items-center justify-center rounded-full border border-brass-deep/40 bg-paper font-display text-base font-semibold text-brass-deep lg:static lg:mb-5"
+                  className="c24-tl-node absolute left-0 top-0 flex h-9 w-9 items-center justify-center rounded-full border border-brass-deep/40 bg-paper font-display text-base font-semibold text-brass-deep lg:relative lg:mb-5"
                 >
                   {i + 1}
                 </span>

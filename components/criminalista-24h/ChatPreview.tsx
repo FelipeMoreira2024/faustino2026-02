@@ -61,7 +61,7 @@ export function C24ChatPreview({ className }: { className?: string }) {
         <p className="mx-auto mb-5 w-fit rounded-md bg-[#182229] px-3 py-1 text-[11px] font-medium uppercase tracking-wide text-[#8696a0]">
           Hoje
         </p>
-        <div className="relative ml-auto w-fit max-w-[88%] rounded-lg rounded-tr-none bg-[#005c4b] px-3 pb-1.5 pt-2 text-[15px] leading-snug text-[#e9edef] shadow-md">
+        <div className="c24-bubble relative ml-auto w-fit max-w-[88%] rounded-lg rounded-tr-none bg-[#005c4b] px-3 pb-1.5 pt-2 text-[15px] leading-snug text-[#e9edef] shadow-md">
           {WA_HOME_MESSAGE}
           <span className="mt-1 flex items-center justify-end gap-1 text-[11px] text-[#9fc3ba]">
             agora

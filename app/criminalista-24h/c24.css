@@ -69,3 +69,393 @@
     transition: none;
   }
 }
+
+/* =====================================================================
+ * MOVIMENTO DA /criminalista-24h
+ *
+ * Regras da casa:
+ * - O título e o botão do topo nunca esperam animação (quem chega aqui tem pressa).
+ * - Só transform, opacity e clip-path: nada que mude o layout.
+ * - Efeitos de scroll usam `animation-timeline` (sem JavaScript). Onde o
+ *   navegador não suporta, a página fica como era: tudo visível e parado.
+ * - `prefers-reduced-motion` desliga todo deslocamento.
+ * ===================================================================== */
+
+:root {
+  --c24-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.c24-page ::selection {
+  background: rgba(201, 169, 97, 0.34);
+}
+
+/* ---- Botão de WhatsApp: brilho que atravessa o botão ---- */
+.c24-btn-wa {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.c24-btn-wa::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.42) 50%,
+    transparent 62%
+  );
+  transform: translateX(-130%);
+}
+.c24-btn-wa svg {
+  transition: transform 0.35s var(--c24-out);
+}
+@keyframes c24-shine {
+  from {
+    transform: translateX(-130%);
+  }
+  to {
+    transform: translateX(130%);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* Uma vez só: quando o botão aparece na tela. */
+  .c24-shine-load::after {
+    animation: c24-shine 1.1s var(--c24-out) 1.5s backwards;
+  }
+  .js .reveal.is-visible .c24-btn-wa::after {
+    animation: c24-shine 1.1s var(--c24-out) 0.9s backwards;
+  }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  /* A transição só existe no :hover: ao sair, o brilho volta sem ser visto. */
+  .c24-btn-wa:hover::after {
+    transform: translateX(130%);
+    transition: transform 0.8s var(--c24-out);
+  }
+  .c24-btn-wa:hover svg {
+    transform: rotate(-8deg) scale(1.08);
+  }
+}
+
+/* ---- Hero: entrada (o título e o botão já nascem prontos) ---- */
+@keyframes c24-wipe {
+  from {
+    clip-path: inset(-0.15em 100% -0.15em -0.1em);
+  }
+  to {
+    clip-path: inset(-0.15em -0.1em -0.15em -0.1em);
+  }
+}
+@keyframes c24-bloom {
+  from {
+    opacity: 0;
+    scale: 0.8;
+  }
+}
+@keyframes c24-rise {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
+}
+@keyframes c24-settle {
+  from {
+    scale: 1.12;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .c24-wipe {
+    animation: c24-wipe 1s var(--c24-out) 0.2s backwards;
+  }
+  .c24-glow {
+    animation: c24-bloom 2.4s var(--c24-out) backwards;
+  }
+  .c24-cap {
+    animation: c24-rise 0.9s var(--c24-out) 0.7s backwards;
+  }
+  .c24-hero-img {
+    animation: c24-settle 1.8s var(--c24-out) backwards;
+  }
+}
+
+/* ---- Fotos: cortina ao entrar na tela, zoom lento no mouse ---- */
+.c24-photo-img {
+  scale: var(--c24-s, 1);
+  transition: scale 1.4s var(--c24-out);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .c24-photo:hover {
+    --c24-s: 1.035;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* A foto não usa o fade padrão do .reveal: ela se abre de cima para baixo. */
+  .js .reveal.c24-reveal-photo {
+    opacity: 1;
+    transform: none;
+  }
+  .js .c24-reveal-photo .c24-photo {
+    clip-path: inset(0 0 100% 0 round 1rem);
+    transition: clip-path 1.2s var(--c24-out) 0.1s;
+  }
+  .js .c24-reveal-photo.is-visible .c24-photo {
+    clip-path: inset(0 0 0 0 round 1rem);
+  }
+  .js .c24-reveal-photo:not(.is-visible) .c24-photo {
+    --c24-s: 1.16;
+  }
+  .js .c24-reveal-photo figcaption {
+    opacity: 0;
+    transition: opacity 0.6s ease 0.7s;
+  }
+  .js .c24-reveal-photo.is-visible figcaption {
+    opacity: 1;
+  }
+}
+
+/* ---- Cartões clicáveis (situações) ---- */
+.c24-card {
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    transform 0.3s var(--c24-out),
+    box-shadow 0.3s ease;
+}
+.c24-card:active {
+  transform: scale(0.985);
+}
+.c24-card-icon {
+  transition:
+    background-color 0.3s ease,
+    transform 0.35s var(--c24-out);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .c24-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 34px -22px rgba(0, 0, 0, 0.85);
+  }
+  .c24-card:hover .c24-card-icon {
+    background-color: rgba(201, 169, 97, 0.2);
+    transform: scale(1.06);
+  }
+}
+
+/* ---- Luz que acompanha o cursor (a posição vem de Effects.tsx) ---- */
+.c24-spot {
+  position: relative;
+  isolation: isolate;
+}
+.c24-spot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    240px circle at var(--c24-mx, 50%) var(--c24-my, 50%),
+    rgba(201, 169, 97, 0.15),
+    transparent 70%
+  );
+  transition: opacity 0.4s ease;
+}
+@media (hover: hover) {
+  .c24-spot:hover::before {
+    opacity: 1;
+  }
+}
+
+/* ---- Grade de áreas de atuação: fio de latão que se desenha no topo ---- */
+.c24-cell {
+  position: relative;
+  transition: background-color 0.35s ease;
+}
+.c24-cell::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: var(--brass);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.55s var(--c24-out);
+}
+@media (hover: hover) {
+  .c24-cell:hover {
+    background-color: #1e252e;
+  }
+  .c24-cell:hover::before {
+    transform: scaleX(1);
+  }
+}
+
+/* ---- Prévia da conversa: a mensagem "chega" depois do aparelho ---- */
+@media (prefers-reduced-motion: no-preference) {
+  .c24-bubble {
+    transform-origin: 100% 0;
+    transition:
+      opacity 0.45s ease 0.6s,
+      scale 0.55s var(--c24-out) 0.6s,
+      translate 0.55s var(--c24-out) 0.6s;
+  }
+  .js .reveal:not(.is-visible) .c24-bubble {
+    opacity: 0;
+    scale: 0.9;
+    translate: 0 10px;
+  }
+}
+
+/* ---- FAQ: abre e fecha com altura animada ---- */
+@media (prefers-reduced-motion: no-preference) {
+  @supports selector(::details-content) and (interpolate-size: allow-keywords) {
+    .c24-faq details {
+      interpolate-size: allow-keywords;
+    }
+    .c24-faq details::details-content {
+      block-size: 0;
+      opacity: 0;
+      overflow-y: clip;
+      transition:
+        block-size 0.45s var(--c24-out),
+        opacity 0.35s ease,
+        content-visibility 0.45s allow-discrete;
+    }
+    .c24-faq details[open]::details-content {
+      block-size: auto;
+      opacity: 1;
+    }
+  }
+}
+
+/* ---- Linha do tempo das primeiras 24 horas ---- */
+.c24-tl-fill {
+  display: none;
+}
+
+/* =====================================================================
+ * EFEITOS LIGADOS AO SCROLL (CSS puro, melhoria progressiva)
+ * Atenção: `view()` procura o ancestral rolável mais próximo, e
+ * `overflow: hidden` conta como rolável. Por isso as molduras das fotos e as
+ * seções usam `overflow-clip`.
+ * ===================================================================== */
+.c24-progress {
+  display: none;
+}
+@keyframes c24-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes c24-drift {
+  from {
+    translate: 0 -3.4%;
+  }
+  to {
+    translate: 0 3.4%;
+  }
+}
+@keyframes c24-draw-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+@keyframes c24-draw-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes c24-node {
+  to {
+    background-color: var(--brass-deep);
+    border-color: var(--brass-deep);
+    color: var(--paper);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  /* Fio de progresso de leitura sob a barra do topo. */
+  .c24-progress {
+    display: block;
+    transform-origin: left;
+    animation: c24-progress linear both;
+    animation-timeline: scroll(root block);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* Paralaxe das fotos: a imagem desliza alguns pixels dentro da moldura. */
+    .c24-photo {
+      --c24-s: 1.08;
+    }
+    .c24-photo-img {
+      animation: c24-drift linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+    .c24-hero-img {
+      animation:
+        c24-settle 1.8s var(--c24-out) backwards,
+        c24-drift linear both;
+      animation-timeline: auto, view();
+      animation-range:
+        normal,
+        cover 0% cover 100%;
+    }
+    @media (hover: hover) {
+      .c24-photo:hover {
+        --c24-s: 1.115;
+      }
+    }
+
+    /* Linha do tempo. Celular: a ponta da linha acompanha os 62% da altura da
+       tela e cada número acende quando ela passa por ele. */
+    .c24-tl {
+      view-timeline: --c24-tl block;
+    }
+    .c24-tl-fill {
+      display: block;
+      transform-origin: top;
+      animation: c24-draw-y linear both;
+      animation-timeline: view(block 0% 38%);
+      animation-range: entry-crossing 0% entry-crossing 100%;
+    }
+    .c24-tl-node {
+      animation: c24-node linear both;
+      animation-timeline: view(block 0% 38%);
+      animation-range: entry-crossing 0% entry-crossing 100%;
+    }
+
+    /* Desktop: os três passos ficam lado a lado, então a linha corre na
+       horizontal enquanto o bloco sobe pela tela. */
+    @media (min-width: 1024px) {
+      .c24-tl-fill {
+        transform-origin: left;
+        animation-name: c24-draw-x;
+        animation-timeline: --c24-tl;
+        animation-range: cover 18% cover 48%;
+      }
+      .c24-tl-node {
+        animation-timeline: --c24-tl;
+        animation-range: cover 16% cover 19%;
+      }
+      .c24-tl li:nth-child(2) .c24-tl-node {
+        animation-range: cover 31.5% cover 34.5%;
+      }
+      .c24-tl li:nth-child(3) .c24-tl-node {
+        animation-range: cover 46.5% cover 49.5%;
+      }
+    }
+  }
+}
