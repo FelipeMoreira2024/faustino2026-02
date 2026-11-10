@@ -129,11 +129,11 @@ export function C24Hero() {
                 OAB/GO 64.028
               </span>
             </span>
-            <span className="mt-1 block text-[13px] leading-snug text-paper/85 sm:text-sm">
-              Secretário-Geral da Comissão de Direitos e Prerrogativas da ABRACRIM/GO
+            <span className="mt-1 block text-[13px] font-medium leading-snug text-paper/90 sm:text-sm">
+              Advogado de Defesa Criminal
             </span>
-            <span className="mt-1 hidden text-xs leading-snug text-muted sm:block">
-              Associação Brasileira dos Advogados Criminalistas
+            <span className="mt-1 block text-[11px] leading-snug text-muted sm:text-xs">
+              Secretário-Geral da Comissão de Direitos e Prerrogativas da ABRACRIM/GO
             </span>
           </figcaption>
         </figure>
