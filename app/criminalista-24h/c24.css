@@ -140,6 +140,15 @@
   }
 }
 
+/* ---- Ponto do plantão na barra do topo ----
+ * No celular fica parado: o único pulso da primeira dobra é o que está ao lado
+ * do botão ("Plantão ativo agora"). A partir de 640px ele pulsa como antes. */
+@media (min-width: 640px) and (prefers-reduced-motion: no-preference) {
+  .c24-pulse-sm {
+    animation: pulse-dot 2.2s ease-out infinite;
+  }
+}
+
 /* ---- Hero: entrada (o título e o botão já nascem prontos) ---- */
 @keyframes c24-wipe {
   from {

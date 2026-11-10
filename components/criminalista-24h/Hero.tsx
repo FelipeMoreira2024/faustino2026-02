@@ -40,13 +40,13 @@ export function C24Hero() {
               />
               <span
                 aria-hidden="true"
-                className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-ink bg-whatsapp"
+                className="absolute bottom-0 right-0 hidden h-3 w-3 rounded-full border-2 border-ink bg-whatsapp sm:block"
               />
             </span>
             <p className="leading-tight">
               <span className="block text-[15px] font-semibold text-paper">Dr. Rodrigo Faustino</span>
               <span className="mt-0.5 block text-[13px] text-muted">
-                Advogado criminalista · OAB/GO 64.028
+                <span className="hidden sm:inline">Advogado criminalista · </span>OAB/GO 64.028
               </span>
             </p>
           </div>
@@ -71,13 +71,14 @@ export function C24Hero() {
               Falar com o advogado agora
             </C24WhatsAppLink>
             <p className="mt-3 text-sm text-muted">
-              Atendimento particular, direto com o advogado. Sigilo absoluto.
+              Atendimento particular
+              <span className="hidden sm:inline">, direto com o advogado</span>. Sigilo absoluto.
             </p>
           </div>
 
           {/* Os números contam até o valor quando a faixa entra na tela. */}
           <Reveal className="mt-8 max-w-[34rem]">
-            <ul className="grid grid-cols-3 divide-x divide-brass/15 border-y border-brass/15 py-4 text-center sm:text-left">
+            <ul className="grid grid-cols-2 divide-x divide-brass/15 border-y border-brass/15 py-4 text-center sm:grid-cols-3 sm:text-left">
               <li className="px-2 first:pl-0 sm:px-5">
                 <span className="flex items-center justify-center gap-1 font-display text-[1.6rem] font-semibold leading-none text-paper sm:justify-start">
                   <C24CountUp to={RATING_VALUE} decimals={1} />
@@ -87,7 +88,7 @@ export function C24Hero() {
                   {GOOGLE_REVIEWS_COUNT} avaliações no Google
                 </span>
               </li>
-              <li className="px-2 sm:px-5">
+              <li className="px-2 max-sm:!border-r-0 max-sm:pr-0 sm:px-5">
                 <span className="block font-display text-[1.6rem] font-semibold leading-none text-paper">
                   <C24CountUp to={950} prefix="+" />
                 </span>
@@ -95,7 +96,8 @@ export function C24Hero() {
                   casos de defesa criminal
                 </span>
               </li>
-              <li className="px-2 last:pr-0 sm:px-5">
+              {/* "24h" já está na barra do topo, no título e ao lado do botão: no celular, esta coluna sai. */}
+              <li className="hidden px-2 last:pr-0 sm:block sm:px-5">
                 <span className="block font-display text-[1.6rem] font-semibold leading-none text-paper">
                   <C24CountUp to={24} suffix="h" duration={1200} />
                 </span>
