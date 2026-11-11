@@ -5,7 +5,7 @@ import { CookieSettingsButton } from "@/components/CookieSettingsButton";
 export function C24Footer() {
   return (
     <footer className="border-t border-brass/15 bg-ink pb-24 lg:pb-0">
-      <div className="px-6 pt-6 text-center text-sm text-muted">
+      <div className="px-6 pt-6 text-center text-sm text-muted [&_button]:text-center">
         <CookieSettingsButton />
       </div>
       <div className="mx-auto max-w-6xl px-5 py-8 text-center sm:px-8">

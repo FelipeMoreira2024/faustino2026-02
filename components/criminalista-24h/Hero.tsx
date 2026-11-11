@@ -127,7 +127,7 @@ export function C24Hero() {
             <span className="mt-1 block text-[13px] font-medium leading-snug text-paper/90 sm:text-sm">
               Advogado de Defesa Criminal
             </span>
-            <span className="mt-1 block text-[11px] leading-snug text-muted sm:text-xs">
+            <span className="mt-1 block text-xs leading-snug text-muted">
               Presidente da Comissão de Direitos e Prerrogativas da ABRACRIM/GO
             </span>
           </figcaption>

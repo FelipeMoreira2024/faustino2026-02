@@ -26,6 +26,15 @@
   }
 }
 
+/* Telas de 320–359px: o botão principal precisa caber em uma linha. */
+@media (max-width: 359px) {
+  .c24-btn-wa {
+    gap: 0.5rem;
+    padding-inline: 0.75rem;
+    font-size: 15px;
+  }
+}
+
 /* ---- Foto do hero: escurece a base para a legenda ---- */
 .c24-shade::after {
   content: "";

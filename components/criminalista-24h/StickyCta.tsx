@@ -49,7 +49,8 @@ export function C24StickyCta() {
         className="c24-dock fixed inset-x-0 bottom-0 z-50 border-t border-brass/20 bg-ink/95 backdrop-blur-md lg:hidden"
       >
         <div className="mx-auto flex max-w-xl items-center gap-3 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3">
-          <span className="relative shrink-0">
+          {/* Abaixo de 360px o rosto sai, para "Plantão 24h" e o nome caberem inteiros. */}
+          <span className="relative shrink-0 max-[359px]:hidden">
             <Image
               src={AVATAR_SRC}
               alt=""
