@@ -8,14 +8,13 @@ import { WA_STANDARD } from "@/lib/whatsapp";
 import {
   absoluteUrl,
   ATTORNEY_NAME,
-  ATTORNEY_OAB,
   personJsonLd,
 } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Dr. Rodrigo Faustino | Advogado Criminalista em Goiás",
   description:
-    "Conheça a atuação profissional do Dr. Rodrigo Faustino, advogado criminalista inscrito na OAB/GO 64.028, com sede em Goiânia.",
+    "Conheça a atuação profissional do Dr. Rodrigo Faustino, advogado criminalista, com sede em Goiânia.",
   alternates: { canonical: "/sobre-rodrigo-faustino" },
   openGraph: {
     title: "Dr. Rodrigo Faustino | Advogado Criminalista em Goiás",
@@ -41,13 +40,12 @@ export default function AboutPage() {
           <div>
             <Scale className="h-6 w-6 text-brass-deep" aria-hidden="true" />
             <h2 className="mt-5 font-display text-3xl font-semibold">Atuação em defesa criminal</h2>
-            <p className="mt-3 font-semibold text-brass-deep">{ATTORNEY_OAB}</p>
             <div className="mt-6 space-y-4 leading-relaxed text-ink-soft">
               <p>
                 Rodrigo Faustino atua na defesa de pessoas presas, investigadas ou acusadas, desde a fase policial até processos e recursos. O atendimento é particular e realizado com orientação direta sobre a fase, os riscos e os próximos passos possíveis.
               </p>
               <p>
-                É inscrito na Ordem dos Advogados do Brasil, Seção Goiás, sob o número 64.028. As informações profissionais publicadas no site devem permanecer objetivas e passíveis de comprovação.
+                É inscrito na Ordem dos Advogados do Brasil, Seção Goiás. As informações profissionais publicadas no site devem permanecer objetivas e passíveis de comprovação.
               </p>
               <p>
                 Conteúdos jurídicos são revisados antes da publicação e utilizam legislação e atos oficiais como referência. As informações são gerais e não substituem a análise individual de documentos e decisões.

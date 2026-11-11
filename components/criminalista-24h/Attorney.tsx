@@ -33,11 +33,11 @@ export function C24Attorney() {
           <Reveal delay={80} className="lg:col-span-7">
             <p className={`${EYEBROW} text-brass`}>Quem vai cuidar do seu caso</p>
             <h2 className={`${H2} mt-3 text-paper`}>Dr. Rodrigo Faustino</h2>
-            <p className="mt-2 font-medium text-brass">Advogado criminalista · OAB/GO 64.028</p>
+            <p className="mt-2 font-medium text-brass">Advogado criminalista</p>
 
             <p className="mt-6 text-[17px] leading-relaxed text-paper">
               <strong className="font-semibold">
-                Secretário-Geral da Comissão de Direitos e Prerrogativas da ABRACRIM/GO
+                Presidente da Comissão de Direitos e Prerrogativas da ABRACRIM/GO
               </strong>{" "}
               (Associação Brasileira dos Advogados Criminalistas), com mais de{" "}
               <strong className="font-semibold">950 casos de defesa criminal</strong> conduzidos em

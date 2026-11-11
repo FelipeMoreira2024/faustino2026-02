@@ -65,12 +65,12 @@ export function Authority() {
               Dr. Rodrigo Faustino
             </h2>
             <p className="mt-2 font-medium text-brass">
-              Advogado Criminalista • OAB/GO 64.028
+              Advogado Criminalista
             </p>
 
             <p className="mt-6 leading-relaxed text-paper">
               <strong className="font-semibold">
-                Secretário-Geral da Comissão de Direitos e Prerrogativas da
+                Presidente da Comissão de Direitos e Prerrogativas da
                 ABRACRIM/GO
               </strong>{" "}
               (Associação Brasileira dos Advogados Criminalistas), com mais de{" "}

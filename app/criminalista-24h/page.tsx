@@ -40,7 +40,7 @@ import { HOME_URL, OFFICE_ADDRESS, PHONE_E164 } from "@/lib/site";
 
 const title = "Advogado Criminalista em Goiânia 24h | Dr. Rodrigo Faustino";
 const description =
-  "Plantão criminal 24h em Goiânia: prisão em flagrante, audiência de custódia, intimação e investigação. Atendimento particular e direto com o advogado. OAB/GO 64.028.";
+  "Plantão criminal 24h em Goiânia: prisão em flagrante, audiência de custódia, intimação e investigação. Atendimento particular e direto com o advogado.";
 const ogImage = "/images/criminalista-24h/og-criminalista-24h.jpg";
 
 /* Sem `headers()` aqui: ler o pedido faria a página renderizar a cada visita. */

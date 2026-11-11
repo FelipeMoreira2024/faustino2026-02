@@ -27,7 +27,7 @@ export function Location() {
               Atendimento em Goiânia
             </h2>
             <p className="mt-6 font-display text-xl font-semibold text-ink">
-              Dr. Rodrigo Faustino — OAB/GO 64.028
+              Dr. Rodrigo Faustino
             </p>
 
             <ul className="mt-6 space-y-4 text-ink-soft">

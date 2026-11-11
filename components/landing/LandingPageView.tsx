@@ -8,7 +8,6 @@ import {
   FileCheck2,
   LockKeyhole,
   MapPin,
-  Scale,
   ShieldCheck,
 } from "lucide-react";
 import {
@@ -29,7 +28,6 @@ import {
 import { createWhatsAppLink, PHONE_DISPLAY, PHONE_TEL } from "@/lib/whatsapp";
 import {
   ATTORNEY_NAME,
-  ATTORNEY_OAB,
   absoluteUrl,
   HOME_URL,
   MAPS_LINK,
@@ -131,9 +129,6 @@ export function LandingPageView({ page }: { page: LandingPage }) {
                   </p>
                 </div>
                 <ul className="mt-8 flex flex-wrap gap-2.5">
-                  <li className="inline-flex items-center gap-2 rounded-full border border-brass/30 px-3.5 py-2 text-[13px] text-paper">
-                    <Scale className="h-3.5 w-3.5 text-brass" aria-hidden="true" /> {ATTORNEY_OAB}
-                  </li>
                   <li className="inline-flex items-center gap-2 rounded-full border border-brass/30 px-3.5 py-2 text-[13px] text-paper">
                     <LockKeyhole className="h-3.5 w-3.5 text-brass" aria-hidden="true" /> Sigilo profissional
                   </li>
@@ -285,7 +280,7 @@ export function LandingPageView({ page }: { page: LandingPage }) {
             <div className="self-center">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brass">RESPONSÁVEL PELO CONTEÚDO</p>
               <h2 className="mt-4 font-display text-3xl font-semibold text-paper sm:text-4xl">{ATTORNEY_NAME}</h2>
-              <p className="mt-2 font-medium text-brass">Advogado Criminalista • {ATTORNEY_OAB}</p>
+              <p className="mt-2 font-medium text-brass">Advogado Criminalista</p>
               <p className="mt-6 max-w-2xl leading-relaxed text-muted">
                 Atua em defesa criminal em casos urgentes e sensíveis, com atendimento direto, orientação clara e responsabilidade profissional. Conteúdo informativo atualizado em {page.lastUpdated}; a análise jurídica depende dos documentos de cada caso.
               </p>
