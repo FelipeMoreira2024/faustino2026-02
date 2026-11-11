@@ -97,6 +97,12 @@ const nextConfig: NextConfig = {
         headers: [{ key: "X-Robots-Tag", value: "noindex" }],
       },
       {
+        // /b é a mesma página da /criminalista-24h (ver app/b/page.tsx): mesma regra.
+        source: "/b",
+        missing: [{ type: "header", key: "x-ab-home-rewrite" }],
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+      },
+      {
         source: "/images/:path*",
         headers: [
           {
