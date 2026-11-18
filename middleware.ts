@@ -1,112 +1,115 @@
 import { NextRequest, NextResponse } from "next/server";
-import { AB_OPTOUT_COOKIE, ASSIGNMENT_COOKIE, signAssignment, verifyAssignment } from "@/lib/ab/crypto";
-import type { PublicExperimentConfig } from "@/lib/ab/types";
+import {
+  AB_ENTRY_HEADER, AB_EXPOSURE_HEADER, AB_OPTOUT_COOKIE, AB_PROBE_HEADER,
+  ASSIGNMENT_COOKIE, catalogProbeToken, signAssignment, signExposure, verifyAssignment,
+} from "@/lib/ab/crypto";
+import type { PageAddress, PublicExperimentConfig } from "@/lib/ab/types";
+import { HOME_HOST, isLandingHost, parseLandingUrl } from "@/lib/ab/urls";
+import { landingCsp } from "@/lib/landing-csp";
 
-function isRobot(userAgent: string) {
-  return /bot|crawler|spider|preview|facebookexternalhit|whatsapp/i.test(userAgent);
-}
-
-/**
- * Cache da config do A/B, para a home não esperar a função serverless + banco a
- * cada visita. Duas camadas:
- * 1. /api/ab/config responde com s-maxage=30 + stale-while-revalidate, então o
- *    CDN da Vercel devolve a config sem acordar a função (ver a rota);
- * 2. cada instância do middleware guarda a última config boa por 30 s.
- * Por isso uma mudança em /admin/experimentos leva cerca de 30–60 s para valer.
- * Falha (rede, timeout, 503) não é guardada: cai no mesmo fallback de antes.
- */
-const CONFIG_TTL_MS = 30_000;
+const CONFIG_TTL_MS = 25_000;
 let cachedConfig: { value: PublicExperimentConfig; expiresAt: number } | undefined;
+let pendingConfig: Promise<PublicExperimentConfig> | undefined;
 
 async function loadConfig(requestUrl: string) {
   if (cachedConfig && cachedConfig.expiresAt > Date.now()) return cachedConfig.value;
-  const configResponse = await fetch(new URL("/api/ab/config", requestUrl), { signal: AbortSignal.timeout(5000) });
-  if (!configResponse.ok) throw new Error("Configuração indisponível");
-  const value = (await configResponse.json()) as PublicExperimentConfig;
-  cachedConfig = { value, expiresAt: Date.now() + CONFIG_TTL_MS };
-  return value;
+  if (!pendingConfig) {
+    const expiresAt = Date.now() + CONFIG_TTL_MS;
+    pendingConfig = (async () => {
+      // Isola esta versão da configuração legada ainda válida no cache da CDN.
+      const response = await fetch(new URL("/api/ab/config?v=2", requestUrl), {
+        signal: AbortSignal.timeout(2500), cache: "no-store",
+      });
+      if (!response.ok) throw new Error("Configuração indisponível");
+      const value = await response.json() as PublicExperimentConfig;
+      cachedConfig = { value, expiresAt };
+      return value;
+    })().finally(() => { pendingConfig = undefined; });
+  }
+  return pendingConfig;
+}
+
+function sameAddress(left: PageAddress, right: PageAddress) {
+  return left.host === right.host && left.path === right.path;
 }
 
 export async function middleware(request: NextRequest) {
-  const allowed = process.env.VERCEL_ENV === "production" && request.nextUrl.hostname === "goiania.rodrigofaustinoadvocacia.com.br";
-  if (request.nextUrl.pathname.startsWith("/api/ab/") || request.nextUrl.pathname.startsWith("/api/admin/")) {
-    if (!allowed) return NextResponse.json({ error: "A/B disponível somente no domínio de produção." }, { status: 403 });
-    if (request.method !== "GET" && request.headers.get("origin") !== request.nextUrl.origin) {
+  const { hostname: host, pathname: path, origin } = request.nextUrl;
+  const allowed = process.env.VERCEL_ENV === "production" && isLandingHost(host);
+  const isAdminApi = path.startsWith("/api/admin/");
+  const isAdminPage = path === "/admin" || path.startsWith("/admin/");
+  if (isAdminApi || path.startsWith("/api/ab/")) {
+    if (!allowed || ((isAdminApi || path === "/api/ab/finalize") && host !== HOME_HOST)) {
+      return NextResponse.json({ error: "A/B indisponível neste endereço." }, { status: 403 });
+    }
+    if (request.method !== "GET" && request.headers.get("origin") !== origin) {
       return NextResponse.json({ error: "Origem inválida." }, { status: 403 });
     }
     return NextResponse.next();
   }
-  if (!allowed || request.method !== "GET") {
-    return NextResponse.next();
+  if (isAdminPage && (!allowed || host !== HOME_HOST)) return new NextResponse(null, { status: 404 });
+
+  const headers = new Headers(request.headers);
+  const secret = process.env.AB_SIGNING_SECRET;
+  const probeToken = headers.get(AB_PROBE_HEADER);
+  headers.delete(AB_PROBE_HEADER);
+  headers.delete(AB_ENTRY_HEADER);
+  headers.delete(AB_EXPOSURE_HEADER);
+  headers.delete("x-ab-home-rewrite");
+  const next = () => NextResponse.next({ request: { headers } });
+  if (!allowed || !parseLandingUrl(path, host) || request.method !== "GET") return next();
+  if (probeToken && secret && probeToken === await catalogProbeToken(secret)) {
+    const response = next();
+    response.headers.set("Cache-Control", "private, no-store");
+    return response;
   }
 
+  const entry = { host, path };
   try {
     const config = await loadConfig(request.url);
-    const secret = process.env.AB_SIGNING_SECRET;
-
-    if (request.cookies.get(AB_OPTOUT_COOKIE)?.value === "1" || isRobot(request.headers.get("user-agent") ?? "")) {
-      if (config.permanentPath === "/") return NextResponse.next();
-      const optOutUrl = request.nextUrl.clone();
-      optOutUrl.pathname = config.permanentPath;
-      const optOutHeaders = new Headers(request.headers);
-      optOutHeaders.set("x-ab-home-rewrite", "1");
-      return NextResponse.rewrite(optOutUrl, { request: { headers: optOutHeaders } });
-    }
-
-    if (!config.experiment) {
-      if (config.permanentPath === "/") return NextResponse.next();
-      const rewriteUrl = request.nextUrl.clone();
-      rewriteUrl.pathname = config.permanentPath;
-      const headers = new Headers(request.headers);
-      headers.set("x-ab-home-rewrite", "1");
-      return NextResponse.rewrite(rewriteUrl, { request: { headers } });
-    }
-    if (!secret) return NextResponse.next();
-
     const experiment = config.experiment;
-    const existing = await verifyAssignment(request.cookies.get(ASSIGNMENT_COOKIE)?.value, secret);
-    const assignment = existing?.experimentId === experiment.id
-      ? existing
-      : {
-          experimentId: experiment.id,
-          participantId: crypto.randomUUID(),
-          pageId: Math.random() * 100 < experiment.baselineAllocation
-            ? experiment.baselinePageId
-            : experiment.challengerPageId,
-          variant: "a" as "a" | "b",
-          exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 180,
-        };
-    if (!existing || existing.experimentId !== experiment.id) {
-      assignment.variant = assignment.pageId === experiment.baselinePageId ? "a" : "b";
-    }
-    const destination = assignment.variant === "a"
-      ? experiment.baselinePath
-      : experiment.challengerPath;
-    const headers = new Headers(request.headers);
-    headers.set("x-ab-home-rewrite", "1");
-    const rewriteUrl = request.nextUrl.clone();
-    rewriteUrl.pathname = destination;
-    const response = destination === "/"
-      ? NextResponse.next({ request: { headers } })
-      : NextResponse.rewrite(rewriteUrl, { request: { headers } });
-    response.headers.set("Cache-Control", "private, no-store");
+    const publication = config.publications.find((item) => sameAddress(item.entry, entry));
+    let destination = publication?.page ?? entry;
+    let assignmentToken: string | undefined;
+    const running = experiment && sameAddress(experiment.entry, entry) &&
+      (!experiment.endsAt || Date.parse(experiment.endsAt) > Date.now());
+    const excluded = request.cookies.get(AB_OPTOUT_COOKIE)?.value === "1" ||
+      /bot|crawler|spider|preview|facebookexternalhit|whatsapp/i.test(headers.get("user-agent") ?? "") ||
+      headers.has("next-router-prefetch") || /prefetch/i.test(headers.get("purpose") ?? headers.get("sec-purpose") ?? "");
 
-    if (!existing || existing.experimentId !== experiment.id) {
-      response.cookies.set(ASSIGNMENT_COOKIE, await signAssignment(assignment, secret), {
-        httpOnly: true,
-        sameSite: "lax",
-        secure: process.env.NODE_ENV === "production",
-        path: "/",
-        maxAge: 60 * 60 * 24 * 180,
+    if (running && secret && !excluded) {
+      const existing = await verifyAssignment(request.cookies.get(ASSIGNMENT_COOKIE)?.value, secret);
+      const keep = existing?.experimentId === experiment.id &&
+        existing.pageId === (existing.variant === "a" ? experiment.baselinePageId : experiment.challengerPageId);
+      const variant = keep ? existing.variant : Math.random() * 100 < experiment.baselineAllocation ? "a" : "b";
+      const assignment = keep ? existing : {
+        variant, experimentId: experiment.id, participantId: crypto.randomUUID(),
+        pageId: variant === "a" ? experiment.baselinePageId : experiment.challengerPageId,
+        exp: Math.floor(Date.now() / 1000) + 180 * 86400,
+      };
+      destination = variant === "a" ? experiment.baseline : experiment.challenger;
+      headers.set(AB_EXPOSURE_HEADER, await signExposure({ ...assignment, entryHost: host, entryPath: path }, secret));
+      if (!keep) assignmentToken = await signAssignment(assignment, secret);
+    }
+    const rewritten = !sameAddress(destination, entry);
+    if (rewritten) headers.set(AB_ENTRY_HEADER, `https://${host}${path}`);
+    const url = request.nextUrl.clone();
+    url.pathname = destination.path;
+    // Ambas as origens usam a mesma árvore de rotas Next. O navegador continua na entrada.
+    const response = rewritten && destination.path !== path ? NextResponse.rewrite(url, { request: { headers } }) : next();
+    if (running || rewritten) response.headers.set("Cache-Control", "private, no-store");
+    if (destination.path === "/defesa-criminal") response.headers.set("Content-Security-Policy", landingCsp);
+    if (assignmentToken) {
+      response.cookies.set(ASSIGNMENT_COOKIE, assignmentToken, {
+        httpOnly: true, sameSite: "lax", secure: true, path: "/", maxAge: 180 * 86400,
       });
     }
     return response;
   } catch {
-    const response = NextResponse.next();
-    response.cookies.delete(ASSIGNMENT_COOKIE);
+    const response = next();
     response.headers.set("Cache-Control", "private, no-store");
     return response;
   }
 }
 
-export const config = { matcher: ["/", "/api/ab/:path*", "/api/admin/:path*"] };
+export const config = { matcher: ["/((?!_next/|images/|.*\\.[^/]+$).*)"] };

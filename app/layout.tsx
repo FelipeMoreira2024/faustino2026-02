@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
 import { CookieConsent } from "@/components/CookieConsent";
-import { ExperimentTracker } from "@/components/ExperimentTracker";
 import {
   absoluteUrl,
   HOME_URL,
@@ -90,7 +89,6 @@ export default function RootLayout({
       </head>
       <body className={`${inter.variable} ${fraunces.variable} font-sans antialiased`}>
         {children}
-        <ExperimentTracker />
         <CookieConsent gtmId={gtmId} />
       </body>
     </html>

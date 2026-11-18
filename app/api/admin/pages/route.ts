@@ -1,42 +1,40 @@
 import { NextResponse } from "next/server";
 import { isAdmin } from "@/lib/ab/auth";
-import { addPage } from "@/lib/ab/db";
+import { addPage, restorePublication, syncLandingCatalog } from "@/lib/ab/db";
+import { probeLanding } from "@/lib/ab/probe";
+import { parseLandingUrl } from "@/lib/ab/urls";
 
 export async function POST(request: Request) {
   if (!(await isAdmin())) return NextResponse.json({ error: "Não autorizado." }, { status: 401 });
-  const body = (await request.json().catch(() => null)) as { name?: string; path?: string } | null;
-  const name = body?.name?.trim();
-  let path = body?.path?.trim();
-  if (!name || !path) return NextResponse.json({ error: "Informe nome e caminho." }, { status: 400 });
+  const body = await request.json().catch(() => null);
   try {
-    const parsed = new URL(path, "https://goiania.rodrigofaustinoadvocacia.com.br");
-    if (parsed.hostname !== "goiania.rodrigofaustinoadvocacia.com.br") {
-      return NextResponse.json({ error: "Use uma página do domínio de Goiânia." }, { status: 400 });
+    if (body?.action === "sync") {
+      await syncLandingCatalog();
+      return NextResponse.json({ ok: true });
     }
-    path = parsed.pathname.replace(/\/$/, "") || "/";
-    if (!/^\/[a-z0-9/_-]*$/.test(path) || /^\/(admin|api)(\/|$)/.test(path) || parsed.search || parsed.hash) {
-      return NextResponse.json({ error: "O caminho da página não é válido." }, { status: 400 });
+    if (body?.action === "restore" && typeof body.entryId === "string" &&
+        /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(body.entryId)) {
+      await restorePublication(body.entryId);
+      return NextResponse.json({ ok: true });
     }
-    const target = `https://goiania.rodrigofaustinoadvocacia.com.br${path}`;
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 5_000);
-    let pageResponse: Response;
-    try {
-      pageResponse = await fetch(target, { method: "HEAD", redirect: "manual", cache: "no-store", signal: controller.signal });
-    } finally {
-      clearTimeout(timeout);
+
+    const name = typeof body?.name === "string" ? body.name.trim() : "";
+    const input = typeof body?.path === "string" ? body.path.trim() : "";
+    const page = parseLandingUrl(input, body?.host);
+    if (!name || name.length > 200 || !page) {
+      return NextResponse.json({ error: "Informe um nome e uma URL válida do Faustino." }, { status: 400 });
     }
-    if (!pageResponse.ok) {
-      return NextResponse.json({ error: "A página precisa estar publicada e responder sem redirecionamento." }, { status: 400 });
+    const probe = await probeLanding(page);
+    if (probe === "unverified") {
+      return NextResponse.json({ error: "Não foi possível verificar a URL agora. Tente novamente." }, { status: 503 });
     }
-    const contentType = pageResponse.headers.get("content-type") ?? "";
-    if (contentType && !contentType.includes("text/html")) {
-      return NextResponse.json({ error: "O endereço informado não é uma página HTML." }, { status: 400 });
+    if (probe === "unavailable") {
+      return NextResponse.json({ error: "Use uma landing publicada que abra diretamente e tenha medição de WhatsApp." }, { status: 400 });
     }
-    return NextResponse.json(await addPage(name, path), { status: 201 });
+    return NextResponse.json(await addPage(name, page.host, page.path), { status: 201 });
   } catch (error) {
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Não foi possível cadastrar a página." },
+      { error: error instanceof Error ? error.message : "Não foi possível atualizar o catálogo." },
       { status: 400 }
     );
   }

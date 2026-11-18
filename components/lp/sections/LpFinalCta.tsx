@@ -1,16 +1,13 @@
 import Image from "next/image";
-import { Phone } from "lucide-react";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { Reveal } from "@/components/Reveal";
-import { LpPhoneLink } from "@/components/lp/LpPhoneLink";
 import { LpWhatsAppLink } from "@/components/lp/LpWhatsAppLink";
 import { CONTAINER } from "@/components/lp/ui";
-import { PHONE_DISPLAY } from "@/lib/site";
 
 const assurances = [
-  "Plantão 24 horas",
-  "Direto com o advogado",
-  "Sigilo profissional",
+  "Disponível 24h",
+  "Atendimento direto com o advogado",
+  "Sigilo absoluto",
   "Atendimento particular",
 ];
 
@@ -20,7 +17,7 @@ export function LpFinalCta() {
       <div className="absolute inset-y-0 right-0 hidden w-[40%] lg:block">
         <div className="lp-photo relative h-full w-full">
           <Image
-            src="/images/lp/dr-rodrigo-faustino-biblioteca.webp"
+            src="/images/lp/dr-rodrigo-faustino-escritorio-azul.webp"
             alt=""
             fill
             quality={65}
@@ -38,7 +35,7 @@ export function LpFinalCta() {
         <Reveal className="py-20 lg:max-w-[42rem] lg:py-32">
           <div className="flex items-center gap-4">
             <Image
-              src="/images/lp/dr-rodrigo-faustino-biblioteca-avatar.webp"
+              src="/images/lp/dr-rodrigo-faustino-escritorio-azul-avatar.webp"
               alt=""
               width={192}
               height={192}
@@ -49,27 +46,18 @@ export function LpFinalCta() {
             <p className="lp-serif text-base italic text-brass">Se é urgente</p>
           </div>
           <h2 className="lp-serif mt-4 text-[2.5rem] font-medium leading-[1.04] tracking-[-0.025em] text-paper sm:text-[3.6rem]">
-            Fale agora com o Dr.&nbsp;Rodrigo Faustino.
+            Precisa de defesa criminal agora?
           </h2>
           <p className="mt-6 max-w-xl text-[1.0625rem] leading-relaxed text-muted">
-            Conte o que aconteceu em poucas linhas. Nas primeiras horas, cada providência pesa: a
-            orientação sobre o depoimento, o pedido de liberdade, a audiência de custódia.
+            Na defesa criminal, <strong className="font-semibold text-paper">cada hora conta</strong>.
+            Fale diretamente com o advogado e entenda o próximo passo do seu caso.
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
             <LpWhatsAppLink section="cta-final" className="lp-btn lp-btn-wa w-full sm:w-auto">
               <WhatsAppIcon className="h-5 w-5 shrink-0" />
-              <span className="sm:hidden">Falar com o Dr.&nbsp;Rodrigo agora</span>
-              <span className="hidden sm:inline">Falar com o Dr.&nbsp;Rodrigo no WhatsApp</span>
+              Atendimento imediato no WhatsApp
             </LpWhatsAppLink>
-            <LpPhoneLink
-              section="cta-final"
-              ariaLabel={`Ligar para ${PHONE_DISPLAY}`}
-              className="lp-btn lp-btn-line w-full sm:w-auto"
-            >
-              <Phone className="h-4 w-4 shrink-0 text-brass" strokeWidth={1.6} aria-hidden="true" />
-              {PHONE_DISPLAY}
-            </LpPhoneLink>
           </div>
 
           <ul className="mt-10 grid grid-cols-2 gap-x-5 gap-y-3 border-t border-brass/15 pt-6 text-sm text-muted sm:flex sm:flex-wrap">

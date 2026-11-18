@@ -66,8 +66,8 @@ CREATE TABLE IF NOT EXISTS ab_settings (
 INSERT INTO ab_pages (name, path) VALUES
   ('Home original', '/'),
   ('Home B', '/b')
-ON CONFLICT (path) DO NOTHING;
+ON CONFLICT DO NOTHING;
 
 INSERT INTO ab_settings (key, value)
-SELECT 'current_home_page_id', id::text FROM ab_pages WHERE path = '/'
+SELECT 'current_home_page_id', id::text FROM ab_pages WHERE path = '/' ORDER BY created_at LIMIT 1
 ON CONFLICT (key) DO NOTHING;

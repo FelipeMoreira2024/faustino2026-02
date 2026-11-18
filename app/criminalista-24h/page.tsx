@@ -1,3 +1,4 @@
+import { LandingMeasurement, landingMetadata } from "@/lib/ab/render";
 import type { Metadata, Viewport } from "next";
 import { LeadTrackingProvider } from "@/components/LeadTrackingContext";
 import { C24Attorney } from "@/components/criminalista-24h/Attorney";
@@ -44,7 +45,7 @@ const description =
 const ogImage = "/images/criminalista-24h/og-criminalista-24h.jpg";
 
 /* Sem `headers()` aqui: ler o pedido faria a página renderizar a cada visita. */
-export const metadata: Metadata = {
+const metadata: Metadata = {
   metadataBase: new URL(HOME_URL),
   title,
   description,
@@ -153,9 +154,14 @@ const jsonLd = [
   },
 ];
 
+export function generateMetadata() {
+  return landingMetadata(metadata);
+}
+
 export default function Criminalista24hPage() {
   return (
     <LeadTrackingProvider pageSlug={C24_SLUG} variant={C24_VARIANT}>
+      <LandingMeasurement />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

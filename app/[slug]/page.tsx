@@ -1,6 +1,6 @@
+import { LandingMeasurement, landingMetadata } from "@/lib/ab/render";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { headers } from "next/headers";
 import { JsonLd } from "@/components/JsonLd";
 import { LandingPageView } from "@/components/landing/LandingPageView";
 import {
@@ -27,15 +27,14 @@ export async function generateMetadata({ params }: RouteProps): Promise<Metadata
   const { slug } = await params;
   const page = getLandingPage(slug);
   if (!page) return {};
-  const shownAtHome = (await headers()).get("x-ab-home-rewrite") === "1";
 
   const canonical = landingPath(page.slug);
 
-  return {
+  return landingMetadata({
     title: page.seoTitle,
     description: page.description,
     keywords: [page.primaryKeyword, ...page.secondaryKeywords],
-    alternates: { canonical: shownAtHome ? "/" : canonical },
+    alternates: { canonical: canonical },
     robots: isVercelPreview
       ? { index: false, follow: false }
       : {
@@ -52,7 +51,7 @@ export async function generateMetadata({ params }: RouteProps): Promise<Metadata
     openGraph: {
       type: "website",
       locale: "pt_BR",
-      url: shownAtHome ? HOME_URL : absoluteUrl(canonical),
+      url: absoluteUrl(canonical),
       siteName: SITE_NAME,
       title: page.seoTitle,
       description: page.description,
@@ -71,7 +70,7 @@ export async function generateMetadata({ params }: RouteProps): Promise<Metadata
       description: page.description,
       images: [absoluteUrl("/images/og-image.jpg")],
     },
-  };
+  });
 }
 
 export default async function LandingRoute({ params }: RouteProps) {
@@ -143,6 +142,7 @@ export default async function LandingRoute({ params }: RouteProps) {
 
   return (
     <>
+      <LandingMeasurement />
       <JsonLd data={[webPageJsonLd, serviceJsonLd, breadcrumbJsonLd, faqJsonLd]} />
       <LandingPageView page={page} />
     </>

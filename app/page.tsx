@@ -1,3 +1,4 @@
+import { LandingMeasurement, landingMetadata } from "@/lib/ab/render";
 import type { Metadata } from "next";
 import { AgencyCredit } from "@/components/AgencyCredit";
 import { CookieSettingsButton } from "@/components/CookieSettingsButton";
@@ -21,7 +22,7 @@ import { LeadTrackingProvider } from "@/components/LeadTrackingContext";
 
 const SITE_URL = "https://goiania.rodrigofaustinoadvocacia.com.br";
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Advogado Criminalista em Goiânia 24h | Dr. Rodrigo Faustino",
   description:
@@ -149,9 +150,14 @@ const faqJsonLd = {
   })),
 };
 
+export function generateMetadata() {
+  return landingMetadata(metadata);
+}
+
 export default function Page() {
   return (
     <LeadTrackingProvider pageSlug="home" variant="a">
+      <LandingMeasurement />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(legalServiceJsonLd) }}

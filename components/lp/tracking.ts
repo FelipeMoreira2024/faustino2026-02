@@ -1,3 +1,4 @@
+import { trackWhatsAppLead, trackPhoneLead } from "@/components/WhatsAppButton";
 import { trackExperimentConversion } from "@/components/ExperimentTracker";
 import { COOKIE_CONSENT_STORAGE_KEY } from "@/lib/consent";
 import { LP_SLUG } from "@/lib/lp-defesa-criminal";
@@ -41,8 +42,12 @@ export function trackLpLead(
   section: string,
   topic = "defesa_criminal"
 ) {
-  // Só conta no A/B interno se a página estiver sendo servida em "/".
   if (channel === "whatsapp") trackExperimentConversion();
+  if (window.location.pathname !== "/defesa-criminal") {
+    const trackLead = channel === "whatsapp" ? trackWhatsAppLead : trackPhoneLead;
+    trackLead({ section, pageSlug: LP_SLUG });
+    return;
+  }
 
   // Esta página carrega o GTM sem aviso de cookies (ver AUTO_CONSENT_PATHS),
   // exceto para quem recusou pelo link do rodapé.

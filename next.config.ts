@@ -1,4 +1,6 @@
 import type { NextConfig } from "next";
+import { landingCsp } from "./lib/landing-csp";
+import { landingPages, landingPath } from "./lib/landing-pages";
 
 const LANDING_URL = "https://adv.rodrigofaustinoadvocacia.com.br";
 const LANDING_HOST = "adv.rodrigofaustinoadvocacia.com.br";
@@ -6,15 +8,7 @@ const HOME_URL = "https://goiania.rodrigofaustinoadvocacia.com.br";
 const HOME_HOST = "goiania.rodrigofaustinoadvocacia.com.br";
 
 const landingPaths = [
-  "/advogado-flagrante-goiania",
-  "/advogado-audiencia-de-custodia-goiania",
-  "/pedido-liberdade-provisoria-goiania",
-  "/advogado-inquerito-policial-goiania",
-  "/advogado-prisao-temporaria-goiania",
-  "/advogado-criminalista-anapolis",
-  "/advogado-crimes-sexuais-aparecida-de-goiania",
-  "/advogado-crimes-sexuais-anapolis",
-  "/advogado-crimes-sexuais-goiania",
+  ...landingPages.map(({ slug }) => landingPath(slug)),
   "/sobre-rodrigo-faustino",
   "/contato",
   "/politica-de-privacidade",
@@ -36,32 +30,6 @@ const legacyRedirects = [
  * e para o carregador do GTM. Ao adicionar outra ferramenta no GTM (ex.: Pixel
  * da Meta), inclua os domínios dela aqui, senão ela será bloqueada.
  */
-const googleTagOrigins = [
-  "https://*.googletagmanager.com",
-  "https://*.google-analytics.com",
-  "https://*.analytics.google.com",
-  "https://*.g.doubleclick.net",
-  "https://*.doubleclick.net",
-  "https://*.googleadservices.com",
-  "https://*.googlesyndication.com",
-  "https://*.google.com",
-  "https://*.google.com.br",
-].join(" ");
-
-const landingCsp = [
-  "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' ${googleTagOrigins}`,
-  "style-src 'self' 'unsafe-inline'",
-  `img-src 'self' data: blob: ${googleTagOrigins}`,
-  "font-src 'self' data:",
-  `connect-src 'self' ${googleTagOrigins}`,
-  `frame-src ${googleTagOrigins}`,
-  "object-src 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-  "frame-ancestors 'self'",
-].join("; ");
-
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: {
@@ -88,18 +56,7 @@ const nextConfig: NextConfig = {
         headers: [{ key: "Content-Security-Policy", value: landingCsp }],
       },
       {
-        // /criminalista-24h é estática e o HTML dela é indexável (é a versão para
-        // a home). Acessada pelo próprio endereço, fica fora do Google por este
-        // cabeçalho. Servida em "/" pelo middleware do A/B, o pedido é "/" e traz
-        // `x-ab-home-rewrite`, então a regra não vale e a home segue indexável.
-        source: "/criminalista-24h",
-        missing: [{ type: "header", key: "x-ab-home-rewrite" }],
-        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
-      },
-      {
-        // /b é a mesma página da /criminalista-24h (ver app/b/page.tsx): mesma regra.
-        source: "/b",
-        missing: [{ type: "header", key: "x-ab-home-rewrite" }],
+        source: "/:path(b|criminalista-24h|advogado-criminal|advogado-defesa-criminal)",
         headers: [{ key: "X-Robots-Tag", value: "noindex" }],
       },
       {

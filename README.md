@@ -24,7 +24,8 @@ npm run start  # servir build
 ## Estrutura
 
 - `app/page.tsx` — home (Goiânia)
-- `app/b/page.tsx` — **variante B da home** para teste A/B (`noindex`, canonical `/`). Seções alteradas em `components/sections/home-b/`; o restante é compartilhado. Leads saem com `page_slug: "home-b"` e `ab_variant: "b"`; cliques em telefone disparam `lead_phone_rodrigo_faustino_v2`.
+- `app/b/page.tsx` — **variante B da home** para teste A/B (`noindex`, canonical `/`). Reexporta `/criminalista-24h`.
+- `app/advogado-criminal/page.tsx` — **nova desafiante da home** (`noindex` no acesso direto, indexável via rewrite em `/`). Conteúdo em `lib/advogado-criminal.ts` e seções em `components/advogado-criminal/`; dispara `lead_whatsapp_rodrigo_faustino_v2` e `lead_phone_rodrigo_faustino_v2` com `page_slug: "advogado-criminal"` e `ab_variant: "d"`.
 - `app/defesa-criminal/page.tsx` — **landing de anúncios** (Google Ads), independente da home. Ver seção abaixo.
 - `app/[slug]/page.tsx` — nove landings
 - `lib/landing-pages.ts` — conteúdo das landings
@@ -50,7 +51,7 @@ Vercel. Na home (/) e em /defesa-criminal, `NEXT_PUBLIC_GTM_ID` carrega o GTM po
 URL: `https://goiania.rodrigofaustinoadvocacia.com.br/defesa-criminal` — página estática,
 `noindex, follow` (não disputa a busca orgânica com a home).
 
-- Conteúdo (textos, situações da triagem, FAQ, honrarias): `lib/lp-defesa-criminal.ts`
+- Conteúdo (textos, situações da triagem, FAQ, honrarias): `lib/lp-defesa-criminal.ts`. Os títulos e a copy seguem a home, com contato somente por WhatsApp.
 - Seções: `components/lp/sections/`; estilos isolados em `app/defesa-criminal/lp.css`
 - Fotos otimizadas: `public/images/lp/` (inclui `og-defesa-criminal.jpg` para o preview no WhatsApp)
 
@@ -63,7 +64,8 @@ carrega e os eventos não vão para o `dataLayer`:
 | Evento | Quando |
 | --- | --- |
 | `lead_whatsapp_rodrigo_faustino_v3` | clique em qualquer botão/link de WhatsApp da página |
-| `lead_phone_rodrigo_faustino_v3` | clique em link de telefone |
+
+A landing não exibe links de ligação nem habilita a detecção automática de telefones. A conversão de ligação v3 permanece no Ads apenas para observação como secundária.
 
 Parâmetros: `lead_section` (hero, triagem, topbar, cta-final…), `lead_topic`
 (códigos neutros `situacao_1` a `situacao_5`, mapeados em `lib/lp-defesa-criminal.ts`,
@@ -74,15 +76,21 @@ Todos os botões de WhatsApp da landing usam a mesma mensagem da home: "Olá, pr
 
 ## Testes A/B
 
-O painel privado fica em `/admin/experimentos`. Ele distribui a home 50/50,
-mantém a página por navegador e mede uma conversão por sessão de 30 minutos.
+No painel privado `/admin/experimentos`, escolha duas landings do catálogo ou cadastre
+uma URL publicada nos subdomínios de Goiânia e `adv`. A URL da versão A distribui
+o tráfego em 50/50, mantém a atribuição do navegador e mede sessões com clique
+no WhatsApp. O painel aceita um teste ativo ou pausado por vez. Uma vencedora
+passa a ser exibida na URL de entrada, que pode ser restaurada pelo catálogo.
 
-1. Crie um Neon Postgres pelo Marketplace da Vercel e conecte-o ao projeto.
-2. Execute `db/001_ab_testing.sql` no console SQL do banco.
-3. Gere o hash da senha com `npm run ab:hash-password -- "sua-senha-segura"`.
-4. Configure na Vercel: `DATABASE_URL`, `AB_ADMIN_PASSWORD_HASH`,
-   `AB_SESSION_SECRET`, `AB_SIGNING_SECRET` e `CRON_SECRET`.
-5. Faça o deploy, entre no painel, confira as páginas `/` e `/b` e inicie o teste.
+Novos slugs de `lib/landing-pages.ts` são sincronizados ao abrir o painel.
+Para uma landing independente, inclua `LandingMeasurement`, use os componentes
+de CTA com medição e aplique `landingMetadata` aos metadados. Cadastre a URL pelo
+painel ou inclua-a no catálogo padrão em `lib/ab/catalog.ts`.
 
-Use valores aleatórios longos e diferentes para os três segredos. A coleta própria
-é independente do GTM; o Google Analytics continua condicionado ao consentimento.
+O projeto usa Postgres no Neon. Configure `DATABASE_URL`, `AB_ADMIN_PASSWORD_HASH`,
+`AB_SESSION_SECRET`, `AB_SIGNING_SECRET` e `CRON_SECRET` na Vercel.
+Gere o hash da senha com `npm run ab:hash-password -- "sua-senha-segura"`.
+Valide `npm run ab:migrate` em uma branch isolada com `DATABASE_URL_UNPOOLED`
+apontando para a conexão direta dessa branch. Depois aplique as migrações no banco
+de produção antes de liberar a versão do app. A migração preserva a publicação
+da home, os experimentos e seus resultados. Use `npm run ab:test` para as regressões.

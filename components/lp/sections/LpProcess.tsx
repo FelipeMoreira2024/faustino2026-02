@@ -15,12 +15,12 @@ export function LpProcess() {
                 Como funciona
               </SectionLabel>
               <h2 className="lp-serif mt-5 text-[2rem] font-medium leading-[1.1] tracking-[-0.02em] sm:text-[2.6rem]">
-                Do primeiro contato à defesa constituída.
+                Como funciona o atendimento
               </h2>
             </div>
             <p className="max-w-lg leading-relaxed text-ink-soft lg:col-span-6">
-              Sem formulário e sem cadastro. Você explica a situação, e o advogado avalia o que
-              precisa ser feito primeiro.
+              Atendimento particular, direto com o advogado. Após a análise do caso,
+              você recebe a proposta de honorários com total transparência.
             </p>
           </div>
         </Reveal>
@@ -51,7 +51,7 @@ export function LpProcess() {
             </p>
             <LpWhatsAppLink section="como-funciona" className="lp-btn lp-btn-wa w-full sm:w-auto">
               <WhatsAppIcon className="h-5 w-5 shrink-0" />
-              Contar o que aconteceu
+              Falar com o advogado agora
             </LpWhatsAppLink>
           </div>
         </Reveal>

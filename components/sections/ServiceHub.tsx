@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ArrowRight, FileSearch, LockKeyhole, MapPinned, Siren } from "lucide-react";
 import { landingPages, landingPath } from "@/lib/landing-pages";
 import { Eyebrow } from "@/components/Eyebrow";
@@ -29,7 +28,7 @@ export function ServiceHub() {
           {landingPages.map((page) => {
             const Icon = iconByKind[page.kind];
             return (
-              <Link
+              <a
                 key={page.slug}
                 href={absoluteUrl(landingPath(page.slug))}
                 className="group flex min-h-64 flex-col border border-ink/15 bg-white/25 p-6 transition-[border-color,transform] duration-300 hover:-translate-y-1 hover:border-brass-deep/60"
@@ -44,7 +43,7 @@ export function ServiceHub() {
                   Ver orientação
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
                 </span>
-              </Link>
+              </a>
             );
           })}
         </div>

@@ -9,9 +9,9 @@ export function LpPractice() {
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           <Reveal className="lg:col-span-5">
             <div className="lg:sticky lg:top-28">
-              <SectionLabel numeral="V">Atuação</SectionLabel>
+              <SectionLabel numeral="V">Especialidades</SectionLabel>
               <h2 className="lp-serif mt-5 text-[2rem] font-medium leading-[1.1] tracking-[-0.02em] text-paper sm:text-[2.6rem]">
-                Exclusivamente defesa criminal.
+                Defesa especializada em direito criminal
               </h2>
               <p className="mt-5 leading-relaxed text-muted">
                 O escritório defende pessoas presas, investigadas, intimadas ou acusadas, em
@@ -23,7 +23,7 @@ export function LpPractice() {
 
               <div className="mt-10 border border-brass/20 p-6">
                 <p className="lp-serif text-lg italic text-paper">
-                  Este não é o atendimento indicado se você:
+                  Este não é o serviço adequado se:
                 </p>
                 <ul className="mt-4 space-y-2.5 text-[15px] leading-snug text-muted">
                   {notServed.map((item) => (

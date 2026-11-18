@@ -7,4 +7,4 @@
  * `page_slug: "criminalista-24h"` e `ab_variant: "c"`. O acesso direto a /b
  * recebe `X-Robots-Tag: noindex` pelo `next.config.ts`.
  */
-export { default, metadata, viewport } from "../criminalista-24h/page";
+export { default, generateMetadata, viewport } from "../criminalista-24h/page";

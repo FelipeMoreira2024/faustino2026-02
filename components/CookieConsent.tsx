@@ -28,12 +28,10 @@ export { AUTO_CONSENT_PATHS, isAutoConsentPath } from "@/lib/consent";
 export function CookieConsent({ gtmId }: { gtmId?: string }) {
   const autoConsent = isAutoConsentPath(usePathname());
   const [consent, setConsent] = useState<Consent>(null);
-  const [abOptOut, setAbOptOut] = useState(false);
 
   useEffect(() => {
     const saved = window.localStorage.getItem(STORAGE_KEY);
     setConsent(saved === "accepted" || saved === "rejected" ? saved : "pending");
-    setAbOptOut(document.cookie.split(";").some((cookie) => cookie.trim() === "faustino_ab_optout=1"));
 
     const reopen = () => setConsent("pending");
     window.addEventListener(SETTINGS_EVENT, reopen);
@@ -59,17 +57,6 @@ export function CookieConsent({ gtmId }: { gtmId?: string }) {
       }
     }
     setConsent(value);
-  }
-
-  async function toggleAbMeasurement() {
-    const enabled = !abOptOut;
-    await fetch("/api/ab/optout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ enabled }),
-    });
-    setAbOptOut(enabled);
-    window.location.reload();
   }
 
   if (autoConsent) {
@@ -108,13 +95,7 @@ export function CookieConsent({ gtmId }: { gtmId?: string }) {
             .
           </p>
           <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:justify-end">
-            <button
-              type="button"
-              className="min-h-11 px-3 text-xs font-semibold text-muted underline underline-offset-4"
-              onClick={toggleAbMeasurement}
-            >
-              {abOptOut ? "Participar do teste de página" : "Não participar do teste de página"}
-            </button>
+            <AbOptOutButton />
             <button
               type="button"
               className="min-h-11 border border-paper/25 px-5 text-sm font-semibold transition-colors hover:bg-paper/10"
@@ -133,6 +114,44 @@ export function CookieConsent({ gtmId }: { gtmId?: string }) {
         </section>
       ) : null}
     </>
+  );
+}
+
+export function AbOptOutButton() {
+  const [optedOut, setOptedOut] = useState<boolean | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    setOptedOut(document.cookie.split(";").some((cookie) => cookie.trim() === "faustino_ab_optout=1"));
+  }, []);
+
+  async function toggle() {
+    setBusy(true);
+    setFailed(false);
+    try {
+      const response = await fetch("/api/ab/optout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ enabled: !optedOut }),
+      });
+      if (!response.ok) throw new Error();
+      window.location.reload();
+    } catch {
+      setFailed(true);
+      setBusy(false);
+    }
+  }
+
+  if (optedOut === null) return null;
+  return (
+    <span>
+      <button type="button" disabled={busy} onClick={() => void toggle()}
+        className="min-h-11 text-xs underline underline-offset-4 disabled:opacity-50">
+        {optedOut ? "Participar do teste de página" : "Não participar do teste de página"}
+      </button>
+      {failed && <span role="status" className="block">Não foi possível salvar a preferência.</span>}
+    </span>
   );
 }
 

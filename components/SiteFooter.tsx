@@ -25,7 +25,7 @@ export function SiteFooter() {
     <footer className="border-t border-brass/15 bg-ink">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-12 sm:px-8 md:grid-cols-[1.1fr_1fr_1fr] lg:px-20">
         <div>
-          <Link href={HOME_URL} aria-label={`${SITE_NAME} — página inicial`}>
+          <a href={HOME_URL} aria-label={`${SITE_NAME} — página inicial`}>
             <Image
               src="/images/logo-faustino.webp"
               alt={SITE_NAME}
@@ -33,7 +33,7 @@ export function SiteFooter() {
               height={72}
               className="h-auto w-[170px] opacity-95"
             />
-          </Link>
+          </a>
           <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted">
             {ATTORNEY_NAME} — Advogado Criminalista • {ATTORNEY_OAB}. Atendimento
             particular e conteúdo jurídico informativo.
@@ -59,9 +59,9 @@ export function SiteFooter() {
           <ul className="mt-4 space-y-2.5 text-sm text-muted">
             {urgentLinks.map(([label, slug]) => (
               <li key={slug}>
-                <Link className="link-underline hover:text-paper" href={absoluteUrl(landingPath(slug))}>
+                <a className="link-underline hover:text-paper" href={absoluteUrl(landingPath(slug))}>
                   {label}
-                </Link>
+                </a>
               </li>
             ))}
           </ul>
@@ -74,9 +74,9 @@ export function SiteFooter() {
           <ul className="mt-4 space-y-2.5 text-sm text-muted">
             {defenseLinks.map(([label, slug]) => (
               <li key={slug}>
-                <Link className="link-underline hover:text-paper" href={absoluteUrl(landingPath(slug))}>
+                <a className="link-underline hover:text-paper" href={absoluteUrl(landingPath(slug))}>
                   {label}
-                </Link>
+                </a>
               </li>
             ))}
           </ul>

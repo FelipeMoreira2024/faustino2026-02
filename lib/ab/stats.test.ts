@@ -31,3 +31,8 @@ test("não decide com amostra insuficiente", () => {
   assert.equal(result.outcome, "inconclusive");
   assert.equal("reason" in result ? result.reason : null, "minimum_sample");
 });
+
+test("bloqueia decisão com desequilíbrio significativo apesar de amostra suficiente", () => {
+  const result = evaluateAutomaticWinner("unequal", sample(1500, 0.1), sample(1000, 0.4));
+  assert.deepEqual(result, { outcome: "inconclusive", reason: "allocation_mismatch" });
+});

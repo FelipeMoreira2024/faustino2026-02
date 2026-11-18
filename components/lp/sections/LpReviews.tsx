@@ -11,12 +11,15 @@ export function LpReviews() {
           <SectionLabel numeral="IV" tone="paper">
             Avaliações
           </SectionLabel>
+          <h2 className="lp-serif mt-5 text-[2rem] font-medium leading-[1.1] tracking-[-0.02em] sm:text-[2.6rem]">
+            O que dizem os clientes
+          </h2>
           <p className="lp-serif mt-6 text-[5.5rem] font-light leading-[0.85] tracking-[-0.04em] sm:text-[6.5rem]">
             5,0
           </p>
           <Stars className="mt-4 text-brass-deep" />
           <p className="mt-4 max-w-xs leading-relaxed text-ink-soft">
-            Nota média no Google, em avaliações públicas deixadas por clientes.
+            Avaliação média 5.0 no Google — por clientes reais
           </p>
           <a
             href={GOOGLE_REVIEWS_URL}

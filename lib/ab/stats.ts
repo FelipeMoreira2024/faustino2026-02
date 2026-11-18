@@ -1,5 +1,10 @@
 type ParticipantResult = { visits: number; conversions: number };
 
+export function hasAllocationMismatch(baseline: number, challenger: number) {
+  const total = baseline + challenger;
+  return total >= 10 && (baseline - challenger) ** 2 / total > 10.827566;
+}
+
 function seededRandom(seed: string) {
   let state = 2166136261;
   for (const character of seed) {
@@ -43,6 +48,9 @@ export function evaluateAutomaticWinner(
     return { outcome: "inconclusive" as const, reason: "minimum_sample" as const };
   }
 
+  if (hasAllocationMismatch(baseline.length, challenger.length)) {
+    return { outcome: "inconclusive" as const, reason: "allocation_mismatch" as const };
+  }
   const random = seededRandom(experimentId);
   const differences = Array.from({ length: iterations }, () =>
     bootstrapRate(challenger, random) - bootstrapRate(baseline, random)

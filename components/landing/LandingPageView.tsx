@@ -98,9 +98,9 @@ export function LandingPageView({ page }: { page: LandingPage }) {
           <div className="mx-auto max-w-6xl px-5 pb-16 pt-8 sm:px-8 lg:px-20 lg:pb-24">
             <nav aria-label="Breadcrumb" className="text-xs text-muted">
               <ol className="flex flex-wrap items-center gap-2">
-                <li><Link className="link-underline" href={HOME_URL}>Início</Link></li>
+                <li><a className="link-underline" href={HOME_URL}>Início</a></li>
                 <li aria-hidden="true">/</li>
-                <li><Link className="link-underline" href={HOME_URL}>Defesa criminal</Link></li>
+                <li><a className="link-underline" href={HOME_URL}>Defesa criminal</a></li>
                 <li aria-hidden="true">/</li>
                 <li aria-current="page" className="text-paper">{page.topic} em {page.city}</li>
               </ol>
@@ -297,12 +297,12 @@ export function LandingPageView({ page }: { page: LandingPage }) {
             <h2 className="mt-4 font-display text-3xl font-semibold sm:text-4xl">Orientações relacionadas ao seu momento</h2>
             <div className="mt-10 grid gap-5 md:grid-cols-3">
               {relatedPages.map((related) => (
-                <Link key={related.slug} href={landingPath(related.slug)} className="group border border-ink/15 bg-white/25 p-6 transition-colors hover:border-brass-deep/60">
+                <a key={related.slug} href={absoluteUrl(landingPath(related.slug))} className="group border border-ink/15 bg-white/25 p-6 transition-colors hover:border-brass-deep/60">
                   <FileCheck2 className="h-5 w-5 text-brass-deep" aria-hidden="true" />
                   <h3 className="mt-4 font-display text-xl font-semibold">{related.h1}</h3>
                   <p className="mt-3 line-clamp-4 text-sm leading-relaxed text-ink-soft">{related.quickAnswer}</p>
                   <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold">Ver orientação <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" /></span>
-                </Link>
+                </a>
               ))}
             </div>
           </div>

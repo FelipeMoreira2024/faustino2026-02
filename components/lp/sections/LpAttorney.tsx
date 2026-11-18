@@ -6,9 +6,9 @@ import { CONTAINER, SectionLabel } from "@/components/lp/ui";
 import { honors } from "@/lib/lp-defesa-criminal";
 
 const credentials = [
-  "Atendimento direto com o advogado, sem intermediários no primeiro contato",
-  "Atuação em todas as fases: delegacia, inquérito, processo e recursos",
-  "Plantão 24 horas para prisões e casos urgentes",
+  "Atendimento direto com o advogado",
+  "Referência em defesa criminal em Goiás",
+  "Plantão 24 horas para emergências",
 ];
 
 export function LpAttorney() {
@@ -20,8 +20,8 @@ export function LpAttorney() {
             <figure>
               <div className="lp-photo relative aspect-[4/5] w-full max-w-md overflow-hidden bg-ink-elevated lg:max-w-none">
                 <Image
-                  src="/images/lp/dr-rodrigo-faustino-biblioteca.webp"
-                  alt="Dr. Rodrigo Faustino de braços cruzados, em frente à biblioteca jurídica"
+                  src="/images/lp/dr-rodrigo-faustino-escritorio-azul.webp"
+                  alt="Dr. Rodrigo Faustino de terno azul, de braços cruzados em um escritório"
                   fill
                   quality={70}
                   sizes="(min-width: 1024px) 40vw, (min-width: 640px) 28rem, 100vw"
@@ -33,24 +33,24 @@ export function LpAttorney() {
           </Reveal>
 
           <Reveal delay={80} className="lg:col-span-7 lg:pt-4">
-            <SectionLabel numeral="III">O advogado</SectionLabel>
+            <SectionLabel numeral="III">Referência em direito criminal</SectionLabel>
             <h2 className="lp-serif mt-5 text-[2.3rem] font-medium leading-[1.05] tracking-[-0.025em] text-paper sm:text-[3.1rem]">
               Dr.&nbsp;Rodrigo Faustino
             </h2>
             <p className="mt-3 text-[15px] font-medium tracking-[0.02em] text-brass">
-              Advogado criminalista · OAB/GO 64.028
+              Advogado criminalista
             </p>
 
             <p className="mt-7 text-[1.0625rem] leading-relaxed text-paper">
-              Secretário-geral da Comissão de Direitos e Prerrogativas da ABRACRIM/GO, a Associação
-              Brasileira dos Advogados Criminalistas. São mais de{" "}
+              Presidente da Comissão de Direitos e Prerrogativas da ABRACRIM/GO
+              (Associação Brasileira dos Advogados Criminalistas), com mais de{" "}
               <strong className="font-semibold">950 casos de defesa criminal</strong> conduzidos em
               Goiânia e em todo o Estado de Goiás.
             </p>
             <p className="mt-4 leading-relaxed text-muted">
-              Atua em casos urgentes e sensíveis com postura técnica, linguagem clara e sigilo. Quem
-              procura o escritório sabe, desde a primeira conversa, o que está em jogo e qual é o
-              próximo passo.
+              Atua com defesa criminal estratégica em casos urgentes e sensíveis, com atendimento
+              direto, postura técnica e orientação clara desde o primeiro contato — sempre com
+              sigilo e responsabilidade profissional.
             </p>
 
             <ul className="mt-8 divide-y divide-brass/15 border-y border-brass/15">
@@ -65,7 +65,7 @@ export function LpAttorney() {
             <div className="mt-9">
               <LpWhatsAppLink section="advogado" className="lp-btn lp-btn-wa w-full sm:w-auto">
                 <WhatsAppIcon className="h-5 w-5 shrink-0" />
-                Falar com o Dr.&nbsp;Rodrigo
+                Falar com o Dr.&nbsp;Rodrigo no WhatsApp
               </LpWhatsAppLink>
             </div>
           </Reveal>
@@ -75,7 +75,7 @@ export function LpAttorney() {
           <Reveal>
             <div className="grid gap-4 lg:grid-cols-12 lg:items-end lg:gap-16">
               <h3 className="lp-serif text-[1.65rem] font-medium leading-tight tracking-[-0.015em] text-paper sm:text-[2rem] lg:col-span-5">
-                Reconhecimento público e diálogo institucional
+                Atuação junto às principais autoridades do direito
               </h3>
               <p className="max-w-xl leading-relaxed text-muted lg:col-span-7">
                 Homenagens recebidas do Legislativo goiano e encontros com autoridades do sistema de

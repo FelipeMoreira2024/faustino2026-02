@@ -1,3 +1,5 @@
+import { faqItems } from "@/lib/faq";
+
 /**
  * Conteúdo da landing de anúncios `/defesa-criminal` (domínio de Goiânia).
  *
@@ -14,8 +16,8 @@ export type Situation = {
    * Vai para o dataLayer como `lead_topic`. Código neutro de propósito: o tema
    * (prisão, investigação, crime sexual…) nunca sai do site, mesmo que um dia
    * uma variável do GTM passe a ler esse campo. O mapa é a ordem desta lista:
-   * situacao_1 familiar preso · situacao_2 intimação · situacao_3 investigação ·
-   * situacao_4 acusação sensível · situacao_5 processo.
+   * situacao_1 flagrante · situacao_2 intimação · situacao_3 mandado ·
+   * situacao_4 acusação sensível · situacao_5 investigação · situacao_6 custódia.
    */
   key: string;
   title: string;
@@ -26,65 +28,71 @@ export type Situation = {
 export const situations: Situation[] = [
   {
     key: "situacao_1",
-    title: "Um familiar foi preso",
+    title: "Prisão em flagrante (sua ou de um familiar)",
     detail: "Flagrante, delegacia ou audiência de custódia",
   },
   {
     key: "situacao_2",
-    title: "Recebi uma intimação",
+    title: "Intimação policial ou judicial",
     detail: "Para depor na delegacia ou em juízo",
   },
   {
     key: "situacao_3",
-    title: "Estou sendo investigado",
-    detail: "Inquérito, mandado de busca ou de prisão",
+    title: "Mandado de prisão ou de busca e apreensão",
+    detail: "Defesa imediata na delegacia e acompanhamento do caso",
   },
   {
     key: "situacao_4",
-    title: "Fui acusado de crime sexual",
+    title: "Acusação de crime sexual",
     detail: "Atendimento reservado, com sigilo absoluto",
   },
   {
     key: "situacao_5",
-    title: "Respondo a um processo",
-    detail: "Defesa, audiências, júri ou recursos",
+    title: "Investigação ou inquérito em andamento",
+    detail: "Estratégia defensiva antes de qualquer declaração",
+  },
+  {
+    key: "situacao_6",
+    title: "Audiência de custódia nas próximas horas",
+    detail: "Análise da legalidade da prisão e defesa na audiência",
   },
 ];
 
 export const practiceAreas = [
   {
-    title: "Prisão em flagrante e audiência de custódia",
-    text: "Acompanhamento na delegacia, análise da legalidade da prisão e defesa na audiência de custódia.",
+    title: "Prisão em Flagrante e Audiência de Custódia",
+    text: "Atuação nas primeiras 24 horas: acompanhamento na delegacia, análise da legalidade da prisão e defesa na audiência de custódia.",
   },
   {
-    title: "Pedidos de liberdade",
-    text: "Habeas corpus, liberdade provisória, relaxamento da prisão e revogação da preventiva.",
+    title: "Pedidos de Liberdade",
+    text: "Habeas corpus, liberdade provisória, relaxamento de prisão e revogação de preventiva, com fundamentação técnica e agilidade.",
   },
   {
-    title: "Inquérito e investigação",
-    text: "Acompanhamento de depoimentos e oitivas, acesso aos autos e estratégia antes de qualquer declaração.",
+    title: "Defesa em Crimes Sexuais",
+    text: "Defesa técnica e sigilosa para quem é acusado em casos de estupro, importunação, assédio ou crimes online. Estratégia definida antes de qualquer declaração.",
   },
   {
-    title: "Acusações de crimes sexuais",
-    text: "Defesa técnica e sigilosa de quem é acusado de estupro, importunação, assédio ou crimes pela internet.",
+    title: "Defesa em Crimes de Drogas",
+    text: "Acusações de posse ou tráfico: análise do flagrante, tese de desclassificação e estratégia defensiva desde o início.",
   },
   {
-    title: "Crimes relacionados a drogas",
-    text: "Posse ou tráfico: análise do flagrante, da abordagem policial e da possibilidade de desclassificação.",
+    title: "Defesa em Acusações de Estelionato e Crimes Patrimoniais",
+    text: "Para quem está sendo investigado ou acusado de estelionato, fraude ou crimes cibernéticos.",
   },
   {
-    title: "Estelionato, fraudes e crimes patrimoniais",
-    text: "Defesa de quem é investigado ou acusado, inclusive em crimes cometidos pela internet.",
+    title: "Defesa em Crimes Violentos e Tribunal do Júri",
+    text: "Atuação em acusações graves, com preparação técnica para plenário e foco na preservação de direitos.",
   },
   {
-    title: "Crimes violentos e Tribunal do Júri",
-    text: "Acusações graves, com preparação técnica para o plenário do júri.",
+    title: "Acompanhamento em Delegacia 24h",
+    text: "Presença do advogado em depoimentos, oitivas e ocorrências urgentes, a qualquer hora.",
   },
 ];
 
 export const notServed = [
-  "é vítima e quer registrar ocorrência ou pedir medida protetiva;",
-  "procura o atendimento gratuito da Defensoria Pública.",
+  "Você busca registrar denúncia ou medida protetiva como vítima",
+  "Você procura a Defensoria Pública (atendimento gratuito do Estado)",
+  "Você foi vítima de golpe online e busca recuperar valores.",
 ];
 
 /** Nomes e instituições conferidos nas próprias fotos e na home atual. */
@@ -152,53 +160,21 @@ export const GOOGLE_REVIEWS_URL =
 
 export const steps = [
   {
-    title: "Você conta o que aconteceu",
-    text: "Pelo WhatsApp ou por telefone, em poucas linhas: a cidade, a fase do caso e a data do próximo ato, se houver. Documentos, só quando o advogado pedir.",
+    title: "Contato imediato",
+    text: "Você chama no WhatsApp, descreve a situação em poucas linhas e recebe retorno rápido — 24 horas para casos urgentes.",
   },
   {
-    title: "O advogado avalia a urgência",
-    text: "Riscos imediatos, prazos e a primeira providência: ir à delegacia, pedir a liberdade ou preparar o depoimento.",
+    title: "Análise do caso",
+    text: "O advogado avalia o momento do processo, os riscos imediatos e o que precisa ser feito primeiro.",
   },
   {
-    title: "Proposta clara, e a defesa começa",
-    text: "Os honorários são apresentados com transparência, conforme a complexidade do caso. Formalizada a contratação, a defesa começa.",
+    title: "Proposta de atuação",
+    text: "Após a análise, você recebe a proposta de honorários com total transparência, de acordo com a complexidade do caso, e as formas de pagamento. A defesa começa assim que formalizada.",
   },
 ];
 
-export const faqs = [
-  {
-    question: "O atendimento é mesmo 24 horas?",
-    answer:
-      "Sim. Em situações urgentes, como prisão em flagrante, mandado de prisão ou audiência de custódia, o plantão funciona 24 horas, todos os dias, inclusive fins de semana.",
-  },
-  {
-    question: "O Dr. Rodrigo atua na defesa de quem foi acusado de crime sexual?",
-    answer:
-      "Sim. A defesa em acusações de crimes sexuais é uma das principais áreas de atuação do Dr. Rodrigo Faustino, em casos de estupro, importunação, assédio e crimes praticados pela internet. O atendimento é reservado e segue sigilo absoluto desde o primeiro contato, e a estratégia é definida antes de qualquer depoimento ou manifestação.",
-  },
-  {
-    question: "Meu familiar foi preso. O que eu faço agora?",
-    answer:
-      "Fale com o advogado imediatamente, pelo WhatsApp ou por telefone, e informe o nome completo da pessoa e onde ela está. Oriente-a a não prestar depoimento antes da chegada da defesa.",
-  },
-  {
-    question: "O que acontece na audiência de custódia?",
-    answer:
-      "A pessoa presa em flagrante é apresentada a um juiz em até 24 horas. Ele decide se a prisão foi legal e se ela poderá responder em liberdade. Por isso a defesa precisa estar preparada antes da audiência.",
-  },
-  {
-    question: "Quanto custa contratar a defesa?",
-    answer:
-      "Os honorários são definidos depois da análise do caso, conforme a complexidade e a urgência, e apresentados com total transparência. O atendimento é particular.",
-  },
-  {
-    question: "A conversa pelo WhatsApp é sigilosa?",
-    answer:
-      "Sim. Tudo o que você relata é protegido pelo sigilo profissional desde a primeira mensagem.",
-  },
-  {
-    question: "Atendem em Aparecida de Goiânia e em outras cidades?",
-    answer:
-      "Sim. Goiânia, Aparecida de Goiânia e região metropolitana, com atendimento presencial e plantão 24 horas. Casos em outras cidades de Goiás são avaliados individualmente.",
-  },
-];
+/** A mesma copy de FAQ da home, com o contato da landing somente por WhatsApp. */
+export const faqs = faqItems.map(({ question, answer }) => ({
+  question,
+  answer: answer.replace("WhatsApp ou telefone", "WhatsApp"),
+}));

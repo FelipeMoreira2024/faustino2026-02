@@ -12,12 +12,15 @@ export async function POST(request: Request) {
     durationDays?: number;
   } | null;
   if (
-    !body?.name?.trim() || !body.baselinePageId || !body.challengerPageId ||
+    typeof body?.name !== "string" || !body.name.trim() || body.name.trim().length > 200 ||
+    typeof body.baselinePageId !== "string" || typeof body.challengerPageId !== "string" ||
+    !/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(body.baselinePageId) ||
+    !/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(body.challengerPageId) ||
     !["manual", "automatic"].includes(body.mode ?? "")
   ) {
     return NextResponse.json({ error: "Preencha todos os dados do teste." }, { status: 400 });
   }
-  const durationDays = Math.max(1, Math.min(90, Number(body.durationDays) || 14));
+  const durationDays = Math.max(1, Math.min(90, Math.trunc(Number(body.durationDays) || 14)));
   try {
     return NextResponse.json(await startExperiment({
       name: body.name.trim(),

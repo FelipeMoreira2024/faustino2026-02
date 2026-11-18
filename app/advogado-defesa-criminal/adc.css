@@ -1,0 +1,224 @@
+/*
+ * Estilos dedicados da página `/advogado-defesa-criminal` (namespace `.adc-`).
+ * Importado via `app/globals.css` para compor o mesmo CSS crítico sem requisição extra.
+ *
+ * Princípios:
+ * - Zero dependência de JS para pintura do Hero (H1, subheadline, CTAs e foto nascem visíveis);
+ * - Animações apenas em compositor (`transform`, `opacity`);
+ * - `content-visibility: auto` nas seções abaixo da dobra (`.adc-defer`);
+ * - Suporte seguro a telas estreitas de 320px até desktop ultrawide.
+ */
+
+html:has(.adc-page) {
+  scroll-padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+.adc-page {
+  --adc-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.adc-page ::selection {
+  background: rgba(201, 169, 97, 0.32);
+}
+
+/* ---- Botão principal de WhatsApp ---- */
+.adc-btn-wa {
+  position: relative;
+  overflow: clip;
+  isolation: isolate;
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.28) inset,
+    0 14px 32px -12px rgba(37, 211, 102, 0.52);
+  transition:
+    background-color 0.2s ease,
+    transform 0.22s var(--adc-ease),
+    box-shadow 0.22s ease;
+}
+
+.adc-btn-wa:hover {
+  background-color: #20c65c;
+}
+
+.adc-btn-wa:active {
+  transform: scale(0.99);
+}
+
+.adc-btn-wa::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 36%,
+    rgba(255, 255, 255, 0.36) 50%,
+    transparent 64%
+  );
+  transform: translateX(-135%);
+}
+
+@keyframes adc-sheen {
+  from {
+    transform: translateX(-135%);
+  }
+  to {
+    transform: translateX(135%);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .adc-btn-hero::after {
+    animation: adc-sheen 1.15s var(--adc-ease) 1.2s backwards;
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .adc-btn-wa:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.32) inset,
+      0 18px 36px -12px rgba(37, 211, 102, 0.62);
+  }
+  .adc-btn-wa:hover::after {
+    transform: translateX(135%);
+    transition: transform 0.75s var(--adc-ease);
+  }
+}
+
+@media (max-width: 359px) {
+  .adc-btn-wa {
+    gap: 0.5rem;
+    padding-inline: 0.9rem;
+    font-size: 0.9375rem;
+  }
+}
+
+/* ---- Moldura editorial do retrato Hero ---- */
+.adc-hero-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(16, 20, 24, 0.03) 0%,
+    rgba(16, 20, 24, 0.08) 54%,
+    rgba(16, 20, 24, 0.88) 100%
+  );
+}
+
+/* ---- Cartões de cenário ---- */
+.adc-card {
+  position: relative;
+  transition:
+    border-color 0.28s ease,
+    background-color 0.28s ease,
+    transform 0.28s var(--adc-ease),
+    box-shadow 0.28s ease;
+}
+
+.adc-card:active {
+  transform: scale(0.99);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .adc-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(201, 169, 97, 0.68);
+    background-color: #1f2732;
+    box-shadow: 0 20px 38px -22px rgba(0, 0, 0, 0.85);
+  }
+}
+
+/* ---- Seções abaixo da dobra ---- */
+.adc-defer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 760px;
+}
+
+/* ---- FAQ nativo (<details>) ---- */
+.adc-faq summary {
+  list-style: none;
+}
+
+.adc-faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.adc-faq details[open] .adc-faq-icon {
+  transform: rotate(45deg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports selector(::details-content) and (interpolate-size: allow-keywords) {
+    .adc-faq details {
+      interpolate-size: allow-keywords;
+    }
+    .adc-faq details::details-content {
+      block-size: 0;
+      opacity: 0;
+      overflow: clip;
+      contain: layout;
+      transition:
+        block-size 0.35s var(--adc-ease),
+        opacity 0.28s ease,
+        content-visibility 0.35s allow-discrete;
+    }
+    .adc-faq details[open]::details-content {
+      block-size: auto;
+      opacity: 1;
+    }
+  }
+}
+
+/* ---- Superfície do WhatsApp ---- */
+.adc-wa-surface {
+  background-color: #0b141a;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+/* ---- Dock sticky mobile / flutuante desktop ---- */
+.adc-dock {
+  transition:
+    transform 0.32s var(--adc-ease),
+    opacity 0.24s ease;
+}
+
+.adc-dock[data-visible="false"] {
+  transform: translateY(120%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adc-dock {
+    transition: none;
+  }
+}
+
+/* ---- Barra de progresso de leitura CSS ---- */
+.adc-scroll-line {
+  display: none;
+}
+
+@keyframes adc-scroll-scale {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .adc-scroll-line {
+      display: block;
+      transform-origin: left;
+      animation: adc-scroll-scale linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+}

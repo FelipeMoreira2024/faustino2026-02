@@ -1,9 +1,7 @@
 import Image from "next/image";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
-import { LpPhoneLink } from "@/components/lp/LpPhoneLink";
 import { LpWhatsAppLink } from "@/components/lp/LpWhatsAppLink";
 import { CONTAINER } from "@/components/lp/ui";
-import { PHONE_DISPLAY } from "@/lib/site";
 
 export function LpTopbar() {
   return (
@@ -23,17 +21,10 @@ export function LpTopbar() {
           <p className="flex min-w-0 items-center gap-2 text-[11px] leading-none text-paper sm:text-xs">
             <span aria-hidden="true" className="pulse-dot h-2 w-2 shrink-0 rounded-full bg-whatsapp" />
             <span className="truncate">
-              {/* Em telas estreitas (320–379px) some o "CRIMINAL" para o telefone caber inteiro */}
               <strong className="font-semibold tracking-[0.08em]">
                 PLANTÃO <span className="hidden min-[380px]:inline">CRIMINAL </span>24H
               </strong>
-              <span className="hidden text-muted md:inline"> · ligue ou chame no WhatsApp:</span>{" "}
-              <LpPhoneLink
-                section="topbar"
-                className="inline-block whitespace-nowrap py-3 font-semibold underline-offset-4 hover:underline"
-              >
-                {PHONE_DISPLAY}
-              </LpPhoneLink>
+              <span className="hidden text-muted md:inline"> — Acusado ou preso? Fale agora:</span>
             </span>
           </p>
         </div>

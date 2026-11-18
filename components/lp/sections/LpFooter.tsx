@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { AgencyCredit } from "@/components/AgencyCredit";
-import { LpCookieOptOut } from "@/components/lp/LpCookieOptOut";
+import { CookieSettingsButton } from "@/components/CookieSettingsButton";
 import { CONTAINER } from "@/components/lp/ui";
 import { absoluteUrl, OFFICE_ADDRESS_DISPLAY } from "@/lib/site";
 
@@ -35,7 +35,7 @@ export function LpFooter() {
           >
             <span className="link-underline">Política de privacidade</span>
           </a>
-          <LpCookieOptOut />
+          <CookieSettingsButton />
         </div>
       </div>
       <div className={`${CONTAINER} border-t border-brass/10 py-4 text-center text-[11px] text-muted/50`}>

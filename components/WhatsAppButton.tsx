@@ -45,23 +45,23 @@ function pushLeadEvent(
 ) {
   if (!hasMetricsConsent()) return;
 
+  const adsLanding = window.location.pathname === "/defesa-criminal";
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({
     ...whatsappLeadEvent,
     ...overrides,
+    event: adsLanding ? overrides.event.replace(/_v2$/, "_v3") : overrides.event,
+    version: adsLanding ? "v3_lp_defesa_criminal" : whatsappLeadEvent.version,
     lead_section: context.section,
     lead_city: context.city || "goiania",
-    lead_topic: context.topic || "defesa_criminal",
+    lead_topic: adsLanding ? "defesa_criminal" : context.topic || "defesa_criminal",
     page_slug: context.pageSlug || "home",
     ab_variant: context.variant || "a",
   });
 }
 
 export function trackWhatsAppLead(context: TrackingContext) {
-  pushLeadEvent(
-    { event: whatsappLeadEvent.event, conversion_type: "whatsapp_click" },
-    context
-  );
+  pushLeadEvent({ event: whatsappLeadEvent.event, conversion_type: "whatsapp_click" }, context);
 }
 
 /** Clique em link `tel:` — evento separado para o GTM não misturar com WhatsApp. */

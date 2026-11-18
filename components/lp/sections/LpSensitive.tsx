@@ -5,10 +5,10 @@ import { LpWhatsAppLink } from "@/components/lp/LpWhatsAppLink";
 import { SectionLabel } from "@/components/lp/ui";
 
 const scope = [
-  "Acusações de estupro, importunação e assédio",
-  "Acusações de crimes sexuais pela internet",
-  "Acompanhamento desde a investigação",
-  "Sigilo absoluto em todo o atendimento",
+  "Defesa em acusações de estupro, importunação e assédio",
+  "Defesa em acusações de crimes sexuais online",
+  "Acompanhamento desde o início da investigação",
+  "Atuação ética, técnica e com sigilo absoluto",
 ];
 
 export function LpSensitive() {
@@ -17,15 +17,15 @@ export function LpSensitive() {
       <div className="mx-auto max-w-3xl px-5 py-20 text-center sm:px-8 lg:py-32">
         <Reveal>
           <SectionLabel numeral="VII" className="justify-center">
-            Acusações sensíveis
+            Defesa especializada
           </SectionLabel>
           <h2 className="lp-serif mt-6 text-[2.1rem] font-medium leading-[1.1] tracking-[-0.02em] text-paper sm:text-[2.9rem]">
-            Acusado de crime sexual? Fale com a defesa antes de falar com qualquer pessoa.
+            Acusado de um crime sexual? Aja antes de falar.
           </h2>
           <p className="mx-auto mt-6 max-w-2xl leading-relaxed text-muted">
-            Nesses casos, o que se diz antes da orientação jurídica, a amigos, à família, nas redes
-            ou na delegacia, costuma pesar no processo. A defesa é técnica, discreta e começa pela
-            estratégia.
+            Acusações de crimes contra a dignidade sexual exigem defesa técnica, responsável e
+            absolutamente sigilosa <strong className="font-semibold text-paper">desde o primeiro contato</strong>
+            {" "}— muitas vezes, o que é dito antes da orientação jurídica define o rumo do caso.
           </p>
         </Reveal>
 
@@ -48,8 +48,7 @@ export function LpSensitive() {
               className="lp-btn lp-btn-wa w-full sm:w-auto"
             >
               <WhatsAppIcon className="h-5 w-5 shrink-0" />
-              <span className="sm:hidden">Conversar com sigilo</span>
-              <span className="hidden sm:inline">Conversar com sigilo pelo WhatsApp</span>
+              Falar com o advogado com total sigilo
             </LpWhatsAppLink>
             <p className="flex items-center gap-2 text-xs text-muted">
               <LockKeyhole className="h-3.5 w-3.5 shrink-0 text-brass" strokeWidth={1.6} aria-hidden="true" />

@@ -1,0 +1,227 @@
+/*
+ * Estilos dedicados da página desafiante `/advogado-criminal` (namespace `.ac-`).
+ * Importado em `app/globals.css` para sair no mesmo bundle CSS sem bloquear a
+ * primeira pintura com um arquivo extra.
+ *
+ * Diretrizes de performance e acessibilidade (Modern Web Guidance):
+ * - Hero H1, subtítulo e botão principal nascem 100% visíveis sem depender de JS;
+ * - Apenas propriedades de compositor (`transform`, `opacity`, `clip-path`);
+ * - Seções abaixo da dobra usam `content-visibility: auto` com `contain-intrinsic-size`;
+ * - `prefers-reduced-motion` respeitado integralmente;
+ * - Suporte seguro a telas estreitas de 320px até ultrawide.
+ */
+
+html:has(.ac-page) {
+  scroll-padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+}
+
+.ac-page {
+  --ac-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ac-page ::selection {
+  background: rgba(201, 169, 97, 0.32);
+}
+
+/* ---- Botão principal de WhatsApp ---- */
+.ac-btn-wa {
+  position: relative;
+  overflow: clip;
+  isolation: isolate;
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.28) inset,
+    0 14px 32px -12px rgba(37, 211, 102, 0.52);
+  transition:
+    background-color 0.2s ease,
+    transform 0.22s var(--ac-ease),
+    box-shadow 0.22s ease;
+}
+
+.ac-btn-wa:hover {
+  background-color: #20c65c;
+}
+
+.ac-btn-wa:active {
+  transform: scale(0.99);
+}
+
+.ac-btn-wa::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 36%,
+    rgba(255, 255, 255, 0.38) 50%,
+    transparent 64%
+  );
+  transform: translateX(-135%);
+}
+
+@keyframes ac-sheen {
+  from {
+    transform: translateX(-135%);
+  }
+  to {
+    transform: translateX(135%);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ac-btn-hero::after {
+    animation: ac-sheen 1.15s var(--ac-ease) 1.3s backwards;
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .ac-btn-wa:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.32) inset,
+      0 18px 36px -12px rgba(37, 211, 102, 0.62);
+  }
+  .ac-btn-wa:hover::after {
+    transform: translateX(135%);
+    transition: transform 0.75s var(--ac-ease);
+  }
+}
+
+/* Telas muito estreitas (320px–359px): mantém botão em linha única sem cortar texto */
+@media (max-width: 359px) {
+  .ac-btn-wa {
+    gap: 0.5rem;
+    padding-inline: 0.85rem;
+    font-size: 0.9375rem;
+  }
+}
+
+/* ---- Moldura editorial do retrato no Hero ---- */
+.ac-hero-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(16, 20, 24, 0.04) 0%,
+    rgba(16, 20, 24, 0.1) 52%,
+    rgba(16, 20, 24, 0.88) 100%
+  );
+}
+
+/* ---- Cartões interativos de triagem ---- */
+.ac-triage-card {
+  position: relative;
+  transition:
+    border-color 0.28s ease,
+    background-color 0.28s ease,
+    transform 0.28s var(--ac-ease),
+    box-shadow 0.28s ease;
+}
+
+.ac-triage-card:active {
+  transform: scale(0.99);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .ac-triage-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(201, 169, 97, 0.65);
+    background-color: #1e252f;
+    box-shadow: 0 20px 38px -22px rgba(0, 0, 0, 0.85);
+  }
+}
+
+/* ---- Seções abaixo da dobra com content-visibility seguro ---- */
+.ac-defer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 760px;
+}
+
+/* ---- FAQ nativo (<details>) com animação progressiva ---- */
+.ac-faq summary {
+  list-style: none;
+}
+
+.ac-faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.ac-faq details[open] .ac-faq-icon {
+  transform: rotate(45deg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports selector(::details-content) and (interpolate-size: allow-keywords) {
+    .ac-faq details {
+      interpolate-size: allow-keywords;
+    }
+    .ac-faq details::details-content {
+      block-size: 0;
+      opacity: 0;
+      overflow: clip;
+      contain: layout;
+      transition:
+        block-size 0.35s var(--ac-ease),
+        opacity 0.28s ease,
+        content-visibility 0.35s allow-discrete;
+    }
+    .ac-faq details[open]::details-content {
+      block-size: auto;
+      opacity: 1;
+    }
+  }
+}
+
+/* ---- Fundo da prévia fiel do WhatsApp ---- */
+.ac-wa-surface {
+  background-color: #0b141a;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+/* ---- Barra fixa mobile e pílula desktop ---- */
+.ac-dock {
+  transition:
+    transform 0.32s var(--ac-ease),
+    opacity 0.24s ease;
+}
+
+.ac-dock[data-visible="false"] {
+  transform: translateY(120%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ac-dock {
+    transition: none;
+  }
+}
+
+/* ---- Barra de progresso de leitura no topo (CSS Scroll-Driven Animation) ---- */
+.ac-scroll-line {
+  display: none;
+}
+
+@keyframes ac-scroll-scale {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .ac-scroll-line {
+      display: block;
+      transform-origin: left;
+      animation: ac-scroll-scale linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+}

@@ -10,13 +10,13 @@ export function LpTriage() {
       <div className={`${CONTAINER} grid gap-10 border-t border-brass/15 py-16 lg:grid-cols-12 lg:gap-12 lg:py-28`}>
         <Reveal className="lg:col-span-5">
           <div className="lg:sticky lg:top-28">
-            <SectionLabel numeral="I">O que aconteceu</SectionLabel>
+            <SectionLabel numeral="I">Atenção imediata</SectionLabel>
             <h2 className="lp-serif mt-5 text-[2rem] font-medium leading-[1.1] tracking-[-0.02em] text-paper sm:text-[2.6rem]">
-              Escolha a situação mais próxima da sua.
+              Situação urgente? Cada hora conta.
             </h2>
             <p className="mt-5 max-w-md leading-relaxed text-muted">
-              A mensagem para o Dr.&nbsp;Rodrigo já vai escrita. Você só confere e envia pelo
-              WhatsApp. Se preferir, complete com os detalhes que quiser.
+              Não preste depoimento sem um advogado criminalista. Uma declaração equivocada
+              nas primeiras horas pode definir o rumo de todo o processo.
             </p>
           </div>
         </Reveal>
@@ -59,7 +59,7 @@ export function LpTriage() {
               topic="outra_situacao"
               className="link-underline relative font-semibold text-paper after:absolute after:inset-x-0 after:-inset-y-3"
             >
-              Escreva com as suas palavras
+              Falar com o advogado agora
             </LpWhatsAppLink>
             .
           </p>

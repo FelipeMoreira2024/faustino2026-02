@@ -9,15 +9,19 @@ export type AssignmentPayload = {
   exp: number;
 };
 
+export type PageAddress = { host: string; path: string };
+export type Exposure = AssignmentPayload & { entryHost: string; entryPath: string };
+
 export type PublicExperimentConfig = {
   experiment: null | {
     id: string;
+    entry: PageAddress;
     baselinePageId: string;
-    baselinePath: string;
+    baseline: PageAddress;
     challengerPageId: string;
-    challengerPath: string;
+    challenger: PageAddress;
     baselineAllocation: number;
     endsAt: string | null;
   };
-  permanentPath: string;
+  publications: { entry: PageAddress; page: PageAddress }[];
 };

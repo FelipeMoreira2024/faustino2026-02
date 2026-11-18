@@ -14,7 +14,7 @@ export function LpFaq() {
               Perguntas frequentes
             </SectionLabel>
             <h2 className="lp-serif mt-5 text-[2rem] font-medium leading-[1.1] tracking-[-0.02em] sm:text-[2.6rem] lg:text-[2.25rem]">
-              O que perguntam no primeiro contato.
+              Perguntas frequentes
             </h2>
             <p className="mt-5 leading-relaxed text-ink-soft">
               Não encontrou a sua dúvida?{" "}

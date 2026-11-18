@@ -1,5 +1,5 @@
+import { LandingMeasurement, landingMetadata } from "@/lib/ab/render";
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 import Image from "next/image";
 import { AgencyCredit } from "@/components/AgencyCredit";
 import { CookieSettingsButton } from "@/components/CookieSettingsButton";
@@ -51,20 +51,14 @@ const directMetadata: Metadata = {
   },
 };
 
-export async function generateMetadata(): Promise<Metadata> {
-  const shownAtHome = (await headers()).get("x-ab-home-rewrite") === "1";
-  if (!shownAtHome) return directMetadata;
-  return {
-    ...directMetadata,
-    alternates: { canonical: "/" },
-    robots: { index: true, follow: true },
-    openGraph: { ...directMetadata.openGraph, url: SITE_URL },
-  };
+export function generateMetadata() {
+  return landingMetadata(directMetadata);
 }
 
 export default function PageB() {
   return (
     <LeadTrackingProvider pageSlug="home-b" variant="b">
+      <LandingMeasurement />
 
       <Topbar home href={WA_HOME_STANDARD} />
 

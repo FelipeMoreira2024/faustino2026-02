@@ -1,6 +1,8 @@
 @import "tailwindcss";
-/* Detalhes da /criminalista-24h no CSS principal: um arquivo a menos travando a primeira pintura. */
+/* Detalhes da /criminalista-24h e /advogado-criminal no CSS principal: um arquivo a menos travando a primeira pintura. */
 @import "./criminalista-24h/c24.css";
+@import "./advogado-criminal/ac.css";
+@import "./advogado-defesa-criminal/adc.css";
 
 :root {
   --ink: #101418;

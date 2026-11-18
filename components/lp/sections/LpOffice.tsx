@@ -27,7 +27,7 @@ export function LpOffice() {
         <Reveal delay={80} className="lg:col-span-5">
           <SectionLabel numeral="IX">O escritório</SectionLabel>
           <h2 className="lp-serif mt-5 text-[2rem] font-medium leading-[1.1] tracking-[-0.02em] text-paper sm:text-[2.6rem]">
-            Atendimento presencial em Goiânia.
+            Atendimento em Goiânia
           </h2>
           <ul className="mt-7 space-y-4 text-[15px] leading-relaxed text-muted">
             <li className="flex gap-3">

@@ -1,4 +1,4 @@
-import type { AssignmentPayload } from "@/lib/ab/types";
+import type { AssignmentPayload, Exposure } from "@/lib/ab/types";
 
 const encoder = new TextEncoder();
 
@@ -59,3 +59,20 @@ export const ASSIGNMENT_COOKIE = "faustino_ab_assignment";
 export const SESSION_COOKIE = "faustino_ab_session";
 export const ADMIN_COOKIE = "faustino_ab_admin";
 export const AB_OPTOUT_COOKIE = "faustino_ab_optout";
+
+export const AB_EXPOSURE_HEADER = "x-faustino-ab-exposure";
+export const AB_ENTRY_HEADER = "x-faustino-ab-entry";
+export const AB_PROBE_HEADER = "x-faustino-ab-probe";
+
+export async function catalogProbeToken(secret: string) {
+  return toBase64Url(await hmac("faustino:catalog-probe", secret));
+}
+
+export async function signExposure(exposure: Exposure, secret: string) {
+  return signAssignment(exposure, `exposure:${secret}`);
+}
+
+export async function verifyExposure(token: string | undefined, secret: string) {
+  const exposure = await verifyAssignment(token, `exposure:${secret}`) as Exposure | null;
+  return exposure?.entryHost && exposure.entryPath ? exposure : null;
+}
