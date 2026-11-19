@@ -45,12 +45,12 @@ export function C24Sensitive() {
           <Reveal className="c24-reveal-photo hidden lg:col-span-5 lg:block">
             <div className="c24-photo relative aspect-[4/5] overflow-clip rounded-2xl bg-ink">
               <Image
-                src="/images/criminalista-24h/dr-rodrigo-estudo.webp"
-                alt="Dr. Rodrigo Faustino lendo em um tablet, em frente a livros de Direito Criminal"
+                src="/images/criminalista-24h/foto-profissional-faustino-advocacia-especializada.webp"
+                alt="Dr. Rodrigo Faustino sentado em uma poltrona, de terno e gravata vermelha"
                 fill
                 quality={70}
                 sizes="26rem"
-                className="c24-photo-img object-cover object-[center_30%]"
+                className="c24-photo-img object-cover object-center"
               />
             </div>
           </Reveal>

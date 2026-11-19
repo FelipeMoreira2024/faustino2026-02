@@ -8,7 +8,6 @@ import { C24WhatsAppLink } from "@/components/criminalista-24h/WhatsAppLink";
 import { AVATAR_SRC, BTN_WA, CONTAINER, HERO_CTA_ID } from "@/components/criminalista-24h/ui";
 import { GOOGLE_RATING, GOOGLE_REVIEWS_COUNT } from "@/lib/criminalista-24h";
 
-/** "4,9" → 4.9, para o contador animar o mesmo número que está em `lib/criminalista-24h.ts`. */
 const RATING_VALUE = Number(GOOGLE_RATING.replace(",", "."));
 
 /**
@@ -59,9 +58,8 @@ export function C24Hero() {
           </h1>
 
           <p className="mt-4 max-w-[34rem] text-[17px] leading-relaxed text-muted sm:text-lg">
-            Familiar preso, intimação ou investigação? Fale agora{" "}
-            <strong className="font-semibold text-paper">direto com o advogado</strong> e saiba
-            o próximo passo.
+            Familiar acusado ou Preso? Fale agora{" "}
+            <strong className="font-semibold text-paper">com o advogado</strong> de Defesa.
           </p>
 
           <div id={HERO_CTA_ID} className="mt-5">
@@ -81,7 +79,7 @@ export function C24Hero() {
             <ul className="grid grid-cols-2 divide-x divide-brass/15 border-y border-brass/15 py-4 text-center sm:grid-cols-3 sm:text-left">
               <li className="px-2 first:pl-0 sm:px-5">
                 <span className="flex items-center justify-center gap-1 font-display text-[1.6rem] font-semibold leading-none text-paper sm:justify-start">
-                  <C24CountUp to={RATING_VALUE} decimals={1} />
+                  <C24CountUp to={RATING_VALUE} decimals={GOOGLE_RATING.includes(",") ? 1 : 0} />
                   <Star className="h-4 w-4 fill-brass text-brass" strokeWidth={1} aria-hidden="true" />
                 </span>
                 <span className="mt-1.5 block text-[12px] leading-snug text-muted sm:text-[13px]">

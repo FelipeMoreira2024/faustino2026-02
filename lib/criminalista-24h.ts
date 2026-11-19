@@ -15,12 +15,9 @@ export const C24_PATH = `/${C24_SLUG}`;
 /** Vai para o dataLayer como `ab_variant` (a home é "a", a /b é "b"). */
 export const C24_VARIANT = "c";
 
-/**
- * Perfil do Google conferido em 05/11/2026: 4,9 estrelas, 249 avaliações.
- * Atualize os dois valores quando o perfil mudar.
- */
-export const GOOGLE_RATING = "4,9";
-export const GOOGLE_REVIEWS_COUNT = 249;
+/** Atualize os dois valores quando o perfil do Google mudar. */
+export const GOOGLE_RATING = "5";
+export const GOOGLE_REVIEWS_COUNT = 250;
 
 /** Abre o Perfil da Empresa no Google Maps direto na aba de avaliações. */
 export const GOOGLE_REVIEWS_URL =
