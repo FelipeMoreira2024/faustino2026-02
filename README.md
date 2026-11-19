@@ -78,9 +78,27 @@ Todos os botões de WhatsApp da landing usam a mesma mensagem da home: "Olá, pr
 
 No painel privado `/admin/experimentos`, escolha duas landings do catálogo ou cadastre
 uma URL publicada nos subdomínios de Goiânia e `adv`. A URL da versão A distribui
-o tráfego em 50/50, mantém a atribuição do navegador e mede sessões com clique
-no WhatsApp. O painel aceita um teste ativo ou pausado por vez. Uma vencedora
-passa a ser exibida na URL de entrada, que pode ser restaurada pelo catálogo.
+o tráfego em 50/50 e mantém a atribuição do navegador. O painel sugere a home
+original e a Criminalista 24h (`/b`). Há um teste ativo ou pausado por vez.
+
+1. Registre a hipótese, a taxa histórica da métrica escolhida, a melhora mínima
+   e a previsão diária. O painel calcula a amostra por variante, com poder de
+   80% e significância bilateral de 5%. Use a revisão manual para validar a
+   medição se a amostra estimada ultrapassar o prazo possível.
+2. Acompanhe navegadores com clique, conversa e lead qualificado. No WhatsApp,
+   copie o código `AB-…` da mensagem e registre o estágio no painel. Use o mesmo
+   critério de qualificação nas duas páginas. O painel conta uma vez por
+   navegador e estágio. O prazo de registro começa na primeira visita medida.
+3. Ao fim da distribuição, o painel espera a janela de qualificação. O resultado
+   exige a amostra planejada, distribuição equilibrada, intervalo de confiança
+   que exclua zero e melhora observada de pelo menos o tamanho definido. Uma
+   vencedora passa a ser exibida na entrada. O catálogo pode restaurá-la.
+
+Durante uma rodada, uma mudança na revisão do deploy interrompe a distribuição
+e impede a publicação da vencedora com os dados da versão anterior. No GTM,
+encaminhe `ab_experiment_id` e `ab_variant` do `dataLayer` como parâmetros de
+evento ao GA4. `page_slug` continua indicando a landing. Use o ID do experimento
+ao filtrar A/B no GA4. Os códigos de atendimento ficam no painel e na mensagem.
 
 Novos slugs de `lib/landing-pages.ts` são sincronizados ao abrir o painel.
 Para uma landing independente, inclua `LandingMeasurement`, use os componentes

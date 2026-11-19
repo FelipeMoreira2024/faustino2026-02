@@ -5,16 +5,15 @@ import { createContext, useContext } from "react";
 export type LeadTrackingDefaults = {
   /** Identificador da página nos eventos de lead (ex.: "home", "home-b"). */
   pageSlug?: string;
-  /** Variante do teste A/B (ex.: "a", "b"). */
+  /** Rótulo legado da página fora de um teste ativo. */
   variant?: string;
 };
 
 const LeadTrackingContext = createContext<LeadTrackingDefaults>({});
 
 /**
- * Fornece page_slug / ab_variant padrão para todos os CTAs de WhatsApp e
- * telefone abaixo dele, sem precisar alterar cada seção. Quando ausente, os
- * botões mantêm o comportamento original (page_slug "home", variante "a").
+ * Fornece page_slug e o rótulo legado para os CTAs de WhatsApp e telefone.
+ * Durante um experimento, o grupo sorteado substitui o rótulo no dataLayer.
  */
 export function LeadTrackingProvider({
   pageSlug,

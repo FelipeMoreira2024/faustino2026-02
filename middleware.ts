@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
   AB_ENTRY_HEADER, AB_EXPOSURE_HEADER, AB_OPTOUT_COOKIE, AB_PROBE_HEADER,
-  ASSIGNMENT_COOKIE, catalogProbeToken, signAssignment, signExposure, verifyAssignment,
+  ASSIGNMENT_COOKIE, catalogProbeToken, contactReference, signAssignment, signExposure, verifyAssignment,
 } from "@/lib/ab/crypto";
 import type { PageAddress, PublicExperimentConfig } from "@/lib/ab/types";
 import { HOME_HOST, isLandingHost, parseLandingUrl } from "@/lib/ab/urls";
@@ -88,7 +88,10 @@ export async function middleware(request: NextRequest) {
         exp: Math.floor(Date.now() / 1000) + 180 * 86400,
       };
       destination = variant === "a" ? experiment.baseline : experiment.challenger;
-      headers.set(AB_EXPOSURE_HEADER, await signExposure({ ...assignment, entryHost: host, entryPath: path }, secret));
+      const reference = experiment.measureLeads ? await contactReference(assignment, secret) : undefined;
+      headers.set(AB_EXPOSURE_HEADER, await signExposure({
+        ...assignment, entryHost: host, entryPath: path, contactReference: reference,
+      }, secret));
       if (!keep) assignmentToken = await signAssignment(assignment, secret);
     }
     const rewritten = !sameAddress(destination, entry);

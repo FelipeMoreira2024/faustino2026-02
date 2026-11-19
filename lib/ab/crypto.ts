@@ -68,6 +68,11 @@ export async function catalogProbeToken(secret: string) {
   return toBase64Url(await hmac("faustino:catalog-probe", secret));
 }
 
+export async function contactReference(assignment: AssignmentPayload, secret: string) {
+  const bytes = await hmac(`faustino:contact:${assignment.experimentId}:${assignment.participantId}`, secret);
+  return Array.from(bytes.subarray(0, 8), (byte) => byte.toString(16).padStart(2, "0")).join("").toUpperCase();
+}
+
 export async function signExposure(exposure: Exposure, secret: string) {
   return signAssignment(exposure, `exposure:${secret}`);
 }

@@ -62,8 +62,8 @@ export function FloatingWhatsApp({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={ariaLabel ?? (home ? "Falar agora no WhatsApp" : "Solicitar atendimento pelo WhatsApp")}
-      onClick={() =>
-        trackWhatsAppInteraction({
+      onClick={(event) =>
+        trackWhatsAppInteraction(event, {
           section: "floating",
           city,
           topic,

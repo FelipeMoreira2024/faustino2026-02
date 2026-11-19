@@ -58,8 +58,8 @@ export function C24Hero() {
           </h1>
 
           <p className="mt-4 max-w-[34rem] text-[17px] leading-relaxed text-muted sm:text-lg">
-            Familiar acusado ou Preso? Fale agora{" "}
-            <strong className="font-semibold text-paper">com o advogado</strong> de Defesa.
+            Seu familiar foi preso, intimado ou está sendo investigado?{" "}
+            <strong className="font-semibold text-paper">Fale com um advogado pelo WhatsApp.</strong>
           </p>
 
           <div id={HERO_CTA_ID} className="mt-5">

@@ -2,6 +2,7 @@
 
 import { WA_HOME_STANDARD } from "@/lib/whatsapp";
 import { trackLpLead } from "@/components/lp/tracking";
+import { trackExperimentConversion } from "@/components/ExperimentTracker";
 
 type LpWhatsAppLinkProps = {
   section: string;
@@ -29,7 +30,8 @@ export function LpWhatsAppLink({
       rel="noopener noreferrer"
       aria-label={ariaLabel}
       className={className}
-      onClick={() => {
+      onClick={(event) => {
+        trackExperimentConversion(event);
         trackLpLead("whatsapp", section, topic);
       }}
     >

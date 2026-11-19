@@ -25,7 +25,7 @@ const sections = [
   },
   {
     title: "Testes de página",
-    text: "O site pode comparar versões da página inicial para entender qual facilita o contato, com fundamento no interesse legítimo de avaliar o funcionamento e melhorar a clareza do canal digital. Um identificador aleatório próprio mantém a versão exibida e permite contar uma visita e, quando ocorrer, o primeiro clique no WhatsApp daquela sessão. Não são armazenados nome, telefone, conteúdo da conversa, endereço IP ou a URL completa para essa finalidade. Os registros pseudônimos são mantidos por até 90 dias após o fim do teste; resultados agregados podem ser preservados no histórico. A participação pode ser desativada em ‘Preferências de cookies’.",
+    text: "O site pode comparar versões de uma página para entender qual facilita o contato, com fundamento no interesse legítimo de avaliar o funcionamento e melhorar a clareza do canal digital. Um identificador aleatório próprio mantém a versão exibida e permite contar a visita e o clique no WhatsApp. Durante um teste, a mensagem pré-preenchida pode conter uma referência que permite à equipe registrar se a conversa começou e se o contato foi qualificado. O sistema do teste guarda a referência e o estágio, sem armazenar nome, telefone, conteúdo da conversa, endereço IP ou URL completa. Os registros pseudônimos são mantidos por até 90 dias após o fim do teste; resultados agregados podem ser preservados no histórico. A participação pode ser desativada em ‘Preferências de cookies’.",
   },
   {
     title: "WhatsApp e serviços externos",

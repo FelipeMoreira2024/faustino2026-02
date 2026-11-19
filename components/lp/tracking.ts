@@ -1,5 +1,5 @@
 import { trackWhatsAppLead, trackPhoneLead } from "@/components/WhatsAppButton";
-import { trackExperimentConversion } from "@/components/ExperimentTracker";
+import { experimentAnalytics } from "@/components/ExperimentTracker";
 import { COOKIE_CONSENT_STORAGE_KEY } from "@/lib/consent";
 import { LP_SLUG } from "@/lib/lp-defesa-criminal";
 
@@ -42,7 +42,6 @@ export function trackLpLead(
   section: string,
   topic = "defesa_criminal"
 ) {
-  if (channel === "whatsapp") trackExperimentConversion();
   if (window.location.pathname !== "/defesa-criminal") {
     const trackLead = channel === "whatsapp" ? trackWhatsAppLead : trackPhoneLead;
     trackLead({ section, pageSlug: LP_SLUG });
@@ -59,5 +58,6 @@ export function trackLpLead(
     ...baseParams,
     lead_section: section,
     lead_topic: topic,
+    ...experimentAnalytics(),
   });
 }

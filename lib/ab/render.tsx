@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { ExperimentTracker } from "@/components/ExperimentTracker";
-import { AB_ENTRY_HEADER, AB_EXPOSURE_HEADER } from "@/lib/ab/crypto";
+import { AB_ENTRY_HEADER, AB_EXPOSURE_HEADER, verifyExposure } from "@/lib/ab/crypto";
 import { HOME_HOST, landingUrl, parseLandingUrl } from "@/lib/ab/urls";
 import { isVercelPreview } from "@/lib/site";
 
@@ -26,10 +26,17 @@ export async function landingMetadata(metadata: Metadata): Promise<Metadata> {
 }
 
 export async function LandingMeasurement() {
-  const exposure = (await headers()).get(AB_EXPOSURE_HEADER);
+  const token = (await headers()).get(AB_EXPOSURE_HEADER) ?? undefined;
+  const secret = process.env.AB_SIGNING_SECRET;
+  const exposure = token && secret ? await verifyExposure(token, secret) : null;
   return (
-    <span hidden data-faustino-landing="whatsapp" data-ab-exposure={exposure ?? undefined}>
-      {exposure ? <ExperimentTracker key={exposure} exposure={exposure} /> : null}
+    <span hidden data-faustino-landing="whatsapp"
+      data-ab-exposure={exposure ? token : undefined}
+      data-ab-experiment-id={exposure?.experimentId}
+      data-ab-variant={exposure?.variant}
+      data-ab-contact-reference={exposure?.contactReference}
+    >
+      {exposure && token ? <ExperimentTracker key={token} exposure={token} /> : null}
     </span>
   );
 }

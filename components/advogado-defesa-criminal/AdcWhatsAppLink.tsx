@@ -35,7 +35,7 @@ export function AdcWhatsAppLink({
       rel="noopener noreferrer"
       aria-label={ariaLabel}
       className={className}
-      onClick={() => trackWhatsAppInteraction({ section, topic, pageSlug, variant })}
+      onClick={(event) => trackWhatsAppInteraction(event, { section, topic, pageSlug, variant })}
     >
       {children}
     </a>

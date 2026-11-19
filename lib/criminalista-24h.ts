@@ -12,7 +12,7 @@
 export const C24_SLUG = "criminalista-24h";
 export const C24_PATH = `/${C24_SLUG}`;
 
-/** Vai para o dataLayer como `ab_variant` (a home é "a", a /b é "b"). */
+/** Rótulo usado no dataLayer fora de um experimento. */
 export const C24_VARIANT = "c";
 
 /** Atualize os dois valores quando o perfil do Google mudar. */

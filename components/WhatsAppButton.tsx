@@ -1,10 +1,11 @@
 "use client";
 
+import type { MouseEvent } from "react";
 import { cn } from "@/lib/utils";
 import { WhatsAppIcon } from "@/components/WhatsAppIcon";
 import { useLeadTracking } from "@/components/LeadTrackingContext";
 import { COOKIE_CONSENT_STORAGE_KEY, isAutoConsentPath } from "@/lib/consent";
-import { trackExperimentConversion } from "@/components/ExperimentTracker";
+import { experimentAnalytics, trackExperimentConversion } from "@/components/ExperimentTracker";
 
 declare global {
   interface Window {
@@ -26,7 +27,7 @@ export type TrackingContext = {
   city?: string;
   topic?: string;
   pageSlug?: string;
-  /** Variante do teste A/B; omitido = "a" (home original). */
+  /** Rótulo legado da landing para eventos fora de um experimento. */
   variant?: string;
 };
 
@@ -56,7 +57,7 @@ function pushLeadEvent(
     lead_city: context.city || "goiania",
     lead_topic: adsLanding ? "defesa_criminal" : context.topic || "defesa_criminal",
     page_slug: context.pageSlug || "home",
-    ab_variant: context.variant || "a",
+    ...experimentAnalytics(context.variant || "a"),
   });
 }
 
@@ -72,8 +73,8 @@ export function trackPhoneLead(context: TrackingContext) {
   );
 }
 
-export function trackWhatsAppInteraction(context: TrackingContext = { section: "link" }) {
-  trackExperimentConversion();
+export function trackWhatsAppInteraction(event: MouseEvent<HTMLAnchorElement>, context: TrackingContext) {
+  trackExperimentConversion(event);
   trackWhatsAppLead(context);
 }
 
@@ -106,8 +107,8 @@ export function WhatsAppButton({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      onClick={() =>
-        trackWhatsAppInteraction({
+      onClick={(event) =>
+        trackWhatsAppInteraction(event, {
           section,
           city,
           topic,

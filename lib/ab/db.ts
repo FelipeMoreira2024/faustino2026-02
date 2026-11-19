@@ -1,10 +1,13 @@
 import "server-only";
 import postgres from "postgres";
-import { evaluateAutomaticWinner } from "@/lib/ab/stats";
+import { evaluateAutomaticWinner, evaluatePlannedWinner } from "@/lib/ab/stats";
 import { landingCatalog } from "@/lib/ab/catalog";
 import { probeLanding } from "@/lib/ab/probe";
 import { HOME_HOST, landingContentKey } from "@/lib/ab/urls";
-import type { Exposure, PublicExperimentConfig } from "@/lib/ab/types";
+import type { ExperimentMode, ExperimentPlan, Exposure, LeadStage, PublicExperimentConfig } from "@/lib/ab/types";
+
+const DAY_MS = 86_400_000;
+const revision = process.env.VERCEL_GIT_COMMIT_SHA || process.env.VERCEL_DEPLOYMENT_ID || null;
 
 let client: ReturnType<typeof postgres> | null | undefined;
 
@@ -29,7 +32,7 @@ export async function getPublicExperimentConfig(): Promise<PublicExperimentConfi
   const [active, publications] = await Promise.all([
     sql<NonNullable<PublicExperimentConfig["experiment"]>[]>`
       SELECT e.id, e.baseline_page_id AS "baselinePageId", e.challenger_page_id AS "challengerPageId",
-        e.baseline_allocation AS "baselineAllocation", e.ends_at AS "endsAt",
+        e.baseline_allocation AS "baselineAllocation", e.ends_at AS "endsAt", e.plan IS NOT NULL AS "measureLeads",
         json_build_object('host', ep.host, 'path', ep.path) AS entry,
         json_build_object('host', bp.host, 'path', bp.path) AS baseline,
         json_build_object('host', cp.host, 'path', cp.path) AS challenger
@@ -38,6 +41,7 @@ export async function getPublicExperimentConfig(): Promise<PublicExperimentConfi
       JOIN ab_pages bp ON bp.id = e.baseline_page_id AND bp.available
       JOIN ab_pages cp ON cp.id = e.challenger_page_id AND cp.available
       WHERE e.status = 'active' AND (e.ends_at IS NULL OR e.ends_at > now())
+        AND (e.plan->>'revision' IS NULL OR e.plan->>'revision' = ${revision})
     `,
     sql<PublicExperimentConfig["publications"]>`
       SELECT json_build_object('host', ep.host, 'path', ep.path) AS entry,
@@ -61,14 +65,15 @@ export async function recordVisit(payload: Exposure) {
       JOIN ab_pages cp ON cp.id = e.challenger_page_id AND cp.available
       WHERE e.id = ${payload.experimentId} AND e.status = 'active'
         AND (e.ends_at IS NULL OR e.ends_at > now())
+        AND (e.plan->>'revision' IS NULL OR e.plan->>'revision' = ${revision})
         AND ep.host = ${payload.entryHost} AND ep.path = ${payload.entryPath}
         AND (CASE WHEN ${payload.variant} = 'a' THEN e.baseline_page_id ELSE e.challenger_page_id END) = ${payload.pageId}
       FOR SHARE OF e
     `;
     if (!active[0]) return null;
     await transaction`
-      INSERT INTO ab_participants (id, experiment_id, page_id, variant)
-      VALUES (${payload.participantId}, ${payload.experimentId}, ${payload.pageId}, ${payload.variant})
+      INSERT INTO ab_participants (id, experiment_id, page_id, variant, contact_reference)
+      VALUES (${payload.participantId}, ${payload.experimentId}, ${payload.pageId}, ${payload.variant}, ${payload.contactReference ?? null})
       ON CONFLICT (experiment_id, id) DO NOTHING
     `;
     await transaction`SELECT id FROM ab_participants WHERE experiment_id = ${payload.experimentId} AND id = ${payload.participantId} FOR UPDATE`;
@@ -107,10 +112,79 @@ export async function recordConversion(sessionId: string, experimentId: string, 
         AND e.id = s.experiment_id
         AND e.status = 'active'
         AND (e.ends_at IS NULL OR e.ends_at > now())
+        AND (e.plan->>'revision' IS NULL OR e.plan->>'revision' = ${revision})
         AND s.last_seen_at >= now() - interval '30 minutes'
       RETURNING s.id
     `;
     return Boolean(updated[0]);
+  });
+}
+
+export async function recordLead(reference: string, stage: LeadStage) {
+  const sql = getDatabase();
+  if (!sql) throw new Error("Banco de dados não configurado.");
+  return sql.begin(async (transaction) => {
+    const [participant] = await transaction<{ id: string; experiment_id: string }[]>`
+      SELECT p.id, p.experiment_id FROM ab_participants p
+      JOIN ab_experiments e ON e.id = p.experiment_id
+      WHERE p.contact_reference = ${reference} AND e.status IN ('active', 'paused')
+        AND now() <= p.created_at + (e.plan->>'attributionDays')::int * interval '24 hours'
+      FOR SHARE OF e
+    `;
+    if (!participant) return false;
+    await transaction`
+      UPDATE ab_participants SET
+        contacted_at = COALESCE(contacted_at, now()),
+        qualified_at = CASE WHEN ${stage} = 'qualified' THEN COALESCE(qualified_at, now()) ELSE qualified_at END
+      WHERE experiment_id = ${participant.experiment_id} AND id = ${participant.id}
+    `;
+    return true;
+  });
+}
+
+type ExperimentMetrics = {
+  baseline_participants: number;
+  challenger_participants: number;
+  baseline_visits: number;
+  challenger_visits: number;
+  baseline_conversions: number;
+  challenger_conversions: number;
+  baseline_clicking_browsers: number;
+  challenger_clicking_browsers: number;
+  baseline_conversations: number;
+  challenger_conversations: number;
+  baseline_qualified: number;
+  challenger_qualified: number;
+};
+
+function metricsQuery(sql: postgres.Sql | postgres.TransactionSql, experimentId: string | postgres.Fragment) {
+  return sql<ExperimentMetrics[]>`
+    SELECT
+      count(DISTINCT s.participant_id) FILTER (WHERE s.variant = 'a')::int AS baseline_participants,
+      count(DISTINCT s.participant_id) FILTER (WHERE s.variant = 'b')::int AS challenger_participants,
+      count(*) FILTER (WHERE s.variant = 'a')::int AS baseline_visits,
+      count(*) FILTER (WHERE s.variant = 'b')::int AS challenger_visits,
+      count(*) FILTER (WHERE s.variant = 'a' AND s.converted_at IS NOT NULL)::int AS baseline_conversions,
+      count(*) FILTER (WHERE s.variant = 'b' AND s.converted_at IS NOT NULL)::int AS challenger_conversions,
+      count(DISTINCT s.participant_id) FILTER (WHERE s.variant = 'a' AND s.converted_at IS NOT NULL)::int AS baseline_clicking_browsers,
+      count(DISTINCT s.participant_id) FILTER (WHERE s.variant = 'b' AND s.converted_at IS NOT NULL)::int AS challenger_clicking_browsers,
+      count(DISTINCT s.participant_id) FILTER (WHERE s.variant = 'a' AND p.contacted_at IS NOT NULL)::int AS baseline_conversations,
+      count(DISTINCT s.participant_id) FILTER (WHERE s.variant = 'b' AND p.contacted_at IS NOT NULL)::int AS challenger_conversations,
+      count(DISTINCT s.participant_id) FILTER (WHERE s.variant = 'a' AND p.qualified_at IS NOT NULL)::int AS baseline_qualified,
+      count(DISTINCT s.participant_id) FILTER (WHERE s.variant = 'b' AND p.qualified_at IS NOT NULL)::int AS challenger_qualified
+    FROM ab_sessions s
+    JOIN ab_participants p ON (p.experiment_id, p.id) = (s.experiment_id, s.participant_id)
+    WHERE s.experiment_id = ${experimentId}
+  `;
+}
+
+function plannedResult(plan: ExperimentPlan, metrics: ExperimentMetrics) {
+  return evaluatePlannedWinner(plan, {
+    browsers: metrics.baseline_participants,
+    outcomes: plan.metric === "qualified_lead" ? metrics.baseline_qualified : metrics.baseline_clicking_browsers,
+  }, {
+    browsers: metrics.challenger_participants,
+    outcomes: plan.metric === "qualified_lead" ? metrics.challenger_qualified : metrics.challenger_clicking_browsers,
   });
 }
 
@@ -140,43 +214,42 @@ export async function endExperiment(
       mode: string;
       status: string;
       ends_at: Date | null;
-    }[]>`SELECT id, entry_page_id, baseline_page_id, challenger_page_id, mode, status, ends_at FROM ab_experiments WHERE id = ${experimentId} FOR UPDATE`;
+      plan: ExperimentPlan | null;
+    }[]>`SELECT id, entry_page_id, baseline_page_id, challenger_page_id, mode, status, ends_at, plan FROM ab_experiments WHERE id = ${experimentId} FOR UPDATE`;
     const experiment = rows[0];
     if (!experiment) throw new Error("Teste não encontrado.");
     if (!["active", "paused"].includes(experiment.status)) return { status: experiment.status };
-    if (options.decisionType === "automatic" && (experiment.mode !== "automatic" || !experiment.ends_at || experiment.ends_at.getTime() > Date.now())) {
+    const { plan } = experiment;
+    const decisionAt = experiment.ends_at && experiment.ends_at.getTime() + (plan?.attributionDays ?? 0) * DAY_MS;
+    if (options.decisionType === "automatic" && (experiment.mode !== "automatic" || !decisionAt || decisionAt > Date.now())) {
       throw new Error("A avaliação automática só pode ocorrer após o prazo definido.");
     }
     if (options.decisionType === "automatic" && experiment.status !== "active") {
       return { status: experiment.status };
     }
 
-    const metricRows = await transaction<{
-      baseline_visits: number;
-      baseline_conversions: number;
-      challenger_visits: number;
-      challenger_conversions: number;
-    }[]>`
-      SELECT
-        count(DISTINCT participant_id) FILTER (WHERE variant = 'a')::int AS baseline_participants,
-        count(DISTINCT participant_id) FILTER (WHERE variant = 'b')::int AS challenger_participants,
-        count(*) FILTER (WHERE variant = 'a')::int AS baseline_visits,
-        count(*) FILTER (WHERE variant = 'a' AND converted_at IS NOT NULL)::int AS baseline_conversions,
-        count(*) FILTER (WHERE variant = 'b')::int AS challenger_visits,
-        count(*) FILTER (WHERE variant = 'b' AND converted_at IS NOT NULL)::int AS challenger_conversions
-      FROM ab_sessions WHERE experiment_id = ${experimentId}
-    `;
-    const finalMetrics = metricRows[0] ?? {
-      baseline_visits: 0,
-      baseline_conversions: 0,
-      challenger_visits: 0,
-      challenger_conversions: 0,
-    };
+    if (plan && options.decisionType === "manual" && (!decisionAt || decisionAt > Date.now() || experiment.status === "paused")) {
+      throw new Error("Aguarde o fim da coleta e da janela de qualificação antes de publicar uma vencedora.");
+    }
+    const [finalMetrics] = await metricsQuery(transaction, experimentId);
 
     let winnerPageId: string | null = null;
     let status: "completed" | "inconclusive" = "completed";
     let details: { outcome?: string; reason?: string; lower?: number; upper?: number } = {};
-    if (options.decisionType === "manual") {
+    if (plan?.revision && plan.revision !== revision) {
+      if (options.decisionType === "manual") throw new Error("O deploy mudou durante o teste. Encerre a rodada sem vencedora.");
+      status = "inconclusive";
+      details = { outcome: "inconclusive", reason: "revision_changed" };
+    } else if (plan) {
+      const result = plannedResult(plan, finalMetrics);
+      details = result;
+      if (result.outcome === "baseline") winnerPageId = experiment.baseline_page_id;
+      else if (result.outcome === "challenger") winnerPageId = experiment.challenger_page_id;
+      else status = "inconclusive";
+      if (options.decisionType === "manual" && winnerPageId !== options.winnerPageId) {
+        throw new Error("A página selecionada ainda não atende aos critérios definidos no plano do teste.");
+      }
+    } else if (options.decisionType === "manual") {
       if (![experiment.baseline_page_id, experiment.challenger_page_id].includes(options.winnerPageId)) {
         throw new Error("A página escolhida não pertence ao teste.");
       }
@@ -223,8 +296,8 @@ export async function controlExperiment(experimentId: string, action: "pause" | 
   const sql = getDatabase();
   if (!sql) throw new Error("Banco de dados não configurado.");
   return sql.begin(async (transaction) => {
-    const rows = await transaction<{ status: string; paused_at: Date | null; ends_at: Date | null }[]>`
-      SELECT status, paused_at, ends_at FROM ab_experiments WHERE id = ${experimentId} FOR UPDATE
+    const rows = await transaction<{ status: string; paused_at: Date | null; ends_at: Date | null; plan: ExperimentPlan | null }[]>`
+      SELECT status, paused_at, ends_at, plan FROM ab_experiments WHERE id = ${experimentId} FOR UPDATE
     `;
     const experiment = rows[0];
     if (!experiment) throw new Error("Teste não encontrado.");
@@ -237,6 +310,7 @@ export async function controlExperiment(experimentId: string, action: "pause" | 
     }
     if (action === "resume") {
       if (experiment.status !== "paused" || !experiment.paused_at) throw new Error("Somente um teste pausado pode ser retomado.");
+      if (experiment.plan?.revision && experiment.plan.revision !== revision) throw new Error("O deploy mudou durante o teste. Encerre a rodada sem vencedora.");
       await transaction`
         UPDATE ab_experiments SET status = 'active',
           ends_at = CASE WHEN ends_at IS NULL THEN NULL ELSE ends_at + (now() - paused_at) END,
@@ -246,23 +320,12 @@ export async function controlExperiment(experimentId: string, action: "pause" | 
       return { status: "active" as const };
     }
     if (!['active', 'paused'].includes(experiment.status)) throw new Error("Este teste já foi encerrado.");
-    const metrics = await transaction<{
-      baseline_visits: number; baseline_conversions: number;
-      challenger_visits: number; challenger_conversions: number;
-    }[]>`
-      SELECT count(DISTINCT participant_id) FILTER (WHERE variant = 'a')::int AS baseline_participants,
-      count(DISTINCT participant_id) FILTER (WHERE variant = 'b')::int AS challenger_participants,
-      count(*) FILTER (WHERE variant = 'a')::int AS baseline_visits,
-        count(*) FILTER (WHERE variant = 'a' AND converted_at IS NOT NULL)::int AS baseline_conversions,
-        count(*) FILTER (WHERE variant = 'b')::int AS challenger_visits,
-        count(*) FILTER (WHERE variant = 'b' AND converted_at IS NOT NULL)::int AS challenger_conversions
-      FROM ab_sessions WHERE experiment_id = ${experimentId}
-    `;
+    const [metrics] = await metricsQuery(transaction, experimentId);
     await transaction`
       UPDATE ab_experiments SET status = 'cancelled', ended_at = now(), paused_at = NULL,
         winner_page_id = NULL, decision_type = 'manual',
         decision_details = ${transaction.json({ reason: "stopped_without_winner" })},
-        final_metrics = ${transaction.json(metrics[0])}
+        final_metrics = ${transaction.json(metrics)}
       WHERE id = ${experimentId}
     `;
     return { status: "cancelled" as const };
@@ -274,7 +337,8 @@ export async function finalizeExpiredExperiments(cleanup = false) {
   if (!sql) return;
   const expired = await sql<{ id: string }[]>`
     SELECT id FROM ab_experiments
-    WHERE status = 'active' AND mode = 'automatic' AND ends_at <= now()
+    WHERE status = 'active' AND mode = 'automatic'
+      AND ends_at + COALESCE((plan->>'attributionDays')::int, 0) * interval '24 hours' <= now()
     LIMIT 1
   `;
   if (expired[0]) {
@@ -303,29 +367,29 @@ export async function getAdminDashboard() {
   const [pages, experiments, current] = await Promise.all([
     sql`SELECT id, name, host, path, available FROM ab_pages ORDER BY host, name`,
     sql`
-      SELECT e.id, e.name, e.mode, e.status, e.started_at, e.ends_at, e.ended_at,
+      SELECT e.id, e.name, e.mode, e.status, e.started_at, e.ends_at, e.ended_at, e.plan, e.baseline_allocation,
+        e.ends_at + COALESCE((e.plan->>'attributionDays')::int, 0) * interval '24 hours' AS decision_at,
+        e.plan->>'revision' IS NOT NULL AND e.plan->>'revision' IS DISTINCT FROM ${revision} AS revision_changed,
         e.baseline_page_id, bp.name AS baseline_name, bp.path AS baseline_path,
         e.challenger_page_id, cp.name AS challenger_name, cp.path AS challenger_path,
         e.winner_page_id, wp.name AS winner_name, e.decision_type, e.decision_details,
         e.entry_page_id, ep.host AS entry_host, ep.path AS entry_path, bp.host AS baseline_host, cp.host AS challenger_host,
-        (CASE WHEN e.status IN ('active', 'paused') THEN count(DISTINCT s.participant_id) FILTER (WHERE s.variant = 'a') ELSE (e.final_metrics->>'baseline_participants')::bigint END)::int AS baseline_participants,
-        (CASE WHEN e.status IN ('active', 'paused') THEN count(DISTINCT s.participant_id) FILTER (WHERE s.variant = 'b') ELSE (e.final_metrics->>'challenger_participants')::bigint END)::int AS challenger_participants,
-        (CASE WHEN e.status IN ('active', 'paused') THEN count(s.id) FILTER (WHERE s.variant = 'a') ELSE COALESCE((e.final_metrics->>'baseline_visits')::bigint, 0) END)::int AS baseline_visits,
-        (CASE WHEN e.status IN ('active', 'paused') THEN count(s.id) FILTER (WHERE s.variant = 'a' AND s.converted_at IS NOT NULL) ELSE COALESCE((e.final_metrics->>'baseline_conversions')::bigint, 0) END)::int AS baseline_conversions,
-        (CASE WHEN e.status IN ('active', 'paused') THEN count(s.id) FILTER (WHERE s.variant = 'b') ELSE COALESCE((e.final_metrics->>'challenger_visits')::bigint, 0) END)::int AS challenger_visits,
-        (CASE WHEN e.status IN ('active', 'paused') THEN count(s.id) FILTER (WHERE s.variant = 'b' AND s.converted_at IS NOT NULL) ELSE COALESCE((e.final_metrics->>'challenger_conversions')::bigint, 0) END)::int AS challenger_conversions
+        CASE WHEN e.status IN ('active', 'paused') THEN to_jsonb(live) ELSE e.final_metrics END AS metrics
       FROM ab_experiments e
       JOIN ab_pages bp ON bp.id = e.baseline_page_id
       JOIN ab_pages cp ON cp.id = e.challenger_page_id
       JOIN ab_pages ep ON ep.id = e.entry_page_id
       LEFT JOIN ab_pages wp ON wp.id = e.winner_page_id
-      LEFT JOIN ab_sessions s ON s.experiment_id = e.id
-      GROUP BY e.id, ep.id, bp.id, cp.id, wp.id
+      LEFT JOIN LATERAL (${metricsQuery(sql, sql`e.id`)}) live ON e.status IN ('active', 'paused')
       ORDER BY e.created_at DESC
     `,
     sql`SELECT entry_page_id, page_id FROM ab_publications`,
   ]);
-  return { pages, experiments, publications: current };
+  return {
+    pages,
+    experiments: experiments.map(({ metrics, ...experiment }) => ({ ...experiment, ...metrics })),
+    publications: current,
+  };
 }
 
 export async function addPage(name: string, host: string, path: string) {
@@ -343,8 +407,9 @@ export async function startExperiment(input: {
   name: string;
   baselinePageId: string;
   challengerPageId: string;
-  mode: "manual" | "automatic";
+  mode: ExperimentMode;
   durationDays: number;
+  plan: Omit<ExperimentPlan, "revision">;
 }) {
   const sql = getDatabase();
   if (!sql) throw new Error("Banco de dados não configurado.");
@@ -358,13 +423,12 @@ export async function startExperiment(input: {
     if (!second || landingContentKey(first.host, first.path) === landingContentKey(second.host, second.path)) {
       throw new Error("Escolha duas landings disponíveis com conteúdos diferentes.");
     }
-    const endsAt = input.mode === "automatic"
-      ? new Date(Date.now() + input.durationDays * 86_400_000)
-      : null;
+    const endsAt = new Date(Date.now() + input.durationDays * DAY_MS);
     const rows = await transaction`
       INSERT INTO ab_experiments
-        (name, entry_page_id, baseline_page_id, challenger_page_id, mode, ends_at)
-      VALUES (${input.name}, ${input.baselinePageId}, ${input.baselinePageId}, ${input.challengerPageId}, ${input.mode}, ${endsAt})
+        (name, entry_page_id, baseline_page_id, challenger_page_id, mode, ends_at, plan)
+      VALUES (${input.name}, ${input.baselinePageId}, ${input.baselinePageId}, ${input.challengerPageId}, ${input.mode}, ${endsAt},
+        ${transaction.json({ ...input.plan, revision })})
       RETURNING id
     `;
     return rows[0];
