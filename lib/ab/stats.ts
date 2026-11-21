@@ -19,6 +19,21 @@ export function planSample(baselineRate: number, minimumLift: number, dailyBrows
   return { perVariant, collectionDays: Math.ceil(2 * perVariant / dailyBrowsers) };
 }
 
+/**
+ * Inverso de planSample: menor melhora (em pontos percentuais, passo de 0,1)
+ * que cabe no prazo informado com o tráfego diário previsto.
+ * Retorna null quando nenhuma melhora possível cabe no prazo.
+ */
+export function detectableLift(baselineRate: number, dailyBrowsers: number, days: number) {
+  if (!Number.isFinite(baselineRate) || baselineRate < 0.1 || !Number.isSafeInteger(days) || days < 1) return null;
+  for (let tenths = 1; baselineRate + tenths / 10 < 100; tenths += 1) {
+    const minimumLift = tenths / 10;
+    const sample = planSample(baselineRate, minimumLift, dailyBrowsers);
+    if (sample && sample.collectionDays <= days) return { minimumLift, ...sample };
+  }
+  return null;
+}
+
 function wilson({ browsers, outcomes }: BrowserResult) {
   const z = 1.959964;
   const rate = outcomes / browsers;

@@ -13,7 +13,7 @@ export async function POST(request: Request) {
   }
   try {
     if (!(await recordLead(reference, body.stage))) {
-      return NextResponse.json({ error: "Referência fora da janela de qualificação ou sem visita registrada." }, { status: 404 });
+      return NextResponse.json({ error: "Código não encontrado. Confira se copiou o código inteiro ou se o prazo para registrar esse atendimento já passou." }, { status: 404 });
     }
     return NextResponse.json({ ok: true });
   } catch {

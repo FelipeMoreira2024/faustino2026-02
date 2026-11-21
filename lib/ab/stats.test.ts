@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { browserRateDifference, evaluateAutomaticWinner, evaluatePlannedWinner, planSample } from "@/lib/ab/stats";
+import { browserRateDifference, detectableLift, evaluateAutomaticWinner, evaluatePlannedWinner, planSample } from "@/lib/ab/stats";
 
 function sample(size: number, conversionRate: number) {
   const converted = Math.round(size * conversionRate);
@@ -55,4 +55,13 @@ test("usa o tamanho planejado por variante e exige evidência e melhora prática
   assert.equal(evaluatePlannedWinner(plan, baseline, group(400, 160)).outcome, "challenger");
   assert.equal(evaluatePlannedWinner(plan, group(400, 160), baseline).outcome, "baseline");
   assert.equal(browserRateDifference(group(0, 0), baseline), null);
+});
+
+test("calcula a menor melhora que cabe no prazo", () => {
+  const result = detectableLift(30, 8, 89);
+  assert.ok(result);
+  assert.ok(result.collectionDays <= 89);
+  assert.ok(result.minimumLift <= 10);
+  assert.ok((planSample(30, result.minimumLift - 0.1, 8)?.collectionDays ?? 0) > 89);
+  assert.equal(detectableLift(30, 8, 0), null);
 });
